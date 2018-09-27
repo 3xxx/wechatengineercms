@@ -1,0 +1,14 @@
+<!-- detail wxml -->
+
+<import src="../../wxParse/wxParse.wxml"/>
+ 
+<view class='page'>
+  <view class='leassonTilte'>{{leassonTilte}}</view>
+  <view class='author'>原创: {{author}}</view>
+  <view class='time'>{{time}}</view>
+  <view class="page__bd page__bd_spacing">
+    <view class='dk-show' style='height:{{dkheight}}px;'>
+      <template is="wxParse" data="{{wxParseData:dkcontent.nodes}}"/>
+    </view>
+  </view>
+</view>

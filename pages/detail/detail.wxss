@@ -1,0 +1,32 @@
+/* detail wxcss */
+.page {
+  padding: 20px 15px;
+  box-sizing: border-box;
+}
+
+.leassonTilte {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.author {
+  font-size: 15px;
+  color: #888;
+}
+
+.time {
+  font-size: 13px;
+  color: #888;
+  margin: 10px 0 20px 0;
+}
+
+.wxParse-p {
+  font-size: 16px;
+  padding: 10px 0;
+  line-height: 26px;
+  color: #888;
+}
+
+.wxParse-img {
+  width: 100% !important;
+}

@@ -1,0 +1,70 @@
+.page swiper{
+  width: 100%;
+  height: 220px;
+}
+.slide-image{
+  width: 100%;
+  height: 100%;
+}
+.menuTab{
+  width: 100%;
+  flex: 0 0 38px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 14px;
+  color: #262626;
+}
+.menuLis{
+  width: 30%;
+  height: 100%;
+  line-height: 38px;
+  text-align: center;
+}
+.actColor{
+  color: #d48806;
+}
+.leassonListOut{
+  width: 100%;
+}
+.leassonList{
+  width: 100%;
+  height: 100px;
+  box-sizing: border-box;
+  padding: 10px 12px 0 12px;
+}
+.listIn{
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid #f5f5f5;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+}
+.leassonImg{
+  flex: 0 0 100px;
+  height: 80px;
+  margin-right: 16px;
+}
+.leassonImgs{
+  width: 100%;
+  height: 80px;
+}
+.leassonTitle{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between
+}
+.leassonTitle .title{
+  font-size: 16px;
+  color: #595959;
+}
+.leassonTitle .author{
+  font-size: 14px;
+  color: #595959;
+}
