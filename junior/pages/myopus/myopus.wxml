@@ -1,0 +1,40 @@
+
+<view class="page">
+  <scroll-view scroll-y style="flex:1;overflow:hidden;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+    <!-- <view class='leassonListOut' wx:for="{{leassonList}}" wx:key="{{item.id}}"> -->
+    <view class='leassonListOut' wx:for="{{articles}}" wx:key="{{item.id}}">
+      <view class='leassonList' data-id="{{item.id}}" bindtap="seeDetail">
+        <view class='listIn'>
+          <view class='leassonImg'>
+            <image src="{{item.imgUrl||spec.productFirstImage}}" class='leassonImgs' mode='aspectFill' />
+          </view>
+          <view class='leassonTitle'>
+            <view class='title'>
+              {{item.title}}
+            </view>
+            <view class='author'>
+              作者：{{item.author}}
+              <!-- {{author}} -->
+
+              <view class="tool">
+                <view class="tool-item">
+                  <image src="../../images/heart-faad14.png"></image>
+                  <text>{{item.likeNum}}</text>
+                </view>
+                <view class="tool-item comment">
+                  <image src="../../images/news-faad14.png"></image>
+                  <text>{{item.commentNum}}</text>
+                </view>
+                <view class="tool-item collect">
+                  <image src="../../images/eye-faad14.png"></image>
+                  <text>{{item.Views}}</text>
+                </view>
+              </view>
+
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
