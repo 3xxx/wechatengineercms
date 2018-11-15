@@ -1,10 +1,15 @@
 /* detail wxcss */
 @import '../../lib/style/fontawesome.wxss';
+<<<<<<< HEAD
 
 /* @import "../../lib/style/iconfont1.wxss"; */
 
 /* @import "../../lib/style/base.wxss"; */
 
+=======
+/* @import "../../lib/style/iconfont1.wxss"; */
+/* @import "../../lib/style/base.wxss"; */
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
 .page {
   padding: 20px 15px;
   box-sizing: border-box;
@@ -66,7 +71,10 @@
 }
 
 /* pages/canvas/canvas.wxss */
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
 canvas {
   position: fixed;
   top: 0;
@@ -116,8 +124,13 @@ canvas {
   left: 30%;
 }
 
+<<<<<<< HEAD
 /* 评论 */
 
+=======
+
+/* 评论 */
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
 .release_list {
   overflow-y: scroll;
   background: #eee;
@@ -193,7 +206,11 @@ canvas {
 }
 
 .publish {
+<<<<<<< HEAD
   width: 100%;
+=======
+  width: 100%; 
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   background: white;
   display: flex;
   margin-top: 20rpx;
@@ -273,8 +290,11 @@ canvas {
   width: 90rpx;
   height: 90rpx;
   margin: 0 20rpx;
+<<<<<<< HEAD
   border-radius: 50%;
   margin-right: 8px;
+=======
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
 }
 
 .redtree {
@@ -318,6 +338,7 @@ canvas {
   border: none;
 }
 
+<<<<<<< HEAD
 .icon:after {
   font-family: 'iconfont';
   font-weight: 500;
@@ -474,3 +495,11 @@ canvas {
     margin-bottom: -200px;
   }
 }
+=======
+.icon:after{
+  font-family: 'iconfont';
+  font-weight: 500;
+  font-style: normal;
+  content: '\e698;'
+}
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8

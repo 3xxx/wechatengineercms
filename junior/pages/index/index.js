@@ -31,7 +31,10 @@ Page({
   onPullDownRefresh: function() {
     this.clearCache();
     this.getArticles(1); //第一次加载数据
+<<<<<<< HEAD
     wx.stopPullDownRefresh();
+=======
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   },
   // 页面上拉触底事件（上拉加载更多）
   onReachBottom: function() {
@@ -125,7 +128,11 @@ Page({
           for (var i = 0; i < res.data.articles.length; i++) {
             imgUrls1.push(res.data.articles[i].imgUrl)
           }
+<<<<<<< HEAD
           // console.log(imgUrls1)
+=======
+          console.log(imgUrls1)
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
           that.setData({
             imgUrls: imgUrls1 //提供数据给页面顶端轮播图片
           })

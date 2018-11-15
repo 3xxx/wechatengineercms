@@ -8,11 +8,18 @@
     "pages/detail/detail"
   ],
   "window": {
+<<<<<<< HEAD
     "backgroundTextStyle": "#eeeeee",
     "navigationBarBackgroundColor": "#faad14",
     "navigationBarTitleText": "青少儿书画plus",
     "navigationBarTextStyle": "white",
     "enablePullDownRefresh": true
+=======
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#faad14",
+    "navigationBarTitleText": "青少儿书画plus",
+    "navigationBarTextStyle": "white"
+>>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   },
   "tabBar": {
     "backgroundColor": "#ffffff",
