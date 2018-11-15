@@ -1,0 +1,9 @@
+<view class="container">
+  <image class="userinfo-avatar" src="../../images/zsjplus.png"></image>
+  <text class="motto">Hi~~欢迎使用珠三角设代小程序~</text>
+  <text class="motto1">………………………………………………\n1.了解工程现场形象进度；\n………………………………………………\n2.记录设计服务过程；\n………………………………………………\n3.分享工作成就；\n………………………………………………</text>
+  <view class="button">
+    <text class="button-text">开发者微信号</text>
+    <text class="button-text">hotqin999</text>
+  </view>
+</view>

@@ -1,0 +1,94 @@
+<!-- detail wxml -->
+<import src="../../wxParse/wxParse.wxml" />
+<!-- 画布大小按需定制 这里我按照背景图的尺寸定的 hidden='{{hidden}}'  -->
+<canvas canvas-id="shareImg" style="width:545px;height:771px"></canvas>
+<!-- 预览区域  -->
+<view hidden='{{hidden}}' class='preview'>
+  <image src='{{prurl}}' mode='widthFix'></image>
+  <button type='primary' size='mini' bindtap='save'>保存分享图</button>
+</view>
+<!-- <button class='share' bindtap='share'>生成分享图</button> -->
+
+<view class='page' catchtap='catchhide'>
+  <view class='leassonTilte'>{{leassonTilte}}</view>
+  <view class='author'>原创: 珠三角设代</view>
+  <view class='time'>{{time}}</view>
+  <view class="page__bd page__bd_spacing" data-id="{{Id}}" data-actindex="{{actIndex}}" catchtap='downloadFile'>
+    <view class='dk-show' style='height:{{dkheight}}px;'>
+      <!-- <template is="wxParse" data="{{wxParseData:dkcontent.nodes}}" /> -->
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="../../images/livejoumal.png" style="width: 60px; height: 60px;" />
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{Title}}</view>
+          <!-- <view class="weui-media-box__desc">{{Created}}</view> -->
+        </view>
+        </view>
+      </view>
+
+      <!-- 点赞、评论、收藏次数 -->
+      <view class="tool">
+        <view class="tool-item" catchtap='onUpTap' data-post-id="{{id}}">
+          <image wx:if="{{liked}}" src="../../images/heart-faad14.png"></image>
+          <image wx:else src="../../images/heart-o-faad14.png"></image>
+          <text>{{likeNum}}</text>
+        </view>
+        <view class="tool-item comment" catchtap='onCommentTap' data-post-id="{{post.postId}}">
+          <image src="../../images/news-faad14.png"></image>
+          <text>{{commentNum}}</text>
+        </view>
+        <view class="tool-item collect" catchtap='onCollectionTap' data-post-id="{{post.postId}}">
+          <image src="../../images/eye-faad14.png"></image>
+          <text>{{views}}</text>
+        </view>
+      </view>
+      <!-- 评论 -->
+      <view class='release_list'>
+        <view wx:key="property" wx:for="{{comment}}" class='commentpl' data-id="{{item.id}}">
+          <button wx:if='{{item.is_me}}' class='revoke' bindtap='binddelete' data-id='{{item.id}}' data-index='{{index}}'>撤销</button>
+
+          <view class='publish'>
+            <image src='{{item.avatar}}'></image>
+            <view class='publish_list'>
+              <text class='publish_list_item'>{{item.username}}</text>
+              <view class='like'>
+                <text class='publish_time'>{{item.publish_time}}</text>
+                <view class='like_num_list' bindtap='bindlike' data-id='{{item.id}}'>
+                  <text class='fa fa-thumbs-o-up' style='{{item.liked?"color:red":"color:black"}}'></text>
+                  <text class='like_num'>{{item.likes_count}}</text>
+                </view>
+              </view>
+              <text class='redtree_text'>{{item.content}}</text>
+            </view>
+          </view>
+        </view>
+        <view class='Nocomment' wx:if='{{comment.length == 0}}'>暂无评论
+        </view>
+      </view>
+
+    </view>
+  </view>
+</view>
+
+<!--发表评论  -->
+<view class='release' hidden='{{!releaseFocus}}'>
+  <input class='text' placeholder='在此处键入评论内容...' bindtap='bindrelease' value='{{releaseValue}}'></input>
+  <text class='fa fa-square-o'></text>
+  <text>{{commentNum}}</text>
+  <button class='share1' open-type='share'>
+    <text class='fa fa-share-square-o'></text>
+  </button>
+  <text>0</text>
+</view>
+<!-- 需要使用 button 来授权登录 -->
+<!-- <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+<view wx:else>请升级微信版本</view> -->
+<form bindsubmit='formSubmit'>
+  <view class='releaseFocus' hidden='{{releaseFocus}}'>
+    <textarea adjust-position='true' fixed='true' data-id='' name='input' class='release_text' placeholder='在此处键入评论内容...' value='{{releaseValue}}' focus='{{focus}}'></textarea>
+    <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" form-type='submit'>发表</button>
+    <view wx:else>请升级微信版本</view>
+  </view>
+</form>

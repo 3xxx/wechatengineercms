@@ -1,13 +1,54 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/detail/detail",
-    "pages/addtopic/addtopic"
+    "pages/pdfview/pdfview",
+    "pages/addtopic/addtopic",
+    "pages/mine/mine",
+    "pages/myopus/myopus",
+    "pages/about/about"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+  "window": {
+    "backgroundColor": "#eeeeee",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#faad14",
+    "navigationBarTitleText": " 珠三角设代",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "default"
+  },
+  "tabBar": {
+    "backgroundColor": "#ffffff",
+    "color": "#000000",
+    "selectedColor": "#faad14",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/home-aaaaaa.png",
+        "selectedIconPath": "images/home-faad14.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/addtopic/addtopic",
+        "iconPath": "images/edit-aaaaaa.png",
+        "selectedIconPath": "images/edit-faad14.png",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/person-outline-aaaaaa.png",
+        "selectedIconPath": "images/person-faad14.png"
+      },
+      {
+        "pagePath": "pages/about/about",
+        "iconPath": "images/dot-circle-o-aaaaaa.png",
+        "selectedIconPath": "images/dot-circle-o-faad14.png",
+        "text": "关于"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
   }
 }

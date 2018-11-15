@@ -1,0 +1,53 @@
+
+<view class="page">
+  <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:key="property" wx:for="{{imgUrls}}">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" mode="widthFix" height="100%" />
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class='menuTab'>
+    <view class='menuLis {{actIndex=="draw"?"actColor":""}}' id='draw' bindtap="changeMenu">绘画</view>
+    <view class='menuLis {{actIndex=="calligraphy"?"actColor":""}}' id='calligraphy' bindtap="changeMenu">书法</view>
+    <view class='menuLis {{actIndex=="writing"?"actColor":""}}' id='writing' bindtap="changeMenu">文章</view>
+    <view class='menuLis {{actIndex=="other"?"actColor":""}}' id='other' bindtap="changeMenu">其他</view>
+  </view>
+  <scroll-view scroll-y style="flex:1;overflow:hidden;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+    <!-- <view class='leassonListOut' wx:for="{{leassonList}}" wx:key="{{item.id}}"> -->
+    <view class='leassonListOut' wx:for="{{articles}}" wx:key="{{item.id}}">
+      <view class='leassonList' data-id="{{item.id}}" bindtap="seeDetail">
+        <view class='listIn'>
+          <view class='leassonImg'>
+            <image src="{{item.imgUrl||spec.productFirstImage}}" class='leassonImgs' mode='aspectFill' />
+          </view>
+          <view class='leassonTitle'>
+            <view class='title'>
+              {{item.title}}
+            </view>
+            <view class='author'>
+              作者：{{item.author}}
+              <!-- {{author}} -->
+
+              <view class="tool">
+                <view class="tool-item">
+                  <image src="../../images/heart-faad14.png"></image>
+                  <text>{{item.likeNum}}</text>
+                </view>
+                <view class="tool-item comment">
+                  <image src="../../images/news-faad14.png"></image>
+                  <text>{{item.commentNum}}</text>
+                </view>
+                <view class="tool-item collect">
+                  <image src="../../images/eye-faad14.png"></image>
+                  <text>{{item.Views}}</text>
+                </view>
+              </view>
+
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

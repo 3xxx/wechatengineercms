@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/addtopic/addtopic",
+    "pages/about/about",
+    "pages/mine/mine",
+    "pages/myopus/myopus",
+    "pages/detail/detail"
+  ],
+  "window": {
+    "backgroundTextStyle": "#eeeeee",
+    "navigationBarBackgroundColor": "#faad14",
+    "navigationBarTitleText": "青少儿书画plus",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "backgroundColor": "#ffffff",
+    "color": "#000000",
+    "selectedColor": "#faad14",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/home-aaaaaa.png",
+        "selectedIconPath": "images/home-faad14.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/addtopic/addtopic",
+        "iconPath": "images/edit-aaaaaa.png",
+        "selectedIconPath": "images/edit-faad14.png",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/person-outline-aaaaaa.png",
+        "selectedIconPath": "images/person-faad14.png"
+      },
+      {
+        "pagePath": "pages/about/about",
+        "iconPath": "images/dot-circle-o-aaaaaa.png",
+        "selectedIconPath": "images/dot-circle-o-faad14.png",
+        "text": "关于"
+      } 
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  }
+}
