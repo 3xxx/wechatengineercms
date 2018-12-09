@@ -33,6 +33,11 @@ EngineerCMS的微信小程序，功能是展示engineercms服务里的文章列�
 
 ![_20181115210633](https://user-images.githubusercontent.com/10678867/48554817-63f19b80-e91a-11e8-81b5-7c47d5a3ab96.jpg)
 
+## 注册
+
+![snap1](https://user-images.githubusercontent.com/10678867/49696513-9030cd00-fbe5-11e8-9c87-31451949ec91.png)
+![snap2](https://user-images.githubusercontent.com/10678867/49696518-932bbd80-fbe5-11e8-943a-755be33064fd.png)
+
 
 # 青少儿书画 小程序，服务端用的engineercms
 
