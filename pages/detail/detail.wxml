@@ -1,6 +1,6 @@
 <!-- detail wxml -->
 
-<import src="../../wxParse/wxParse.wxml"/>
+<import src="../../wxParse/wxParse.wxml" />
 <!-- 画布大小按需定制 这里我按照背景图的尺寸定的 hidden='{{hidden}}'  -->
 <canvas canvas-id="shareImg" style="width:545px;height:771px"></canvas>
 <!-- 预览区域  -->
@@ -8,15 +8,18 @@
   <image src='{{prurl}}' mode='widthFix'></image>
   <button type='primary' size='mini' bindtap='save'>保存分享图</button>
 </view>
-<button class='share' bindtap='share'>生成分享图</button>
- 
-<view class='page' catchtap='catchhide'>
+<!-- <button class='share' bindtap='share'>生成分享图</button> -->
+<wxc-avatar class="avatar" _pid="{{_pid}}" bindtap='share'>share</wxc-avatar>
+
+<!-- wxp template -->
+<view class='page' catchtap='catchhide' id='contain'>
   <view class='leassonTilte'>{{leassonTilte}}</view>
   <view class='author'>原创: {{author}}</view>
   <view class='time'>{{time}}</view>
   <view class="page__bd page__bd_spacing">
     <view class='dk-show' style='height:{{dkheight}}px;'>
-      <template is="wxParse" data="{{wxParseData:dkcontent.nodes}}"/>
+      <template is="wxParse" data="{{wxParseData:dkcontent.nodes}}" />
+
       <!-- 点赞、评论、收藏 -->
       <view class="tool">
         <view class="tool-item" catchtap='onUpTap' data-post-id="{{id}}">
@@ -24,7 +27,7 @@
           <image wx:else src="../../images/heart-o-faad14.png"></image>
           <text>{{likeNum}}</text>
         </view>
-        <view class="tool-item comment" catchtap='onCommentTap' data-post-id="{{post.postId}}">
+        <view class="tool-item" catchtap='onCommentTap' data-post-id="{{post.postId}}">
           <image src="../../images/news-faad14.png"></image>
           <text>{{commentNum}}</text>
         </view>
@@ -33,7 +36,6 @@
           <text>{{views}}</text>
         </view>
       </view>
-
 
       <view class='release_list'>
         <view wx:key="property" wx:for="{{comment}}" class='commentpl' data-id="{{item.id}}">
@@ -57,28 +59,64 @@
         <view class='Nocomment' wx:if='{{comment.length == 0}}'>暂无评论
         </view>
       </view>
+
+      <!--评论盒子-->
+      <view class="cf-bg" catchtap="cemojiCfBg" style="display:{{cfBg ? 'block' : 'none'}}"></view>
+      <view class="comment-fixed">
+        <form catchsubmit="formSubmit" report-submit="true">
+          <view class="comment-respond">
+            <!-- <input class="comment-input" maxlength="200" name="inputPostID" value="{{detail.id}}" style="display:none" /> -->
+            <view class="comment-box">
+              <image src="../../images/entry-home.png" class="img-plus" style="margin-left:20rpx;margin-right:20rpx" catchtap="goHome"></image>
+              <input class="comment-input" type='text' confirm-type="send" cursor-spacing="10" maxlength="100" name="input" value="{{releaseValue}}" placeholder="输入评论" focus="{{focus}}" bindblur="onReplyBlur" bindfocus="onRepleyFocus" />
+              <!-- <textarea class="comment-input" type='text' confirm-type="send" cursor-spacing="10" maxlength="200" name='input' value='{{releaseValue}}' placeholder="我要评论" focus="{{focus}}" bindblur="textAreaBlur" bindfocus="textAreaFocus"/> -->
+
+              <button class="comment-button touch-active" wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" formType="submit">发送</button>
+              <image src="../../images/plus.png" class="img-plus" catchtap="emojiShowHide" mode=""></image>
+
+            </view>
+            <!--功能图标-->
+            <!--emoji表情盒子-->
+            <view class="emoji-box {{isShow ? 'emoji-move-in' : 'emoji-move-out'}} {{isLoad ? 'no-emoji-move' : ''}}">
+              <scroll-view scroll-y="true" bindscroll="emojiScroll" style="height:200px">
+                <block wx:for="{{emojis}}" wx:key="">
+                  <view class="emoji-cell">
+                    <image class="touch-active" catchtap="emojiChoose" src="../../wxParse/emojis/{{item.emoji}}.gif" data-emoji="{{item.char}}" data-oxf="{{item.emoji}}"></image>
+                  </view>
+                </block>
+              </scroll-view>
+            </view>
+
+          </view>
+        </form>
+      </view>
+
     </view>
+
   </view>
 </view>
-<!--发表评论  -->
-<view class='release' hidden='{{!releaseFocus}}'>
+
+<!--发表评论   hidden='{{!releaseFocus}}'-->
+<!-- <view class='release'>
   <input class='text' placeholder='在此处键入评论内容...' bindtap='bindrelease' value='{{releaseValue}}'></input>
   <text class='fa fa-square-o'></text>
   <text>{{commentNum}}</text>
+  <view class="fa fa-smile-o" catchtap="emojiShowHide"></view>
+  <button class='cf-send touch-active' wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" form-type='submit'>发表</button>
   <button class='share1' open-type='share'>
     <text class='fa fa-share-square-o'></text>
   </button>
   <text>0</text>
-</view>
+</view> -->
 
 <!-- 需要使用 button 来授权登录 -->
 <!-- <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
 <view wx:else>请升级微信版本</view> -->
 
-<form bindsubmit='formSubmit'>
+<!-- <form bindsubmit='formSubmit'>
   <view class='releaseFocus' hidden='{{releaseFocus}}'>
     <textarea adjust-position='true' fixed='true' data-id='' name='input' class='release_text' placeholder='在此处键入评论内容...' value='{{releaseValue}}' focus='{{focus}}'></textarea>
     <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" form-type='submit'>发表</button>
     <view wx:else>请升级微信版本</view>
   </view>
-</form>
+</form> -->

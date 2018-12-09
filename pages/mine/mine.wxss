@@ -103,3 +103,10 @@
   background: lightgray;
   margin-left: 90rpx;
 }
+
+.register_text{
+  color:darkgray;
+ /* text-align: center; */
+  display: flex;
+  justify-content: center;
+}

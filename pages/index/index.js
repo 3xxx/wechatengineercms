@@ -1,4 +1,5 @@
 //获取应用实例
+//var util = require('../../utils/util.js');
 var app = getApp();
 var imgUrls1 = []
 var page = 1; //分页标识，第几次下拉，用户传给后台获取新的下拉数据
@@ -23,7 +24,7 @@ Page({
     apiUrl: "https://zsj.itdos.com/v1/wx/getwxarticles",
     leassonId: '',
 
-    msgList: [],//搜索结果列表
+    msgList: [], //搜索结果列表
     searchLogList: [], // 存储搜索历史记录信息
     hidden: true, // 加载提示框是否显示
     scrollTop: 0, // 居顶部高度
@@ -123,10 +124,18 @@ Page({
       success: function(res) {
         if (res.data.info == "SUCCESS") { //成功
           var tmpArr = that.data.msgList;
-          console.log(tmpArr);
+          // console.log(tmpArr);
           // 这一步实现了上拉加载更多
           tmpArr.push.apply(tmpArr, res.data.searchers);
           // 赋值并隐藏加载的icon
+          // for (var i = 0; i < res.data.searchers.length; i++) {
+          // var goods_id_list = { 'Link': ''};//定义一个接受对象
+          // goods_id_list.Link = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%3E%3Crect%20fill%3D%22%234CAF50%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%3E%3C%2Frect%3E%3Ctext%20fill%3D%22%23FFF%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20font-size%3D%2216%22%20font-family%3D%22Verdana%2C%20Geneva%2C%20sans-serif%22%20alignment-baseline%3D%22middle%22%3E%E6%A0%87%3C%2Ftext%3E%3C%2Fsvg%3E';
+          // tmpArr.push(goods_id_list);//添加数组信息
+          //根据第一个字符，生成图片
+          // tmpArr[i].Link = goods_id_list.Link//util.setImg('s')
+          // }
+          // console.log(tmpArr);
           that.setData({
             msgList: tmpArr,
             hidden: true
@@ -134,7 +143,7 @@ Page({
           // 缓存列表页面
           wx.setStorageSync(msgListKey, allMsg);
           searchpage++;
-          console.log(searchpage);
+          // console.log(that.data.msgList);
         } else { //失败
           if (res.data == '') {
             wx.showToast({
@@ -254,7 +263,7 @@ Page({
           standardFocus: true,
           otherFocus: true,
           searchshow: false,
-          actIndex:'drawing',
+          actIndex: 'drawing',
           apiUrl: 'https://zsj.itdos.com/v1/wx/searchwxdrawings?projectid=25002' //搜索图纸列表接口地址
         })
         break;
@@ -269,7 +278,7 @@ Page({
           standardFocus: false,
           otherFocus: true,
           searchshow: false,
-          actIndex:'standard',
+          actIndex: 'standard',
           apiUrl: 'https://zsj.itdos.com/v1/wx/searchwxstandards' //搜索规范列表接口地址
         })
         break;
@@ -284,7 +293,7 @@ Page({
           standardFocus: true,
           otherFocus: false,
           searchshow: false,
-          actIndex:'other',
+          actIndex: 'other',
           apiUrl: 'https://zsj.itdos.com/v1/wx/searchwxdrawings?projectid=25004' //搜索其他文件列表接口地址（监理）
         })
         break;
@@ -446,30 +455,60 @@ Page({
       that.setData({
         downloadurl: 'https://zsj.itdos.com/v1/wx/wxstandardpdf/' + e.currentTarget.dataset.id,
       });
-    }else{
+    } else {
       that.setData({
         downloadurl: 'https://zsj.itdos.com/v1/wx/wxpdf/' + e.currentTarget.dataset.id,
       });
     };
 
-    wx.downloadFile({
-      url: that.data.downloadurl,//'https://zsj.itdos.com/v1/wx/wxpdf/' + e.currentTarget.dataset.id,
-      success: function(res) {
-        console.log(res)
-        const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
-        wx.openDocument({
-          filePath: filePath,
-          fileType: 'pdf',
-          success: function(res) {
-            console.log('打开成功');
-          },
-          fail: function(res) {
-            console.log(res);
-          }
-        })
-      },
-      fail: function(res) {
-        console.log(res);
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        if (res.code) {
+          //发起网络请求
+          wx.downloadFile({
+            url: that.data.downloadurl + '?code='+res.code, //'https://zsj.itdos.com/v1/wx/wxpdf/' + e.currentTarget.dataset.id,
+            header: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            // method: "POST",
+            // data: {//download不支持data参数
+            //   code: res.code,
+            //   app_version: 1.2,
+            // },
+            success: function(res) {
+              // console.log(res)
+              const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
+              wx.openDocument({
+                filePath: filePath,
+                fileType: 'pdf',
+                success: function(res) {
+                  console.log('打开成功');
+                },
+                fail: function(res) {
+                  console.log(res);
+                  wx.showToast({
+                    title: res.data.info,
+                    icon: 'loading',
+                    duration: 1500
+                  })
+                }
+              })
+            },
+            fail: function(res) {
+              console.log(res);
+              wx.showToast({
+                title: res.data.info,
+                icon: 'loading',
+                duration: 1500
+              })
+            }
+          })
+
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
       }
     })
   }

@@ -1,4 +1,4 @@
-// detail js
+// detail.js
 //引入本地json数据，这里引入的就是第一步定义的json数据
 const app = getApp()
 var util = require('../../utils/util.js');
@@ -23,6 +23,7 @@ Page({
     isShowNoDatasTips: false,
     endloading: false,
     focus: false,
+    inputMarBot: false, //评论框聚焦时，让评论框距离底部的距离为50rpx
 
     open: true,
     
@@ -30,8 +31,21 @@ Page({
     shop_item: {},
     shop_num: {},
     //  发表评论
+    releaseValue: '',
     releaseFocus: true,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    emojiChar: "☺-😌-😍-😓-😏-😜-😪-😭-😁-😃-😏-😖-😡-😳-😷-👍-👌-✌-✊-☝-☀-☁-⛅-⚡-💖-💔-🕙-🌹-🍉-🎂-🎁-🍚-☕-🍺-👄-🐞-⚽-🏀-👧-👦-💊",
+
+
+    //0x1f---
+    emoji: ["00", "1F60C", "1F60D", "1F613", "1F60F", "1F61C",
+      "1F62A", "1F62D", "1F601", "1F603",
+      "1F60F", "1F616", "1F621",
+      "1F633", "1F637", "1F44D", "1F44C", "270C",
+      "270A", "261D", "2600", "2601", "26C5", "26A1", "1F496", "1F494", "1F559", "1F339", "1F349", "1F382", "1F381", "1F35A", "2615", "1F37A", "1F444", "1F41E", "26BD", "1F3C0", "1F467", "1F466", "1F48A"
+    ],
+    emojis: [], //qq、微信原始表情
+    alipayEmoji: [], //支付宝表情
   },
   /**
    * 生命周期函数--监听页面加载
@@ -171,9 +185,21 @@ Page({
         }
       }
     })
+
+    var em = {},
+      emChar = that.data.emojiChar.split("-");
+    that.data.emoji.forEach(function(v, i) {
+      em = {
+        char: emChar[i],
+        emoji: v, //"0x1f" + 
+      };
+      that.data.emojis.push(em)
+    });
+    that.setData({
+      emojis: that.data.emojis
+    })
+    // console.log(that.data.emojis)
   },
-
-
 
   bindGetUserInfo(e) {
     console.log(e.detail.userInfo)
@@ -331,125 +357,6 @@ Page({
     })
     // console.log(this.data.releaseFocus)
   },
-  //删除评论
-  binddelete1: function(e) {
-    var that = this;
-    if (wx.getStorageSync('auth_token')) {
-      // 判断用户是否登录
-      wx.showModal({
-        title: '提示',
-        content: '确定撤销吗',
-        success: function(res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-            wx.request({
-              url: link.binddelete,
-              method: 'POST',
-              header: {
-                'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
-                'mbcore-access-token': wx.getStorageSync('access_token'),
-                'mbcore-auth-token': wx.getStorageSync('auth_token')
-              },
-              data: {
-                id: e.currentTarget.dataset.id
-              },
-              success: function(res) {
-                console.log(res)
-                var dataid = e.currentTarget.dataset.id;
-                var index = e.currentTarget.dataset.index
-                // 评论总数 
-                var conment_length = res.data.result
-                var release = that.data.release;
-                release.splice(index, 1)
-                that.setData({
-                  release: release,
-                  releaselength: conment_length
-                })
-              }
-            })
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-          }
-        }
-      })
-    } else {
-      //去注册登录
-      this.userInfoReadyCallback()
-    }
-  },
-
-  // 登录后才可以发表评论
-  // 点击发表评论
-  formSubmit1: function(e) {
-    console.log(wx.getStorageSync('auth_token'));
-    var that = this;
-    var id = this.data.id;
-    var textareaValue = e.detail.value.input
-    console.log(textareaValue)
-    if (wx.getStorageSync('auth_token')) {
-      if (e.detail.value.input == '') {
-        wx.showToast({
-          title: '请输入内容',
-          icon: 'none'
-        })
-      } else {
-        wx.request({
-          url: link.formSubmit,
-          data: {
-            content: textareaValue,
-            msgid: id,
-          },
-          method: 'POST',
-          header: {
-            'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
-            'mbcore-access-token': wx.getStorageSync('access_token'),
-            'mbcore-auth-token': wx.getStorageSync('auth_token')
-          },
-          success: function(res) {
-            console.log(res)
-            console.log('-----')
-            console.log(res.data.code)
-            if (res.data.code == 0) {
-              wx.showToast({
-                title: '请输入内容',
-                icon: 'none'
-              })
-            } else {
-              //var that = this;
-              var textarea_item = {};
-              var textareaValue = res.data.result.content;
-              var name = res.data.result.username;
-              var time = res.data.result.publish_time;
-              var avatar = res.data.result.avatar;
-              var id = res.data.result.id;
-              var like = res.data.result.likes_count;
-              var isme = res.data.result.is_me;
-              var comments_count = res.data.result.comments_count
-              //console.log(release);
-              //console.log(that);
-              var release = that.data.release;
-              textarea_item.content = textareaValue;
-              textarea_item.username = name;
-              textarea_item.publish_time = time;
-              textarea_item.avatar = avatar;
-              textarea_item.id = id;
-              textarea_item.likes_count = like;
-              textarea_item.is_me = isme;
-              release.push(textarea_item);
-              that.setData({
-                release: release,
-                releaseFocus: true, //隐藏输入框
-                releaseValue: '', //清空输入框内容
-                releaselength: comments_count //更新页面发表评论总数
-              })
-            }
-          }
-        })
-      }
-    } else {
-      this.userInfoReadyCallback()
-    }
-  },
 
   //获取用户信息后加上code 去请求auth- token
   userInfoReadyCallback: function(calback) {
@@ -605,7 +512,7 @@ Page({
   binddelete(e) {
     var that = this
     var index = e.currentTarget.dataset.index //e.target.dataset.id;
-    // console.log(e)
+    console.log(e)
     var comment = that.data.comment
     wx.showModal({
       title: '提示',
@@ -699,4 +606,238 @@ Page({
       }
     })
   },
+
+  //解决滑动穿透问题
+  emojiScroll: function(e) {
+    console.log(e)
+  },
+
+  onReplyBlur: function (e) {
+    this.setData({
+      releaseValue: e.detail.value,
+      // inputMarBot: false
+    })
+    // var self = this;
+    // console.log('onReplyBlur', isFocusing);
+    // if (!isFocusing) {
+    //   {
+    //     const text = e.detail.value.trim();
+    //     if (text === '') {
+    //       self.setData({
+    //         parentID: "0",
+    //         placeholder: "评论...",
+    //         userid: "",
+    //         toFromId: "",
+    //         commentdate: ""
+    //       });
+    //     }
+    //   }
+    // }
+    // console.log(isFocusing);
+  },
+
+  onRepleyFocus: function (e) {
+    // var self = this;
+    // isFocusing = false;
+    // console.log('onRepleyFocus', isFocusing);
+    // if (!self.data.focus) {
+    //   self.setData({ focus: true })
+    // }
+    this.setData({
+      isShow: false,
+      cfBg: false,
+      // inputMarBot: true //
+    })
+  },
+
+
+  //文本域失去焦点时 事件处理
+  textAreaBlur: function(e) {
+    //获取此时文本域值
+    // console.log(e.detail.value)
+    this.setData({
+      releaseValue: e.detail.value,
+      // inputMarBot: false
+    })
+  },
+  //文本域获得焦点事件处理
+  textAreaFocus: function() {
+    //创建节点选择器
+    // var query = wx.createSelectorQuery();
+    //选择id
+    // query.select('#contain').boundingClientRect()
+    // query.exec(function (res) {
+      //res就是 所有标签为myText的元素的信息 的数组
+      // console.log(res);
+      //取高度
+      // console.log(res[0].height);
+            // 使页面滚动到底部  
+      // wx.pageScrollTo({
+      //   scrollTop: res[0].bottom, //rect.height
+      //   duration: 300 //设置滚动时间
+      // });
+      //   scrollTop: 0,
+    // })
+      //功能代码
+      this.setData({
+        isShow: false,
+        cfBg: false,
+        // inputMarBot: true //
+      })
+    // })
+  },
+  //点击表情显示隐藏表情盒子
+  emojiShowHide: function() {
+    this.setData({
+      isShow: !this.data.isShow,
+      isLoad: false,
+      cfBg: !this.data.false
+    })
+  },
+  //表情选择
+  emojiChoose: function(e) {
+    //当前输入内容和表情合并
+    this.setData({
+      releaseValue: this.data.releaseValue + e.currentTarget.dataset.emoji
+    })
+    // wxparse.wxParse('content', 'html', this.data.content, this, 5)
+  },
+  //点击emoji背景遮罩隐藏emoji盒子
+  cemojiCfBg: function() {
+    this.setData({
+      isShow: false,
+      cfBg: false
+    })
+  },
+
+  goHome: function () {
+    wx.switchTab({
+      url: '../index/index'
+    })
+  },
+  //发送评论评论 事件处理
+  send: function() {
+    var that = this
+    // console.log(that.data.releaseValue)
+    if (that.data.releaseValue == '') {
+      // if (this.data.releaseValue == '') {
+      wx.showToast({
+        title: '请留言',
+      })
+      return false;
+    }
+    var list = this.data.comment;
+    // 必须是在用户已经授权的情况下调用
+    // 获取用户信息
+    wx.getSetting({
+      success: res => {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          // wx.getUserInfo({
+          // success: res => {
+          wx.getUserInfo({
+            success: function(res) {
+              var userInfo = res.userInfo
+              var nickName = userInfo.nickName
+              var avatarUrl = userInfo.avatarUrl
+              var gender = userInfo.gender //性别 0：未知、1：男、2：女
+              var province = userInfo.province
+              var city = userInfo.city
+              var country = userInfo.country
+              // console.log(e.detail.value.input)
+              // console.log(this.data)
+              var a = list ? list : []
+              // 调用函数时，传入new Date()参数，返回值是日期和时间  
+              var time = util.formatTime(new Date());
+
+              // 登录
+              wx.login({
+                success: res => {
+                  // 发送 res.code 到后台换取 openId, sessionKey, unionId
+                  if (res.code) {
+                    //发起网络请求
+                    wx.request({
+                      url: "https://zsj.itdos.com/v1/wx/addwxrelease/" + that.data.id,
+                      header: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                      },
+                      method: "POST",
+                      data: {
+                        code: res.code,
+                        content: that.data.releaseValue,
+                        username: nickName,
+                        publish_time: time,
+                        avatar: avatarUrl,
+                        app_version: 3,
+                      },
+                      success: function(res) {
+                        // 再通过setData更改Page()里面的data，动态更新页面的数据  
+                        a.push({
+                          content: that.data.releaseValue, //this.data.releaseValue
+                          username: nickName,
+                          is_me: true,
+                          publish_time: time,
+                          // likes_count: 5,
+                          avatar: avatarUrl,
+                        })
+                        wx.setStorage({
+                          key: 'info',
+                          data: a,
+                        })
+                        that.setData({
+                          comment: a,
+                          releaseValue: '',
+                          releaseFocus: true, //隐藏输入框
+                          // releaselength: comments_count //更新页面发表评论总数
+                        })
+                        // console.log(avatarUrl)
+                      }
+                    })
+                  }
+                }
+              })
+            },
+          })
+        }
+      }
+    })
+
+    // var that = this,
+    //   conArr = [];
+    // //此处延迟的原因是 在点发送时 先执行失去文本焦点 再执行的send 事件 此时获取数据不正确 故手动延迟100毫秒
+    // console.log(that.data.releaseValue)
+    // setTimeout(function () {
+    //   if (that.data.releaseValue.trim().length > 0) {
+    //     conArr.push({
+    //       avatar: util.ossAliyuncs + "/images/banner5.jpg",
+    //       uName: "雨碎江南",
+    //       time: util.formatTime(new Date()),
+    //       releaseValue: that.data.releaseValue
+    //     })
+    //     that.setData({
+    //       comments: that.data.comments.concat(conArr),
+    //       releaseValue: "", //清空文本域值
+    //       isShow: false,
+    //       cfBg: false
+    //     })
+    //     wxparse.wxParse('comments', 'html', that.data.comments, that, 5)
+    //   } else {
+    //     that.setData({
+    //       releaseValue: "" //清空文本域值
+    //     })
+    //   }
+    // }, 100)
+  },
+
+  //获取容器高度，使页面滚动到容器底部
+  pageScrollToBottom: function() {
+    wx.createSelectorQuery().select('#j_page').boundingClientRect(function(rect) {
+      //使页面滚动到底部
+      wx.pageScrollTo({
+        scrollTop: rect.bottom, //rect.height
+        duration: 10 //设置滚动时间
+      })
+    }).exec()
+  }
+
 })

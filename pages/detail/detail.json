@@ -1,3 +1,8 @@
 {
-  "navigationBarTitleText": "珠三角设代"
+  "navigationBarTitleText": "珠三角设代",
+  "usingComponents": {
+    "layout-head": "../../common/layout/head",
+    "layout-foot": "../../common/layout/foot",
+    "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index"
+  }
 }

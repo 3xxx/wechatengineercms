@@ -1,0 +1,26 @@
+.back_img{
+  /* background: url(../../images/meBack.jpg) no-repeat; */
+  background-size:cover;
+  -webkit-filter: blur(10px); /* Chrome, Opera */
+  -moz-filter: blur(10px);
+  -ms-filter: blur(10px);    
+  filter: blur(10px); 
+  z-index:0;
+  position:relative;
+}
+.login_info{
+  z-index: 999;
+  position:absolute;
+}
+.login_form{
+  border-radius:5px;
+  margin-left:8%;
+  background-color: rgba(255,255,255,0.2);
+}
+
+.register_text{
+  color:darkgray;
+ /* text-align: center; */
+  display: flex;
+  justify-content: center;
+}

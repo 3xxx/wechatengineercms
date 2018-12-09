@@ -37,17 +37,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    console.log(options)
+    // console.log(options)
     this.setData({
       Id: options.id,
       Title: options.title,
-      actIndex: options.actIndex
+      actIndex: options.actIndex,
+      Link:options.link
     })
-    if (options.actindex=='standard'){
-      this.setData({
-        Title: options.numtitle,
-      })
-    }
+    // if (options.actIndex=='standard'){
+    //   this.setData({
+    //     Title: options.numtitle,
+    //   })
+    // }
     // 获得高度
     let winPage = this;
     wx.getSystemInfo({
@@ -184,7 +185,7 @@ Page({
     return {
       // desc: '最具人气的小程序开发联盟!',
       title: '珠三角设代-分享文件链接',
-      path: 'pages/pdfview/pdfview?id=' + this.data.Id + '&title=' + this.data.Title+'&actIndex=' + this.data.actIndex
+      path: 'pages/pdfview/pdfview?id=' + this.data.Id + '&title=' + this.data.Title + '&actIndex=' + this.data.actIndex + '&link=' + this.data.Link
     }
   },
 
@@ -704,7 +705,7 @@ Page({
 
   //预览pdf文件
   downloadFile: function(e) {
-    console.log(e)
+    // console.log(e)
     var that = this;
     // console.log(that.data.actIndex)
     if (that.data.actIndex=='standard') {
@@ -720,7 +721,7 @@ Page({
     wx.downloadFile({
       url: that.data.downloadurl,
       success: function(res) {
-        console.log(res)
+        // console.log(res)
         const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
         wx.openDocument({
           filePath: filePath,

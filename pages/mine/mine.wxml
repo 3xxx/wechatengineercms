@@ -7,6 +7,16 @@
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
+
+
+  <!-- <view class="weui-cell__bd">
+      <navigator url="../login/login">
+        点击登录</navigator>
+    </view> -->
+  <navigator url="../register/register">
+    <text class="register_text">还没有账号，点击注册吧</text>
+  </navigator>
+
   <view class="separate"></view>
   <!-- <view class="person-line"></view> -->
   <view class="order" catchtap="toOrder">
@@ -60,7 +70,7 @@
       <image class="item-image" src="../../images/heart-faad14.png"></image>
       <text class="item-text">我的点赞</text>
     </view> -->
-    
+
   </view>
   <view class="separate"></view>
 </view>

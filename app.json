@@ -4,6 +4,7 @@
     "pages/detail/detail",
     "pages/pdfview/pdfview",
     "pages/addtopic/addtopic",
+    "pages/register/register",
     "pages/mine/mine",
     "pages/myopus/myopus",
     "pages/about/about"

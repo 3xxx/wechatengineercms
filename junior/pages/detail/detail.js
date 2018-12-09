@@ -23,21 +23,14 @@ Page({
     isShowNoDatasTips: false,
     endloading: false,
     focus: false,
-<<<<<<< HEAD
     inputMarBot: false, //评论框聚焦时，让评论框距离底部的距离为50rpx
 
     open: true,
 
-=======
-
-    open: true,
-    
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
     shop: [],
     shop_item: {},
     shop_num: {},
     //  发表评论
-<<<<<<< HEAD
     releaseValue: '',
     releaseFocus: true,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -53,10 +46,6 @@ Page({
     ],
     emojis: [], //qq、微信原始表情
     alipayEmoji: [], //支付宝表情
-=======
-    releaseFocus: true,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   },
 
   /**
@@ -102,11 +91,7 @@ Page({
             },
             data: {
               code: res.code,
-<<<<<<< HEAD
               app_version: 3, //plus用的
-=======
-              app_version: 3,//plus用的
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
               // x: '',
               // y: ''
               // id: options.id
@@ -131,11 +116,7 @@ Page({
                 commentNum: res.data.commentNum,
               })
               wxparse.wxParse('dkcontent', 'html', that.data.dkcontent, that, 5)
-<<<<<<< HEAD
               // console.log(that.data.comment)
-=======
-
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
               // 生成画布
               let promise1 = new Promise(function(resolve, reject) {
                 wx.getImageInfo({
@@ -191,15 +172,8 @@ Page({
                 ctx.stroke()
                 ctx.draw()
               })
-<<<<<<< HEAD
             }
           })
-=======
-
-            }
-          })
-
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
         }
       }
     })
@@ -217,7 +191,6 @@ Page({
       }
     })
 
-<<<<<<< HEAD
     var em = {},
       emChar = that.data.emojiChar.split("-");
     that.data.emoji.forEach(function(v, i) {
@@ -231,9 +204,6 @@ Page({
       emojis: that.data.emojis
     })
     // console.log(that.data.emojis)
-=======
-
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   },
 
   bindGetUserInfo(e) {
@@ -395,10 +365,6 @@ Page({
   },
   //删除评论
   binddelete1: function(e) {
-<<<<<<< HEAD
-=======
-
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
     var that = this;
     if (wx.getStorageSync('auth_token')) {
       // 判断用户是否登录
@@ -438,11 +404,7 @@ Page({
           }
         }
       })
-<<<<<<< HEAD
 
-=======
-      
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
     } else {
       //去注册登录
       this.userInfoReadyCallback()
@@ -573,16 +535,10 @@ Page({
 
   // 添加留言
   formSubmit(e) {
-<<<<<<< HEAD
-    console.log(e)
-    // console.log(this.data.id)
-    var that = this
-    console.log(that.data.releaseValue)
-=======
     // console.log(e)
     // console.log(this.data.id)
     var that = this
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
+    //console.log(that.data.releaseValue)
     if (e.detail.value.input == '') {
       // if (this.data.releaseValue == '') {
       wx.showToast({
@@ -778,7 +734,6 @@ Page({
     })
   },
 
-<<<<<<< HEAD
   //解决滑动穿透问题
   emojiScroll: function(e) {
     console.log(e)
@@ -968,6 +923,4 @@ Page({
     }).exec()
   }
 
-=======
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
 })

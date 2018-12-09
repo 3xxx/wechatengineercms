@@ -37,7 +37,6 @@ Page({
   },
 
   onLoad(options) {
-<<<<<<< HEAD
     $init(this);
     var that = this;
     that.clearCache(); //清本页缓存
@@ -48,9 +47,6 @@ Page({
       content: '',
       title: ''
     })
-=======
-    $init(this)
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   },
 
   //单选按钮
@@ -98,10 +94,6 @@ Page({
   handleImagePreview(e) {
     const idx = e.target.dataset.idx
     const images = this.data.images
-<<<<<<< HEAD
-=======
-
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
     wx.previewImage({
       current: images[idx],
       urls: images,
@@ -112,10 +104,7 @@ Page({
     const title = this.data.title
     const content = this.data.content
     const radioo = this.data.radioo
-<<<<<<< HEAD
     var that=this
-=======
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
     // console.log(radioo)
     switch (radioo) {
       case "draw":
@@ -184,14 +173,11 @@ Page({
                       icon: 'success',
                       duration: 1000
                     })
-<<<<<<< HEAD
                     // this.setData({
                     //   content: '',
                     //   title:''
                     // })
                     that.clearCache(); //清本页缓存
-=======
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
                     wx.navigateTo({
                       url: `../detail/detail?id=` + res.data.id
                     })

@@ -82,6 +82,30 @@
   color: #595959;
 }
 
+.tool{
+  height: 64rpx;
+  text-align: center;
+  line-height: 64rpx;
+  margin: 20rpx 28rpx 20rpx 0;
+}
+.tool-item{
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 30rpx;
+}
+.tool-item image{
+  height: 30rpx;
+  width: 30rpx;
+  /* vertical-align: -3px; */
+  margin-right: 10rpx;
+}
+.comment image{
+  transform: scale(1.0);
+}
+.collect image{
+  transform: scale(1.2);
+}
+
 .contain {
   width: 100%;
   height: 100%;

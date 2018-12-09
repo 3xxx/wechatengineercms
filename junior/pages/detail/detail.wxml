@@ -11,11 +11,7 @@
 </view>
 <button class='share' bindtap='share'>生成分享图</button>
 
-<<<<<<< HEAD
 <view class='page' catchtap='catchhide' id='contain'>
-=======
-<view class='page' catchtap='catchhide'>
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   <view class='leassonTilte'>{{leassonTilte}}</view>
   <view class='author'>原创: {{author}} ●青少儿书画</view>
   <view class='time'>{{time}}</view>
@@ -40,10 +36,6 @@
         </view>
       </view>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
       <view class='release_list'>
         <view wx:key="property" wx:for="{{comment}}" class='commentpl' data-id="{{item.id}}">
           <button wx:if='{{item.is_me}}' class='revoke' bindtap='binddelete' data-id='{{item.id}}' data-index='{{index}}'>撤销</button>
@@ -67,9 +59,9 @@
         </view>
       </view>
 
-<<<<<<< HEAD
   <!--评论盒子-->
-  <!-- <view class="cf-bg" catchtap="cemojiCfBg" style="display:{{cfBg ? 'block' : 'none'}}"></view>  id="container" cursor-spacing='20'style="{{inputMarBot?'margin-bottom:50rpx':''}}"-->
+  <view class="cf-bg" catchtap="cemojiCfBg" style="display:{{cfBg ? 'block' : 'none'}}"></view>
+  <!-- id="container" cursor-spacing='20'style="{{inputMarBot?'margin-bottom:50rpx':''}}" -->
   <view class="comment-fixed">
     <view class="cf-box">
       <textarea class="cf-content" bindfocus="textAreaFocus" maxlength="200" bindblur="textAreaBlur" auto-height value='{{releaseValue}}' placeholder="我要评论" name='input' cursor-spacing='20'/>
@@ -107,43 +99,20 @@
   <text>{{commentNum}}</text>
   <view class="fa fa-smile-o" catchtap="emojiShowHide"></view>
   <button class='cf-send touch-active' wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" form-type='submit'>发表</button>
-=======
-    </view>
-  </view>
-</view>
-
-<!--发表评论  -->
-<view class='release' hidden='{{!releaseFocus}}'>
-  <input class='text' placeholder='在此处键入评论内容...' bindtap='bindrelease' value='{{releaseValue}}'></input>
-  <text class='fa fa-square-o'></text>
-  <text>{{commentNum}}</text>
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   <button class='share1' open-type='share'>
     <text class='fa fa-share-square-o'></text>
   </button>
   <text>0</text>
-<<<<<<< HEAD
 </view> -->
-=======
-</view>
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
 
 <!-- 需要使用 button 来授权登录 -->
 <!-- <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
 <view wx:else>请升级微信版本</view> -->
 
-<<<<<<< HEAD
 <!-- <form bindsubmit='formSubmit'>
-=======
-<form bindsubmit='formSubmit'>
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8
   <view class='releaseFocus' hidden='{{releaseFocus}}'>
     <textarea adjust-position='true' fixed='true' data-id='' name='input' class='release_text' placeholder='在此处键入评论内容...' value='{{releaseValue}}' focus='{{focus}}'></textarea>
     <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" form-type='submit'>发表</button>
     <view wx:else>请升级微信版本</view>
   </view>
-<<<<<<< HEAD
 </form> -->
-=======
-</form>
->>>>>>> cbc6d87f96a3568e1b301c828f02367fd839b3f8

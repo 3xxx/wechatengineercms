@@ -1,0 +1,4 @@
+<view class="foot">
+    <image class="foot-icon" src="https://s10.mogucdn.com/mlcdn/c45406/171122_0l2jfld15d00if3455e8c3i9f5ai2_200x200.png"></image>
+    <text class="foot-text">底部模板</text>
+</view>
