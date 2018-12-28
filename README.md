@@ -1,5 +1,5 @@
 # wxengineercms
-EngineerCMS的微信小程序，功能是展示engineercms服务里的文章列表，查阅文章，上传图片和发布文章。
+EngineerCMS的微信小程序，功能是展示engineercms服务里的文章列表，查阅文章，上传图片和发布文章，查询图纸、规范和会议纪要等文件，分享资料链接给好友和群。
 
 # 珠三角设代小程序
 
