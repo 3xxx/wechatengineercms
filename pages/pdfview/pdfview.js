@@ -42,7 +42,7 @@ Page({
       Id: options.id,
       Title: options.title,
       actIndex: options.actIndex,
-      Link:options.link
+      Link: options.link
     })
     // if (options.actIndex=='standard'){
     //   this.setData({
@@ -82,7 +82,7 @@ Page({
     //         },
     //         data: {
     //           code: res.code,
-    //           app_version: 1.1, //阅览版用的
+    //           app_version: 1, //plus版用的
     //         },
     //         // header: {
     //         //   'content-type': 'application/json' // 默认值
@@ -209,7 +209,7 @@ Page({
             data: {
               code: res.code,
               liked: liked,
-              app_version: 1.2,
+              app_version: 1,
             },
             success: function(res) {
               if (!liked) {
@@ -274,7 +274,7 @@ Page({
         page_size: that.data.page_size
       },
       header: {
-        'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+        'appid': '?????',
         'mbcore-access-token': wx.getStorageSync('access_token'),
         'mbcore-auth-token': wx.getStorageSync('auth_token')
       },
@@ -349,7 +349,7 @@ Page({
               url: link.binddelete,
               method: 'POST',
               header: {
-                'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+                'appid': '?????',
                 'mbcore-access-token': wx.getStorageSync('access_token'),
                 'mbcore-auth-token': wx.getStorageSync('auth_token')
               },
@@ -404,7 +404,7 @@ Page({
           },
           method: 'POST',
           header: {
-            'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+            'appid': '??????',
             'mbcore-access-token': wx.getStorageSync('access_token'),
             'mbcore-auth-token': wx.getStorageSync('auth_token')
           },
@@ -557,10 +557,10 @@ Page({
                         username: nickName,
                         publish_time: time,
                         avatar: avatarUrl,
-                        app_version: 1.2,
+                        app_version: 1,
                       },
                       // header: {
-                      //   'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+                      //   'appid': '??????',
                       //   'mbcore-access-token': wx.getStorageSync('access_token'),
                       //   'mbcore-auth-token': wx.getStorageSync('auth_token')
                       // },
@@ -708,7 +708,7 @@ Page({
     // console.log(e)
     var that = this;
     // console.log(that.data.actIndex)
-    if (that.data.actIndex=='standard') {
+    if (that.data.actIndex == 'standard') {
       that.setData({
         downloadurl: 'https://zsj.itdos.com/v1/wx/wxstandardpdf/' + e.currentTarget.dataset.id,
       });
@@ -718,24 +718,48 @@ Page({
       });
     };
 
-    wx.downloadFile({
-      url: that.data.downloadurl,
-      success: function(res) {
-        // console.log(res)
-        const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
-        wx.openDocument({
-          filePath: filePath,
-          fileType: 'pdf',
-          success: function(res) {
-            console.log('打开成功');
-          },
-          fail: function(res) {
-            console.log(res);
-          }
-        })
-      },
-      fail: function(res) {
-        console.log(res);
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        if (res.code) {
+          //发起网络请求
+          wx.downloadFile({
+            url: that.data.downloadurl + '?code=' + res.code + '&app_version=1',
+            header: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            success: function(res) {
+              // console.log(res)
+              const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
+              wx.openDocument({
+                filePath: filePath,
+                fileType: 'pdf',
+                success: function(res) {
+                  console.log('打开成功');
+                },
+                fail: function(res) {
+                  console.log(res);
+                  wx.showToast({
+                    title: res.data.info,
+                    icon: 'loading',
+                    duration: 1500
+                  })
+                }
+              })
+            },
+            fail: function(res) {
+              console.log(res);
+              wx.showToast({
+                title: res.data.info,
+                icon: 'loading',
+                duration: 1500
+              })
+            }
+          })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
       }
     })
   }

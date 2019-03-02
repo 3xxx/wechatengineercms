@@ -1,3 +1,8 @@
 {
   "navigationBarTitleText": "青少儿书画+●内容"
+  "usingComponents": {
+    "layout-head": "../../common/layout/head",
+    "layout-foot": "../../common/layout/foot",
+    "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index"
+  }
 }

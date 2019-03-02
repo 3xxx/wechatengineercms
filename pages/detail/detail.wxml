@@ -1,12 +1,14 @@
 <!-- detail wxml -->
-
 <import src="../../wxParse/wxParse.wxml" />
+<!-- 点击分享按钮，调用事件“share”  hidden="{{canvasHidden}}"-->
+<!-- <canvas canvas-id="share" style="width:750px;height:920px;"></canvas> -->
 <!-- 画布大小按需定制 这里我按照背景图的尺寸定的 hidden='{{hidden}}'  -->
 <canvas canvas-id="shareImg" style="width:545px;height:771px"></canvas>
 <!-- 预览区域  -->
 <view hidden='{{hidden}}' class='preview'>
   <image src='{{prurl}}' mode='widthFix'></image>
   <button type='primary' size='mini' bindtap='save'>保存分享图</button>
+  <button type='primary' class='openSetting' open-type="openSetting" bindopensetting='handleSetting' hidden='{{openSettingBtnHidden}}'>去授权</button>
 </view>
 <!-- <button class='share' bindtap='share'>生成分享图</button> -->
 <wxc-avatar class="avatar" _pid="{{_pid}}" bindtap='share'>share</wxc-avatar>

@@ -19,7 +19,7 @@ Page({
   },
 
   formSubmit: function(e) {
-    console.log(e);
+    // console.log(e);
     // form 表单取值，格式 e.detail.value.name(name为input中自定义name值) ；使用条件：需通过<form bindsubmit="formSubmit">与<button formType="submit">一起使用
     var account = e.detail.value.account;
     var password = e.detail.value.password;
@@ -68,7 +68,7 @@ Page({
               code: res.code,
               uname: account,
               password: password,
-              app_version: 3,
+              app_version: 1,
             },
             method: 'POST',
             header: {

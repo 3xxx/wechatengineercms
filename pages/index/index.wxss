@@ -196,3 +196,14 @@ tab-h {
 .clear-search-log{
     text-align: center;
 }
+
+.avatar {
+  display: block;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: #31b0d5;
+  color: #FFF;
+  margin: 0 auto;
+  text-align:center;
+}

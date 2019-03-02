@@ -56,6 +56,7 @@ http://blog.csdn.net/sinat_31177681/article/details/53557642
       <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{Link}}" style="width: 60px; height: 60px;" style="border-radius: 100%"/>
+          <!-- <wxc-avatar class="avatar">图</wxc-avatar> -->
         </view>
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg" data-id="{{Id}}" catchtap='downloadFile'>
           <view class="weui-media-box__title">{{Title}}</view>
@@ -102,11 +103,11 @@ http://blog.csdn.net/sinat_31177681/article/details/53557642
         </view>
       </view>
     </scroll-view>
-    <view>
+    <!-- <view>
       <loading hidden="{{hidden}}" bindchange="loadingChange">
-        加载中...
+        加载中...在页面中使用这种会导致死掉，比如空关键字搜索！应该放js中
       </loading>
-    </view>
+    </view> -->
   </view>
   <view class="page__ft">
   </view>
@@ -118,7 +119,7 @@ http://blog.csdn.net/sinat_31177681/article/details/53557642
       <view class='leassonList' data-id="{{item.id}}" bindtap="seeDetail">
         <view class='listIn'>
           <view class='leassonImg'>
-            <image src="{{item.imgUrl}}" class='leassonImgs' />
+            <image src="{{item.imgUrl||spec.productFirstImage}}" class='leassonImgs' mode='aspectFill' />
           </view>
           <view class='leassonTitle'>
             <view class='title'>

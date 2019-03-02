@@ -70,7 +70,9 @@ Page({
     }
     if (!this.data.searchshow) {
       // console.log(searchpage);
-      this.loadMsgData(searchpage)
+      if ("" != searchTitle) {
+        this.loadMsgData(searchpage)
+      }
     }
   },
   // 清缓存
@@ -103,15 +105,18 @@ Page({
     // console.log(that)
     msgListKey = "msgList" + pg;
     // 显示加载的icon
-    that.setData({
-      hidden: false
-    });
+    wx.showLoading({
+      title: '加载中...',
+    })
+    // that.setData({
+    //   hidden: false
+    // });
     // 获取上一页数据
     var allMsg = that.data.msgList;
 
     var postData = {
       searchpage: pg, //分页标识
-      app_version: 1.2, //当前版本，后台根据版本不同给出不同的数据格式
+      app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
       keyword: searchTitle
     }
     wx.request({
@@ -157,6 +162,9 @@ Page({
       },
       fail: function(e) {
         console.log(e);
+      },
+      complete: () => {
+        wx.hideLoading()
       }
     })
   },
@@ -172,7 +180,7 @@ Page({
     var apiUrl = 'https://zsj.itdos.com/v1/wx/getwxarticles'; //文章列表接口地址
     var postData = {
       page: pg, //分页标识
-      app_version: 1.2, //当前版本，后台根据版本不同给出不同的数据格式
+      app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
     }
     wx.request({
       url: apiUrl,
@@ -372,12 +380,18 @@ Page({
       searchLogShowed: false
     });
     // pageNum = 1;
-    that.loadMsgData(1);
-    // 搜索后将搜索记录缓存到本地
-    if ("" != searchTitle) {
+    if ("" != searchTitle) { //20190301修改此处
+      that.loadMsgData(1);
+      // 搜索后将搜索记录缓存到本地
       var searchLogData = that.data.searchLogList;
       searchLogData.push(searchTitle);
       wx.setStorageSync('searchLog', searchLogData);
+    }else{
+      wx.showToast({
+        title: '缺少关键字！',
+        icon: 'none',
+        duration: 2000
+      })
     }
   },
   // 点击叉叉icon 清除输入内容，同时清空关键字，并加载数据——没有关键字，就是加载所有数据。
@@ -447,9 +461,14 @@ Page({
     });
   },
 
-  //直接查看pdf文件——暂时没用上
+  //直接查看pdf文件
   downloadFile: function(e) {
     // console.log(e)
+    // 显示加载的icon
+    wx.showLoading({
+      title: '加载中...',
+    })
+
     var that = this;
     if (!that.data.standardFocus) {
       that.setData({
@@ -468,14 +487,14 @@ Page({
         if (res.code) {
           //发起网络请求
           wx.downloadFile({
-            url: that.data.downloadurl + '?code='+res.code, //'https://zsj.itdos.com/v1/wx/wxpdf/' + e.currentTarget.dataset.id,
+            url: that.data.downloadurl + '?code=' + res.code + '&app_version=1', //'https://zsj.itdos.com/v1/wx/wxpdf/' + e.currentTarget.dataset.id,
             header: {
               "Content-Type": "application/x-www-form-urlencoded"
             },
             // method: "POST",
             // data: {//download不支持data参数
             //   code: res.code,
-            //   app_version: 1.2,
+            //   app_version: 1,
             // },
             success: function(res) {
               // console.log(res)
@@ -485,9 +504,10 @@ Page({
                 fileType: 'pdf',
                 success: function(res) {
                   console.log('打开成功');
+                  wx.hideLoading()
                 },
                 fail: function(res) {
-                  console.log(res);
+                  // console.log(res);
                   wx.showToast({
                     title: res.data.info,
                     icon: 'loading',
@@ -497,18 +517,26 @@ Page({
               })
             },
             fail: function(res) {
-              console.log(res);
+              // console.log(res);
               wx.showToast({
                 title: res.data.info,
                 icon: 'loading',
                 duration: 1500
               })
-            }
-          })
+            },
 
+          })
         } else {
-          console.log('登录失败！' + res.errMsg)
+          console.log('登录失败！' + res.errMsg);
+          wx.hideLoading()
         }
+      },
+      fail: function (res) {
+        console.log(res);
+        wx.hideLoading()
+      },
+      complete: () => {
+        wx.hideLoading()
       }
     })
   }

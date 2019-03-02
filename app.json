@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/detail/detail",
     "pages/pdfview/pdfview",
+    "pages/login/login",
     "pages/addtopic/addtopic",
     "pages/register/register",
     "pages/mine/mine",

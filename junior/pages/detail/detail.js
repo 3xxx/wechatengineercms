@@ -35,8 +35,6 @@ Page({
     releaseFocus: true,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     emojiChar: "☺-😌-😍-😓-😏-😜-😪-😭-😁-😃-😏-😖-😡-😳-😷-👍-👌-✌-✊-☝-☀-☁-⛅-⚡-💖-💔-🕙-🌹-🍉-🎂-🎁-🍚-☕-🍺-👄-🐞-⚽-🏀-👧-👦-💊",
-
-
     //0x1f---
     emoji: ["00", "1F60C", "1F60D", "1F613", "1F60F", "1F61C",
       "1F62A", "1F62D", "1F601", "1F603",
@@ -46,6 +44,7 @@ Page({
     ],
     emojis: [], //qq、微信原始表情
     alipayEmoji: [], //支付宝表情
+    openSettingBtnHidden:true,
   },
 
   /**
@@ -145,7 +144,7 @@ Page({
                 // var unit = that.data.screenWidth / 375
                 ctx.setFillStyle('white');
                 ctx.fillRect(0, 0, 600, 880);
-                ctx.drawImage(res1[0].path, 50, 200, 400, 400)
+                ctx.drawImage(res1[0].path, 30, 200, 480, 400)
                 ctx.drawImage('../../' + res1[1].path, 350, 610, 160, 160)
                 // ctx.drawImage(imgurl, 50, 200, 400, 400)
                 // ctx.drawImage(bgImgPath, 350, 610, 160, 160)
@@ -303,7 +302,7 @@ Page({
         page_size: that.data.page_size
       },
       header: {
-        'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+        'appid': '??????',
         'mbcore-access-token': wx.getStorageSync('access_token'),
         'mbcore-auth-token': wx.getStorageSync('auth_token')
       },
@@ -378,7 +377,7 @@ Page({
               url: link.binddelete,
               method: 'POST',
               header: {
-                'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+                'appid': '????',
                 'mbcore-access-token': wx.getStorageSync('access_token'),
                 'mbcore-auth-token': wx.getStorageSync('auth_token')
               },
@@ -434,7 +433,7 @@ Page({
           },
           method: 'POST',
           header: {
-            'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+            'appid': '??????',
             'mbcore-access-token': wx.getStorageSync('access_token'),
             'mbcore-auth-token': wx.getStorageSync('auth_token')
           },
@@ -591,7 +590,7 @@ Page({
                         app_version: 3,
                       },
                       // header: {
-                      //   'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+                      //   'appid': '????',
                       //   'mbcore-access-token': wx.getStorageSync('access_token'),
                       //   'mbcore-auth-token': wx.getStorageSync('auth_token')
                       // },
@@ -702,7 +701,11 @@ Page({
         wx.hideLoading()
       },
       fail: function(res) {
-        console.log(res)
+        console.log(res);
+        wx.hideLoading()
+      },
+      complete: () => {
+        wx.hideLoading()
       }
     })
   },
@@ -730,8 +733,90 @@ Page({
             }
           }
         })
+      },
+      fail: function(err) {
+        if (err.errMsg === 'saveImageToPhotosAlbum:fail auth deny') {
+          // this.openSettingBtnHidden = false
+          that.setData({
+            openSettingBtnHidden: false
+          })
+          wx.showToast({
+            title: '缺少授权，请点击授权',
+            icon: 'none',
+            duration: 2000
+          })
+          // this.$apply()
+        } else if (err.errMsg === 'saveImageToPhotosAlbum:fail cancel') {
+          // this.openSettingBtnHidden = false
+          that.setData({
+            openSettingBtnHidden: true
+          })
+          wx.showToast({
+            title: '取消保存',
+            icon: 'none',
+            duration: 2000
+          })
+          // this.$apply()
+        }
+        // console.log(err);
+        // if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+        // console.log("用户一开始拒绝了，我们想再次发起授权")
+        // wx.authorize({
+        //   scope: 'scope.writePhotosAlbum',
+        //   success(successdata) {
+        //     console.log('授权成功')
+        //   },
+        //   fail(faildata) {
+        //     console.log('授权失败')
+        //     console.log(faildata)
+        //   }
+        // })
+        // console.log('打开设置窗口')
+        // wx.openSetting({
+        //   success(settingdata) {
+        //     console.log(settingdata)
+        //     if (settingdata.authSetting['scope.writePhotosAlbum']) {
+        //       console.log('获取权限成功，给出再次点击图片保存到相册的提示。')
+        //     } else {
+        //       console.log('获取权限失败，给出不给权限就无法正常使用的提示')
+        //     }
+        //   }
+        // })
+        // }
       }
+      // fail: (res) => {
+      //   console.log(res)
+      // },
+      // complete: () => {
+      //   wx.hideLoading()
+      // }
     })
+  },
+  // 手动授权
+  handleSetting(e) {
+    var that = this
+    if (!e.detail.authSetting['scope.writePhotosAlbum']) {
+      wx.showModal({
+        title: '警告',
+        content: '若不打开授权，则无法将图片保存在相册中！',
+        showCancel: false
+      })
+      that.setData({
+        openSettingBtnHidden: true
+      })
+      // this.openSettingBtnHidden = true
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '您已授权，赶紧将图片保存在相册中吧！',
+        showCancel: false
+      })
+      that.setData({
+        openSettingBtnHidden: true
+      })
+      // this.openSettingBtnHidden = true
+    }
+    // this.$apply()
   },
 
   //解决滑动穿透问题

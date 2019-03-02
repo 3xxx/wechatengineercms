@@ -94,7 +94,7 @@ Page({
             data: {
               code: res.code,
               page: pg, //分页标识
-              app_version: 1.2, //当前版本，后台根据版本不同给出不同的数据格式
+              app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
             },
             success: function(res) {
               if (res.data.info == "SUCCESS") { //成功
