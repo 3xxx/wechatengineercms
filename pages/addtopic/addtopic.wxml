@@ -1,11 +1,11 @@
 <view class="question-form">
   <view class="question-input-area">
-      <!-- 文章编号  -->
+    <!-- 文章编号  -->
     <!-- <view class="question-title-wrap">
       <input class="question-title" placeholder="请输入编号" maxlength="40" placeholder-style="color:#b3b3b3;font-size:18px;" bindinput="handleTitleInput"></input>
       <view class="title-input-counter">{{titleCount}}/40</view>
     </view> -->
-        <!-- 文章标题  -->
+    <!-- 文章标题  -->
     <view class="question-title-wrap">
       <input class="question-title" placeholder="请输入标题" maxlength="40" placeholder-style="color:#b3b3b3;font-size:18px;" bindinput="handleTitleInput"></input>
       <view class="title-input-counter">{{titleCount}}/40</view>
@@ -31,7 +31,7 @@
 
     <!-- 添加图片按钮  -->
     <view class="question-images-tool">
-      <button type="default" size="mini" bindtap="chooseImage" wx:if="{{images.length < 3}}">添加图片</button>
+      <button type="default" size="mini" bindtap="chooseImage" wx:if="{{images.length < 6}}">添加图片</button>
     </view>
 
     <!-- 图片缩略图  -->
@@ -47,6 +47,10 @@
   </view>
 
   <!-- 提交表单按钮  -->
-  <button class="weui-btn" type="primary" bindtap="submitForm">提交</button>
+  <button wx:if="{{hasRegist}}" class="weui-btn" type="primary" bindtap="submitForm">提交</button>
+  <!-- <button wx:if="{{!hasRegist}}" class="weui-btn" type="primary" bindtap="submitForm"> -->
+  <navigator url="../register/register">
+    <button wx:if="{{!hasRegist}}">还没有账号，点击注册吧</button>
+  </navigator>
 
 </view>

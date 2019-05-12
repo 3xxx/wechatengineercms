@@ -31,9 +31,9 @@ Page({
     // Do something when page scroll
   },
   onTabItemTap(item) {
-    console.log(item.index)
-    console.log(item.pagePath)
-    console.log(item.text)
+    // console.log(item.index)
+    // console.log(item.pagePath)
+    // console.log(item.text)
   },
   // Event handler.
   viewTap: function () {

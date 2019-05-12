@@ -1,5 +1,6 @@
 /* detail wxcss */
 @import '../../lib/style/fontawesome.wxss';
+
 .page {
   padding: 20px 15px;
   box-sizing: border-box;
@@ -61,6 +62,7 @@
 }
 
 /* pages/canvas/canvas.wxss */
+
 canvas {
   position: fixed;
   top: 0;
@@ -110,8 +112,8 @@ canvas {
   left: 30%;
 }
 
-
 /* 评论 */
+
 .release_list {
   overflow-y: scroll;
   background: #eee;
@@ -187,7 +189,7 @@ canvas {
 }
 
 .publish {
-  width: 100%; 
+  width: 100%;
   background: white;
   display: flex;
   margin-top: 20rpx;
@@ -312,11 +314,11 @@ canvas {
   border: none;
 }
 
-.icon:after{
+.icon:after {
   font-family: 'iconfont';
   font-weight: 500;
   font-style: normal;
-  content: '\e698;'
+  content: '\e698;';
 }
 
 /* emoji评论相关 */
@@ -475,14 +477,33 @@ canvas {
   height: 120rpx;
   border-radius: 50%;
   background: #31b0d5;
-  color: #FFF;
+  color: #fff;
   margin: 0 auto;
-  text-align:center;
-  }
+  text-align: center;
+  float: right;
+  /* background-color: #fff; */
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  /* border: 0 solid #fff; *//* border-radius: 500px; */
+  box-shadow: 4px 1px 1px #ccc;
+  opacity:0.6;
+}
 
-   
-  
-  /*  comment   */
+.delete {
+  float: right;
+  background-color: #fff;
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  border: 0 solid #fff;
+  border-radius: 500px;
+  box-shadow: 4px 1px 1px #ccc;
+  opacity:0.6;
+}
+
+/*  comment   */
+
 .commentheader {
   padding: 20rpx 0;
   text-align: left;
@@ -711,9 +732,11 @@ canvas {
   margin-right: 10px;
   margin-top: 10rpx;
 }
+
 /*  comment end  */
-  
+
 /*   menu-box      */
+
 .menu-box {
   position: relative;
   height: 80px;
@@ -768,4 +791,5 @@ canvas {
   display: inline-block;
   text-align: center;
 }
+
 /*   end menu-box  */

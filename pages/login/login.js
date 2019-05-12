@@ -1,6 +1,5 @@
 var app = getApp();
 var util = require('../../utils/util.js');
-
 Page({
   data: {
     account:"",
@@ -37,5 +36,11 @@ Page({
     }, function (res) {
       console.log(res);
     });
+  },
+  onShareAppMessage: function () {
+    return {
+      title: '珠三角设代plus',
+      path: 'pages/login/login'
+    }
   }
 })

@@ -3,8 +3,10 @@
 const app = getApp()
 var util = require('../../utils/util.js');
 let wxparse = require("../../wxParse/wxParse.js");
+var config = require('../../config.js');
 Page({
   data: {
+    isAdmin: false,
     dkheight: 300,
     dkcontent: "",
     leassonTilte: '',
@@ -26,7 +28,7 @@ Page({
     inputMarBot: false, //评论框聚焦时，让评论框距离底部的距离为50rpx
 
     open: true,
-    
+
     shop: [],
     shop_item: {},
     shop_num: {},
@@ -35,8 +37,6 @@ Page({
     releaseFocus: true,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     emojiChar: "☺-😌-😍-😓-😏-😜-😪-😭-😁-😃-😏-😖-😡-😳-😷-👍-👌-✌-✊-☝-☀-☁-⛅-⚡-💖-💔-🕙-🌹-🍉-🎂-🎁-🍚-☕-🍺-👄-🐞-⚽-🏀-👧-👦-💊",
-
-
     //0x1f---
     emoji: ["00", "1F60C", "1F60D", "1F613", "1F60F", "1F61C",
       "1F62A", "1F62D", "1F601", "1F603",
@@ -46,225 +46,258 @@ Page({
     ],
     emojis: [], //qq、微信原始表情
     alipayEmoji: [], //支付宝表情
-    openSettingBtnHidden:true,
+    openSettingBtnHidden: true,
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     // console.log(options)
     this.setData({
-      id: options.id
+      id: options.id,
+      isAdmin: app.globalData.isAdmin
     })
+    // this.data.isAdmin = app.globalData.isAdmin
+    // console.log(this.data.isAdmin)
     // 获得高度
-    let winPage = this;
+    // let winPage = this;
+    var that = this;
     wx.getSystemInfo({
-      success: function(res) {
-        let winHeight = res.windowHeight;
+      success: function (res) {
+        // let winHeight = res.windowHeight;
         // console.log(winHeight);
-        winPage.setData({
-          dkheight: winHeight - winHeight * 0.05 - 80
+        that.setData({
+          // screenWidth: res.screenWidth,
+          dkheight: res.windowHeight - res.windowHeight * 0.05 - 80
         })
       }
     });
-    var that = this;
-    //获取用户设备信息，屏幕宽度
-    wx.getSystemInfo({
-      success: res => {
-        that.setData({
-          screenWidth: res.screenWidth
-        })
-        // console.log(that.data.screenWidth)
-      }
-    })
+    // var that = this;
+    // //获取用户设备信息，屏幕宽度
+    // wx.getSystemInfo({
+    //   success: res => {
+    //     that.setData({
+    //       screenWidth: res.screenWidth
+    //     })
+    //     // console.log(that.data.screenWidth)
+    //   }
+    // })
     // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        if (res.code) {
-          var getData = wx.request({
-            url: 'https://zsj.itdos.com/v1/wx/getwxarticle/' + options.id,
-            header: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            data: {
-              code: res.code,
-              app_version: 1,//阅览版用的
-              // x: '',
-              // y: ''
-              // id: options.id
-            },
-            // header: {
-            //   'content-type': 'application/json' // 默认值
-            // },
-            success: function(res) {
-              // console.log(res.data)
-              that.setData({
-                dkcontent: res.data.html,
-                leassonTilte: res.data.title,
-                time: res.data.time,
-                author: res.data.author,
-                views: res.data.Views,
-                likeNum: res.data.likeNum,
-                liked: res.data.liked,
-                comment: res.data.comment,
-                commentNum: res.data.commentNum,
-              })
-              wxparse.wxParse('dkcontent', 'html', that.data.dkcontent, that, 5)
+    // wx.login({
+    //   success: res => {
+    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
+    //     if (res.code) {
+    var sessionId = wx.getStorageSync('sessionId')
+    // console.log(sessionId)
+    var getData = wx.request({
+      url: config.url + '/wx/getwxarticle/' + options.id,
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        // 'Cookie': sessionId,
+      },
+      data: {
+        hotqinsessionid: sessionId
+        // code: res.code,
+        // app_version: 1,//plus版用的
+        // x: '',
+        // y: '',
+        // id: options.id
+      },
+      // header: {
+      //   'content-type': 'application/json' // 默认值
+      // },
+      success: function (res) {
+        // console.log(res.data)
+        that.setData({
+          dkcontent: res.data.html,
+          leassonTilte: res.data.title,
+          time: res.data.time,
+          author: res.data.author,
+          views: res.data.Views,
+          likeNum: res.data.likeNum,
+          liked: res.data.liked,
+          comment: res.data.comment,
+          commentNum: res.data.commentNum,
+        })
+        wxparse.wxParse('dkcontent', 'html', that.data.dkcontent, that, 5)
 
-              // 生成画布
-              let promise1 = new Promise(function(resolve, reject) {
-                wx.getImageInfo({
-                  src: res.data.imgUrl,
-                  success: function(res1) {
-                    // console.log(res1)
-                    resolve(res1);
-                  }
-                })
-              });
-              let promise2 = new Promise(function(resolve, reject) {
-                wx.getImageInfo({
-                  src: '../../images/qrcode.jpg',
-                  success: function(res1) {
-                    // console.log(res1)
-                    resolve(res1);
-                  }
-                })
-              });
-              Promise.all([
-                promise1, promise2
-              ]).then(res1 => {
-                // console.log(res1)
-                const ctx = wx.createCanvasContext('shareImg')
-                //主要就是计算好各个图文的位置
-                // var unit = that.data.screenWidth / 375
-                ctx.setFillStyle('white');
-                ctx.fillRect(0, 0, 600, 880);
-                ctx.drawImage(res1[0].path, 30, 200, 480, 400)
-                ctx.drawImage('../../' + res1[1].path, 350, 610, 160, 160)
-                // ctx.drawImage(imgurl, 50, 200, 400, 400)
-                // ctx.drawImage(bgImgPath, 350, 610, 160, 160)
-
-                ctx.setFontSize(28)
-                ctx.setFillStyle('#6F6F6F')
-                ctx.fillText('来自小程序 - 珠三角设代', 30, 660)
-
-                ctx.setFontSize(30)
-                ctx.setFillStyle('#111111')
-                ctx.fillText('快来围观和发布日志', 30, 710)
-
-                ctx.setFontSize(22)
-                ctx.fillText('长按扫码进入小程序查看', 30, 750)
-
-                ctx.setFillStyle('#6F6F6F')
-                ctx.fillText('Author:' + res.data.author, 545 / 2, 100)
-                ctx.setTextAlign('center')
-                ctx.setFontSize(24)
-                ctx.setFillStyle('#111111')
-                ctx.fillText(res.data.title, 545 / 2, 50)
-                ctx.fillText(res.data.word, 545 / 2, 160)
-                ctx.fillText('……', 60, 190)
-                ctx.stroke()
-                ctx.draw()
-              })
+        // 生成画布
+        let promise1 = new Promise(function (resolve, reject) {
+          wx.getImageInfo({
+            src: res.data.imgUrl,
+            success: function (res1) {
+              // console.log(res1)
+              resolve(res1);
             }
           })
+        });
+        let promise2 = new Promise(function (resolve, reject) {
+          wx.getImageInfo({
+            src: '../../images/qrcode.jpg',
+            success: function (res1) {
+              // console.log(res1)
+              resolve(res1);
+            }
+          })
+        });
+        Promise.all([
+          promise1, promise2
+        ]).then(res1 => {
+          // console.log(res1)
+          const ctx = wx.createCanvasContext('shareImg')
+          //主要就是计算好各个图文的位置
+          // var unit = that.data.screenWidth / 375
+          ctx.setFillStyle('white');
+          ctx.fillRect(0, 0, 600, 880);
+          ctx.drawImage(res1[0].path, 30, 200, 480, 400)
+          ctx.drawImage('../../' + res1[1].path, 350, 610, 160, 160)
+          // ctx.drawImage(imgurl, 50, 200, 400, 400)
+          // ctx.drawImage(bgImgPath, 350, 610, 160, 160)
 
-        }
+          ctx.setFontSize(28)
+          ctx.setFillStyle('#6F6F6F')
+          ctx.fillText('来自小程序 - 珠三角设代', 30, 660)
+
+          ctx.setFontSize(30)
+          ctx.setFillStyle('#111111')
+          ctx.fillText('快来围观和发布日志', 30, 710)
+
+          ctx.setFontSize(22)
+          ctx.fillText('长按扫码进入小程序查看', 30, 750)
+
+          ctx.setFillStyle('#6F6F6F')
+          ctx.fillText('Author:' + res.data.author, 545 / 2, 100)
+          ctx.setTextAlign('center')
+          ctx.setFontSize(24)
+          ctx.setFillStyle('#111111')
+          ctx.fillText(res.data.title, 545 / 2, 50)
+          ctx.fillText(res.data.word, 545 / 2, 160)
+          ctx.fillText('……', 60, 190)
+          ctx.stroke()
+          ctx.draw()
+        })
       }
     })
+    //     }
+    //   }
+    // })
     // 查看是否授权
-    wx.getSetting({
-      success(res) {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wx.getUserInfo({
-            success: function(res) {
-              // console.log(res.userInfo)
-            }
-          })
-        }
-      }
-    })
-
+    // wx.getSetting({
+    //   success(res) {
+    //     if (res.authSetting['scope.userInfo']) {
+    //       // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+    //       wx.getUserInfo({
+    //         success: function(res) {
+    //           // console.log(res.userInfo)
+    //         }
+    //       })
+    //     }
+    //   }
+    // })
     var em = {},
       emChar = that.data.emojiChar.split("-");
-    that.data.emoji.forEach(function(v, i) {
+    that.data.emoji.forEach(function (v, i) {
       em = {
         char: emChar[i],
         emoji: v, //"0x1f" + 
       };
       that.data.emojis.push(em)
     });
-    that.setData({
-      emojis: that.data.emojis
-    })
+    // that.setData({******20190501这个没用吧？？？？********
+    //   emojis: that.data.emojis
+    // })
     // console.log(that.data.emojis)
   },
 
   bindGetUserInfo(e) {
-    console.log(e.detail.userInfo)
+    // console.log(e.detail.userInfo)
   },
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     // console.log(this.data.id)
     return {
-      title: '珠三角设代',
+      title: '珠三角设代plus',
       path: 'pages/detail/detail?id=' + this.data.id
     }
   },
 
+  // 删除文章
+  delete(e) {
+    // console.log(e.currentTarget.dataset.id)
+    var sessionId = wx.getStorageSync('sessionId')
+    //发起网络请求
+    wx.request({
+      url: config.url + "/wx/deletewxarticle",
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      method: "POST",
+      data: {
+        id: e.currentTarget.dataset.id,
+        hotqinsessionid: sessionId
+      },
+      success: function (res) {
+        if (res.data == "ok") {
+          wx.showToast({
+            title: "删除成功！",
+            duration: 1000,
+            icon: "sucess",
+          })
+        } else {
+          wx.showToast({
+            title: "删除失败！",
+            duration: 1000,
+            icon: "err",
+          })
+        }
+      }
+    })
+  },
+
   //点赞切换
-  onUpTap: function(event) {
+  onUpTap: function (event) {
     var that = this;
     var liked = that.data.liked;
     var likeNum = that.data.likeNum; //当前赞数
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        if (res.code) {
-          //发起网络请求
-          wx.request({
-            url: "https://zsj.itdos.com/v1/wx/addwxlike/" + that.data.id,
-            header: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            method: "POST",
-            data: {
-              code: res.code,
-              liked: liked,
-              app_version: 1,
-            },
-            success: function(res) {
-              if (!liked) {
-                // views: ++this.data.views,
-                likeNum++;
-                liked = true;
-              } else {
-                --likeNum;
-                liked = false;
-              }
-              // break;
-              that.setData({
-                liked: liked,
-                likeNum: likeNum,
-              })
-              // console.log(that.data.views)
-              wx.showToast({
-                title: that.data.liked ? "点赞成功" : "点赞取消",
-                duration: 1000,
-                icon: "sucess",
-                make: true
-              })
-            }
-          })
-        }
+    var sessionId = wx.getStorageSync('sessionId')
+    //发起网络请求
+    wx.request({
+      url: config.url + "/wx/addwxlike/" + that.data.id,
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
       },
+      method: "POST",
+      data: {
+        liked: liked,
+        app_version: 1,
+        hotqinsessionid: sessionId
+      },
+      success: function (res) {
+        if (!liked) {
+          // views: ++this.data.views,
+          likeNum++;
+          liked = true;
+        } else {
+          --likeNum;
+          liked = false;
+        }
+        // break;
+        that.setData({
+          liked: liked,
+          likeNum: likeNum,
+        })
+        // console.log(that.data.views)
+        wx.showToast({
+          title: that.data.liked ? "点赞成功" : "点赞取消",
+          duration: 1000,
+          icon: "sucess",
+          make: true
+        })
+      }
     })
   },
 
   //收藏切换
-  onCollectionTap: function(event) {
+  onCollectionTap: function (event) {
     //dbpost对象已在onLoad函数中被保存到了this变量中，无需再次实例化
     var newData = this.dbPost.collect();
     //重新绑定数据，注意，不要将整个newData全部作为setData的参数，应当有选择的更新部分数据
@@ -282,7 +315,7 @@ Page({
   },
 
   // 评论分页加载
-  reviewpage: function(e) {
+  reviewpage: function (e) {
     var that = this;
     var id = this.data.id;
     console.log('qqqqqq')
@@ -298,13 +331,13 @@ Page({
         page_size: that.data.page_size
       },
       header: {
-        'appid': '??????',
+        'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
         'mbcore-access-token': wx.getStorageSync('access_token'),
         'mbcore-auth-token': wx.getStorageSync('auth_token')
       },
-      success: function(res) {
-        console.log(res)
-        console.log('→')
+      success: function (res) {
+        // console.log(res)
+        // console.log('→')
         if (res.data.code == 1) {
           var datas = res.data.result.comments;
           if (res.data.result.more_data == 0) {
@@ -342,7 +375,7 @@ Page({
   },
 
   // 发表评论显示/隐藏
-  bindrelease: function(e) {
+  bindrelease: function (e) {
     // console.log(e)
     this.setData({
       releaseFocus: false,
@@ -352,7 +385,7 @@ Page({
     // console.log(this.data.releaseFocus)
   },
 
-  catchhide: function() {
+  catchhide: function () {
     this.setData({
       releaseFocus: true
     })
@@ -360,7 +393,7 @@ Page({
   },
 
   //获取用户信息后加上code 去请求auth- token
-  userInfoReadyCallback: function(calback) {
+  userInfoReadyCallback: function (calback) {
     var that = this;
     //console.log(app.globalData.userInfo);
     util.login().then((res) => {
@@ -368,9 +401,9 @@ Page({
       return util.getUserAuthRequest(link.authtoken, {
         code: res.code
       })
-    }).then(function(res) {
+    }).then(function (res) {
       //如果needBind 是true 则需要本地缓存paramBind验证手机号时用
-      console.log(res.data.result.needBind);
+      // console.log(res.data.result.needBind);
       if (res.data.result.needBind) {
         //为新用户，提示去绑定手机号页面
         var paramBind = wx.getStorageSync('paramBind') || '';
@@ -379,7 +412,7 @@ Page({
         wx.showModal({
           title: '提示',
           content: '您尚未登录，点击确定去往手机登录页面,点击取消将无法购买',
-          success: function(res) {
+          success: function (res) {
             if (res.confirm) {
               wx.navigateTo({
                 url: '/pages/bindphone/bindphone'
@@ -430,7 +463,7 @@ Page({
           // wx.getUserInfo({
           // success: res => {
           wx.getUserInfo({
-            success: function(res) {
+            success: function (res) {
               var userInfo = res.userInfo
               var nickName = userInfo.nickName
               var avatarUrl = userInfo.avatarUrl
@@ -443,61 +476,72 @@ Page({
               var a = list ? list : []
               // 调用函数时，传入new Date()参数，返回值是日期和时间  
               var time = util.formatTime(new Date());
-
-              // 登录
-              wx.login({
-                success: res => {
-                  // 发送 res.code 到后台换取 openId, sessionKey, unionId
-                  if (res.code) {
-                    //发起网络请求
-                    wx.request({
-                      url: "https://zsj.itdos.com/v1/wx/addwxrelease/" + that.data.id,
-                      header: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                      },
-                      method: "POST",
-                      data: {
-                        code: res.code,
-                        content: e.detail.value.input,
-                        username: nickName,
-                        publish_time: time,
-                        avatar: avatarUrl,
-                        app_version: 1,
-                      },
-                      // header: {
-                      //   'appid': '?????',
-                      //   'mbcore-access-token': wx.getStorageSync('access_token'),
-                      //   'mbcore-auth-token': wx.getStorageSync('auth_token')
-                      // },
-                      success: function(res) {
-                        // 再通过setData更改Page()里面的data，动态更新页面的数据  
-                        a.push({
-                          content: e.detail.value.input, //this.data.releaseValue
-                          username: nickName,
-                          is_me: true,
-                          publish_time: time,
-                          // likes_count: 5,
-                          avatar: avatarUrl,
-                        })
-                        wx.setStorage({
-                          key: 'info',
-                          data: a,
-                        })
-                        that.setData({
-                          comment: a,
-                          releaseValue: '',
-                          releaseFocus: true, //隐藏输入框
-                          // releaselength: comments_count //更新页面发表评论总数
-                        })
-                        // console.log(avatarUrl)
-                      }
-                    })
-                  }
+              var sessionId = wx.getStorageSync('sessionId')
+              //发起网络请求
+              wx.request({
+                url: config.url + "/wx/addwxrelease/" + that.data.id,
+                header: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: "POST",
+                data: {
+                  hotqinsessionid: sessionId,
+                  content: e.detail.value.input,
+                  username: nickName,
+                  publish_time: time,
+                  avatar: avatarUrl,
+                  app_version: 1,
+                },
+                // header: {
+                //   'appid': 'fZ4wruPFDWZTEwD1gUhbkez0CUmeWGJx',
+                //   'mbcore-access-token': wx.getStorageSync('access_token'),
+                //   'mbcore-auth-token': wx.getStorageSync('auth_token')
+                // },
+                success: function (res) {
+                  // 再通过setData更改Page()里面的data，动态更新页面的数据  
+                  a.push({
+                    content: e.detail.value.input, //this.data.releaseValue
+                    username: nickName,
+                    is_me: true,
+                    publish_time: time,
+                    // likes_count: 5,
+                    avatar: avatarUrl,
+                  })
+                  wx.setStorage({
+                    key: 'info',
+                    data: a,
+                  })
+                  that.setData({
+                    comment: a,
+                    releaseValue: '',
+                    releaseFocus: true, //隐藏输入框
+                    // releaselength: comments_count //更新页面发表评论总数
+                  })
+                  // console.log(avatarUrl)
+                },
+                fail: function (err) {
+                  wx.showToast({
+                    title: '评论写入失败',
+                  })
                 }
               })
             },
+            fail: function (err) {
+              wx.showToast({
+                title: '获取用户级别信息失败',
+              })
+            }
+          })
+        }else{
+          wx.showToast({
+            title: '未授权获取用户级别信息，无法添加评论',
           })
         }
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '获取小程序权限设置失败',
+        })
       }
     })
   },
@@ -509,23 +553,26 @@ Page({
     })
   },
 
-  // 删除留言
+  // 删除留言_要加session识别用户身份
   binddelete(e) {
     var that = this
     var index = e.currentTarget.dataset.index //e.target.dataset.id;
-    console.log(e)
+    // console.log(e)
     var comment = that.data.comment
     wx.showModal({
       title: '提示',
       content: '是否删除该条数据',
-      success: function(res) {
+      success: function (res) {
         if (res.confirm) {
-
+          var sessionId = wx.getStorageSync('sessionId')
           //发起网络请求
           wx.request({
-            url: "https://zsj.itdos.com/v1/wx/deletewxrelease/" + e.currentTarget.dataset.id,
+            url: config.url + "/wx/deletewxrelease/" + e.currentTarget.dataset.id,
             method: "POST",
-            success: function(res) {
+            data:{
+              hotqinsessionid: sessionId
+            },
+            success: function (res) {
               comment.splice(index, 1);
               that.setData({
                 comment: comment
@@ -534,9 +581,19 @@ Page({
               wx.showToast({
                 title: '删除成功',
               })
+            },
+            fail: function (err) {
+              wx.showToast({
+                title: '删除请求失败',
+              })
             }
           })
         }
+      },
+      fail: function (err) {
+        // wx.showToast({
+        //   title: '取消删除',
+        // })
       }
     })
   },
@@ -544,7 +601,7 @@ Page({
   /**
    * 生成分享图
    */
-  share: function() {
+  share: function () {
     var that = this
     //获取用户设备信息设备像素比
     // wx.getSystemInfo({
@@ -567,7 +624,7 @@ Page({
       destWidth: 545 * 2,
       destHeight: 771 * 2,
       canvasId: 'shareImg',
-      success: function(res) {
+      success: function (res) {
         // console.log(res.tempFilePath);
         that.setData({
           prurl: res.tempFilePath,
@@ -575,7 +632,7 @@ Page({
         })
         wx.hideLoading()
       },
-      fail: function(res) {
+      fail: function (res) {
         console.log(res);
         wx.hideLoading()
       },
@@ -588,7 +645,7 @@ Page({
   /**
    * 保存到相册
    */
-  save: function() {
+  save: function () {
     var that = this
     //生产环境时 记得这里要加入获取相册授权的代码
     wx.saveImageToPhotosAlbum({
@@ -599,7 +656,7 @@ Page({
           showCancel: false,
           confirmText: '好哒',
           confirmColor: '#72B9C3',
-          success: function(res) {
+          success: function (res) {
             if (res.confirm) {
               // console.log('用户点击确定');
               that.setData({
@@ -609,7 +666,7 @@ Page({
           }
         })
       },
-      fail: function(err) {
+      fail: function (err) {
         if (err.errMsg === 'saveImageToPhotosAlbum:fail auth deny') {
           // this.openSettingBtnHidden = false
           that.setData({
@@ -695,7 +752,7 @@ Page({
   },
 
   //解决滑动穿透问题
-  emojiScroll: function(e) {
+  emojiScroll: function (e) {
     console.log(e)
   },
 
@@ -739,7 +796,7 @@ Page({
 
 
   //文本域失去焦点时 事件处理
-  textAreaBlur: function(e) {
+  textAreaBlur: function (e) {
     //获取此时文本域值
     // console.log(e.detail.value)
     this.setData({
@@ -748,33 +805,33 @@ Page({
     })
   },
   //文本域获得焦点事件处理
-  textAreaFocus: function() {
+  textAreaFocus: function () {
     //创建节点选择器
     // var query = wx.createSelectorQuery();
     //选择id
     // query.select('#contain').boundingClientRect()
     // query.exec(function (res) {
-      //res就是 所有标签为myText的元素的信息 的数组
-      // console.log(res);
-      //取高度
-      // console.log(res[0].height);
-            // 使页面滚动到底部  
-      // wx.pageScrollTo({
-      //   scrollTop: res[0].bottom, //rect.height
-      //   duration: 300 //设置滚动时间
-      // });
-      //   scrollTop: 0,
+    //res就是 所有标签为myText的元素的信息 的数组
+    // console.log(res);
+    //取高度
+    // console.log(res[0].height);
+    // 使页面滚动到底部  
+    // wx.pageScrollTo({
+    //   scrollTop: res[0].bottom, //rect.height
+    //   duration: 300 //设置滚动时间
+    // });
+    //   scrollTop: 0,
     // })
-      //功能代码
-      this.setData({
-        isShow: false,
-        cfBg: false,
-        // inputMarBot: true //
-      })
+    //功能代码
+    this.setData({
+      isShow: false,
+      cfBg: false,
+      // inputMarBot: true //
+    })
     // })
   },
   //点击表情显示隐藏表情盒子
-  emojiShowHide: function() {
+  emojiShowHide: function () {
     this.setData({
       isShow: !this.data.isShow,
       isLoad: false,
@@ -782,7 +839,7 @@ Page({
     })
   },
   //表情选择
-  emojiChoose: function(e) {
+  emojiChoose: function (e) {
     //当前输入内容和表情合并
     this.setData({
       releaseValue: this.data.releaseValue + e.currentTarget.dataset.emoji
@@ -790,7 +847,7 @@ Page({
     // wxparse.wxParse('content', 'html', this.data.content, this, 5)
   },
   //点击emoji背景遮罩隐藏emoji盒子
-  cemojiCfBg: function() {
+  cemojiCfBg: function () {
     this.setData({
       isShow: false,
       cfBg: false
@@ -803,7 +860,7 @@ Page({
     })
   },
   //发送评论评论 事件处理
-  send: function() {
+  send: function () {
     var that = this
     // console.log(that.data.releaseValue)
     if (that.data.releaseValue == '') {
@@ -815,7 +872,6 @@ Page({
     }
     var list = this.data.comment;
     // 必须是在用户已经授权的情况下调用
-    // 获取用户信息
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
@@ -823,7 +879,7 @@ Page({
           // wx.getUserInfo({
           // success: res => {
           wx.getUserInfo({
-            success: function(res) {
+            success: function (res) {
               var userInfo = res.userInfo
               var nickName = userInfo.nickName
               var avatarUrl = userInfo.avatarUrl
@@ -836,59 +892,65 @@ Page({
               var a = list ? list : []
               // 调用函数时，传入new Date()参数，返回值是日期和时间  
               var time = util.formatTime(new Date());
-
               // 登录
-              wx.login({
-                success: res => {
-                  // 发送 res.code 到后台换取 openId, sessionKey, unionId
-                  if (res.code) {
-                    //发起网络请求
-                    wx.request({
-                      url: "https://zsj.itdos.com/v1/wx/addwxrelease/" + that.data.id,
-                      header: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                      },
-                      method: "POST",
-                      data: {
-                        code: res.code,
-                        content: that.data.releaseValue,
-                        username: nickName,
-                        publish_time: time,
-                        avatar: avatarUrl,
-                        app_version: 1,
-                      },
-                      success: function(res) {
-                        // 再通过setData更改Page()里面的data，动态更新页面的数据  
-                        a.push({
-                          content: that.data.releaseValue, //this.data.releaseValue
-                          username: nickName,
-                          is_me: true,
-                          publish_time: time,
-                          // likes_count: 5,
-                          avatar: avatarUrl,
-                        })
-                        wx.setStorage({
-                          key: 'info',
-                          data: a,
-                        })
-                        that.setData({
-                          comment: a,
-                          releaseValue: '',
-                          releaseFocus: true, //隐藏输入框
-                          // releaselength: comments_count //更新页面发表评论总数
-                        })
-                        // console.log(avatarUrl)
-                      }
-                    })
-                  }
+              // wx.login({
+              //   success: res => {
+              //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
+              //     if (res.code) {
+              //发起网络请求
+              wx.request({
+                url: config.url + "/wx/addwxrelease/" + that.data.id,
+                header: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: "POST",
+                data: {
+                  // code: res.code,
+                  content: that.data.releaseValue,
+                  username: nickName,
+                  publish_time: time,
+                  avatar: avatarUrl,
+                  // app_version: 1,
+                },
+                success: function (res) {
+                  // 再通过setData更改Page()里面的data，动态更新页面的数据  
+                  a.push({
+                    content: that.data.releaseValue, //this.data.releaseValue
+                    username: nickName,
+                    is_me: true,
+                    publish_time: time,
+                    // likes_count: 5,
+                    avatar: avatarUrl,
+                  })
+                  wx.setStorage({
+                    key: 'info',
+                    data: a,
+                  })
+                  that.setData({
+                    comment: a,
+                    releaseValue: '',
+                    releaseFocus: true, //隐藏输入框
+                    // releaselength: comments_count //更新页面发表评论总数
+                  })
+                  // console.log(avatarUrl)
                 }
               })
+              //     }
+              //   }
+              // })
             },
+          })
+        } else {
+          // 显示模态弹窗
+          wx.showModal({
+            title: '未授权用户！',
+            content: '请点击上部的授权按钮进行授权。',
+            success(res) {
+            }
           })
         }
       }
     })
-
     // var that = this,
     //   conArr = [];
     // //此处延迟的原因是 在点发送时 先执行失去文本焦点 再执行的send 事件 此时获取数据不正确 故手动延迟100毫秒
@@ -917,8 +979,8 @@ Page({
   },
 
   //获取容器高度，使页面滚动到容器底部
-  pageScrollToBottom: function() {
-    wx.createSelectorQuery().select('#j_page').boundingClientRect(function(rect) {
+  pageScrollToBottom: function () {
+    wx.createSelectorQuery().select('#j_page').boundingClientRect(function (rect) {
       //使页面滚动到底部
       wx.pageScrollTo({
         scrollTop: rect.bottom, //rect.height
@@ -926,5 +988,4 @@ Page({
       })
     }).exec()
   }
-
 })

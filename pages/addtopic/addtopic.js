@@ -5,6 +5,8 @@ import {
   $init,
   $digest
 } from '../../utils/common.util'
+var config = require('../../config.js');
+var app = getApp();
 
 const wxUploadFile = promisify(wx.uploadFile)
 Page({
@@ -13,13 +15,26 @@ Page({
     contentCount: 0,
     title: '',
     content: '',
-    images: []
+    images: [],
+    hasRegist: false,//是否注册
   },
 
   onLoad(options) {
     $init(this)
+    if (app.globalData.hasRegist) {
+      this.setData({
+        hasRegist: true
+      })
+    }
   },
-
+  /**
+     * 生命周期函数--监听页面显示
+     */
+  onShow: function () {
+    this.setData({
+      hasRegist: app.globalData.hasRegist//naviback返回此页不会触发onload，但是会触发onshow
+    })
+  },
   handleTitleInput(e) {
     const value = e.detail.value
     this.data.title = value
@@ -92,50 +107,42 @@ Page({
         //   images: urls
         // })
         // 登录
-        wx.login({
-          success: res => {
-            // 发送 res.code 到后台换取 openId, sessionKey, unionId
-            if (res.code) {
-              //发起网络请求
-              wx.request({
-                url: 'https://zsj.itdos.com/v1/wx/addwxarticle',
-                header: {
-                  "Content-Type": "application/x-www-form-urlencoded"
-                },
-                method: "POST",
-                data: {
-                  code: res.code,
-                  title: title,
-                  content: content,
-                  images: urls
-                  // mobile: e.detail.value.mobile,
-                  // password: e.detail.value.password
-                },
-                success: function (res) {
-                  if (res.data.status == 0) {
-                    wx.showToast({
-                      title: res.data.info,
-                      icon: 'loading',
-                      duration: 1500
-                    })
-                  } else {
-                    wx.showToast({
-                      title: res.data.info, //这里打印出登录成功
-                      icon: 'success',
-                      duration: 1000
-                    })
-                    wx.navigateTo({
-                      url: `../detail/detail?id=` + res.data.id
-                    })
-                  }
-                }
+        var sessionId = wx.getStorageSync('sessionId')
+        //发起网络请求
+        wx.request({
+          url: 'https://zsj.itdos.com/v1/wx/addwxarticle',
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          method: "POST",
+          data: {
+            hotqinsessionid: sessionId,
+            title: title,
+            content: content,
+            images: urls
+            // mobile: e.detail.value.mobile,
+            // password: e.detail.value.password
+          },
+          success: function (res) {
+            if (res.data.status == 0) {
+              wx.showToast({
+                title: res.data.info,
+                icon: 'loading',
+                duration: 1500
               })
-
             } else {
-              console.log('登录失败！' + res.errMsg)
+              wx.showToast({
+                title: res.data.info, //这里打印出登录成功
+                icon: 'success',
+                duration: 1000
+              })
+              wx.navigateTo({
+                url: `../detail/detail?id=` + res.data.id
+              })
             }
           }
         })
+
         // wx.request({
         //   url: 'https://zsj.itdos.com/wx/addwxarticle',
         //   header: {
@@ -169,14 +176,7 @@ Page({
         //   }
         // })
       }).then(res => {
-        // const pages = getCurrentPages();
-        // const currPage = pages[pages.length - 1];
-        // const prevPage = pages[pages.length - 2];
 
-        // prevPage.data.questions.unshift(res)
-        // $digest(prevPage)
-
-        // wx.navigateBack()
       }).catch(err => {
         console.log(">>>> create question error:", err)
       }).then(() => {
@@ -187,7 +187,7 @@ Page({
 
   onShareAppMessage: function () {
     return {
-      title: '珠三角设代',
+      title: '珠三角设代plus',
       path: 'pages/index/index'
     }
   }

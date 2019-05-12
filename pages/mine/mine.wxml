@@ -2,20 +2,30 @@
 <view class="page">
   <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="userinfo-btn">点击微信授权 </button>
+    <!-- <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">获取用户信息</button> -->
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
 
-
   <!-- <view class="weui-cell__bd">
       <navigator url="../login/login">
         点击登录</navigator>
     </view> -->
-  <navigator url="../register/register">
-    <text class="register_text">还没有账号，点击注册吧</text>
-  </navigator>
+  <view wx:if="{{!hasRegist}}">
+    <navigator url="../register/register">
+      <text class="register_text">还没有账号，点击注册吧</text>
+    </navigator>
+  </view>
+  <!-- <view wx:if="{{hasRegist && !hasUserInfo}}"> -->
+  <button wx:if="{{hasRegist && !hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击微信授权 </button>
+  <!-- </view> -->
+  <view wx:if="{{hasRegist && hasUserInfo}}">
+    <navigator url="../updatepass/updatepass">
+      <text class="register_text">已登录，修改密码</text>
+    </navigator>
+  </view>
 
   <view class="separate"></view>
   <!-- <view class="person-line"></view> -->
@@ -25,14 +35,14 @@
   </view>
   <view class="separate"></view>
 
-  <view class="navs">
+  <!-- <view class="navs">
     <block wx:for-items="{{orderItems}}" wx:key="name">
       <view class="nav-item" catchtap="toOrder" data-type="{{item.name}}" data-typeid="{{item.typeId}}">
         <image src="{{item.imageurl}}" class="nav-image" />
         <text>{{item.name}}</text>
       </view>
     </block>
-  </view>
+  </view> -->
 
   <view class="separate"></view>
   <view class="person-list">
@@ -55,10 +65,7 @@
       <image class="item-image" src="../../images/livejoumal.png"></image>
       <text class="item-text">其他</text>
     </view>
-
-    <!-- <view class="person-line"></view>
-
-    <view class="list-item">
+    <!-- <view class="list-item">
       <image class="item-image" src="../../images/star3-faad14.png"></image>
       <text class="item-text">我的收藏</text>
     </view>
@@ -70,7 +77,10 @@
       <image class="item-image" src="../../images/heart-faad14.png"></image>
       <text class="item-text">我的点赞</text>
     </view> -->
-
   </view>
-  <view class="separate"></view>
+
+  <button wx:if="{{!hasLocation}}" open-type="openSetting" bindopensetting="callback">打开授权信息面板</button>
+  <!-- <navigator url="../search/search"> -->
+  <button type="primary" bindtap="checkin"> 打卡</button>
+  <!-- </navigator> -->
 </view>

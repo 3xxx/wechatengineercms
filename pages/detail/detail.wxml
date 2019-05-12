@@ -1,7 +1,6 @@
 <!-- detail wxml -->
+
 <import src="../../wxParse/wxParse.wxml" />
-<!-- 点击分享按钮，调用事件“share”  hidden="{{canvasHidden}}"-->
-<!-- <canvas canvas-id="share" style="width:750px;height:920px;"></canvas> -->
 <!-- 画布大小按需定制 这里我按照背景图的尺寸定的 hidden='{{hidden}}'  -->
 <canvas canvas-id="shareImg" style="width:545px;height:771px"></canvas>
 <!-- 预览区域  -->
@@ -18,6 +17,7 @@
   <view class='leassonTilte'>{{leassonTilte}}</view>
   <view class='author'>原创: {{author}}</view>
   <view class='time'>{{time}}</view>
+  <button class="delete" wx:if="{{isAdmin}}" type="primary" size="mini" data-id="{{id}}" bindtap="delete">删除</button>
   <view class="page__bd page__bd_spacing">
     <view class='dk-show' style='height:{{dkheight}}px;'>
       <template is="wxParse" data="{{wxParseData:dkcontent.nodes}}" />

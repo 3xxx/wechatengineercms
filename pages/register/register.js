@@ -1,15 +1,16 @@
-var util = require('../../utils/util.js');
 var app = getApp();
+var util = require('../../utils/util.js');
+var config = require('../../config.js');
 
 Page({
   data: {
     showTopTips: false,
     errorMsg: ""
   },
-  onLoad: function() {
+  onLoad: function () {
     var that = this;
     wx.getSystemInfo({
-      success: function(res) {
+      success: function (res) {
         that.setData({
           windowHeight: res.windowHeight,
           windowWidth: res.windowWidth
@@ -18,7 +19,7 @@ Page({
     });
   },
 
-  formSubmit: function(e) {
+  formSubmit: function (e) {
     // console.log(e);
     // form 表单取值，格式 e.detail.value.name(name为input中自定义name值) ；使用条件：需通过<form bindsubmit="formSubmit">与<button formType="submit">一起使用
     var account = e.detail.value.account;
@@ -63,7 +64,7 @@ Page({
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: 'https://zsj.itdos.com/v1/wx/wxregist',
+            url: config.url + '/wx/wxregist',
             data: {
               code: res.code,
               uname: account,
@@ -74,8 +75,13 @@ Page({
             header: {
               'content-type': 'application/x-www-form-urlencoded'
             },
-            success: function(res) {
+            success: function (res) {
               if (res.data.info == "SUCCESS") { //成功
+                //注册成功应该修改按钮状态为已注册和登录
+                app.globalData.hasRegist = true
+                app.globalData.user_id = res.data.userId
+                app.globalData.isAdmin = res.data.isAdmin
+                // console.log(app.globalData.isAdmin)
                 // app.ajax.req('/itdragon/register', {
                 //   "account": account,
                 //   "password": password
@@ -90,12 +96,17 @@ Page({
                     if (res.confirm) {
                       // 点击确定后跳转登录页面并关闭当前页面
                       // wx.redirectTo({//redirect不能跳转到tabar
+                      //   url: '../mine/mine'
+                      // })
+                      // wx.switchTab({
                       //   url: '../index/index'
                       // })
-                      wx.switchTab({
-                        url: '../index/index'
+                      //console.log(app.globalData.hasRegist)
+                      // 应该返回到上一页
+                      wx.navigateBack({
+                        delta: 1
                       })
-                    } 
+                    }
                   }
                   // success: function(res) {//错误代码
                   //   if (res.confirm) {

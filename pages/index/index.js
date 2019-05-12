@@ -1,6 +1,7 @@
 //获取应用实例
 //var util = require('../../utils/util.js');
 var app = getApp();
+var config = require('../../config.js');
 var imgUrls1 = []
 var page = 1; //分页标识，第几次下拉，用户传给后台获取新的下拉数据
 
@@ -21,7 +22,7 @@ Page({
     author: '珠三角设代',
     // leassonList: [],//文章列表
     actIndex: 'article',
-    apiUrl: "https://zsj.itdos.com/v1/wx/getwxarticles",
+    apiUrl: config.url + "/wx/getwxarticles",
     leassonId: '',
 
     msgList: [], //搜索结果列表
@@ -38,7 +39,7 @@ Page({
     searchshow: true, //页面是显示搜索（图纸、规范、其他）还是显示文章列表-首页
   },
   // 页面加载
-  onLoad: function() {
+  onLoad: function () {
     var that = this;
     that.clearCache(); //清本页缓存
     //顶部轮播图片
@@ -47,10 +48,11 @@ Page({
   },
 
   // 下拉刷新
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     if (!this.data.articleFocus) {
       this.clearCache();
       this.getArticles(1); //第一次加载数据
+      wx.stopPullDownRefresh();
     }
     // if (!this.data.searchFocus) {
     //   //清理缓存的作用
@@ -64,7 +66,7 @@ Page({
   },
 
   // 页面上拉触底事件（上拉加载更多）
-  onReachBottom: function() {
+  onReachBottom: function () {
     if (!this.data.articleFocus) {
       this.getArticles(page); //后台获取新数据并追加渲染
     }
@@ -76,7 +78,7 @@ Page({
     }
   },
   // 清缓存
-  clearCache: function() {
+  clearCache: function () {
 
     // 这里也要分清是文章列表页还是搜索页。
 
@@ -88,7 +90,7 @@ Page({
   },
   /**************** 界面点击 *****************/
   // 文章点击跳转详情页
-  onArticle: function() {
+  onArticle: function () {
     // 业务逻辑
   },
 
@@ -99,7 +101,7 @@ Page({
    * "pageSize" ：每页数量
    * "keyword" ：以文章标题模糊查询 ，格式为 "search_LIKE_实体类属性"
    */
-  loadMsgData: function(pg) {
+  loadMsgData: function (pg) {
     pg = pg ? pg : 1;
     var that = this;
     // console.log(that)
@@ -113,12 +115,13 @@ Page({
     // });
     // 获取上一页数据
     var allMsg = that.data.msgList;
-
     var postData = {
       searchpage: pg, //分页标识
-      app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
+      app_version: 1, //当前版本plus，后台根据版本不同给出不同的数据格式
       keyword: searchTitle
     }
+    // var sessionId = wx.getStorageSync('sessionId')
+    // console.log(sessionId)
     wx.request({
       url: that.data.apiUrl,
       data: postData,
@@ -126,7 +129,7 @@ Page({
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      success: function(res) {
+      success: function (res) {
         if (res.data.info == "SUCCESS") { //成功
           var tmpArr = that.data.msgList;
           // console.log(tmpArr);
@@ -160,7 +163,7 @@ Page({
           console.log(res.data); //.info
         }
       },
-      fail: function(e) {
+      fail: function (e) {
         console.log(e);
       },
       complete: () => {
@@ -173,11 +176,11 @@ Page({
    * 获取文章列表
    * @param {int} pg  分页标识 默认0
    */
-  getArticles: function(pg) {
+  getArticles: function (pg) {
     //设置默认值
     pg = pg ? pg : 1;
     var that = this;
-    var apiUrl = 'https://zsj.itdos.com/v1/wx/getwxarticles'; //文章列表接口地址
+    var apiUrl = config.url + '/wx/getwxarticles'; //文章列表接口地址
     var postData = {
       page: pg, //分页标识
       app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
@@ -189,7 +192,7 @@ Page({
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      success: function(res) {
+      success: function (res) {
         if (res.data.info == "SUCCESS") { //成功
           if (pg == 1) {
             var tmpimgUrls = that.data.imgUrls;
@@ -213,13 +216,13 @@ Page({
           console.log(res.data.info);
         }
       },
-      fail: function(e) {
+      fail: function (e) {
         console.log(e);
       }
     })
   },
 
-  tap: function(e) {
+  tap: function (e) {
     for (var i = 0; i < order.length; ++i) {
       if (order[i] === this.data.toView) {
         this.setData({
@@ -229,25 +232,25 @@ Page({
       }
     }
   },
-  tapMove: function(e) {
+  tapMove: function (e) {
     this.setData({
       scrollTop: this.data.scrollTop + 10
     })
   },
 
-  lower: function(e) {
+  lower: function (e) {
     // console.log(e)
     // let name = e.detail.value;
     // this.setData({
     //   usernameNew: name
     // })
   },
-  upper: function(e) {
+  upper: function (e) {
 
   },
 
   // tab切换事件
-  changeMenu: function(e) {
+  changeMenu: function (e) {
     // const radioo = this.data.actIndex
     // console.log(e.currentTarget.id)
     switch (e.currentTarget.id) {
@@ -272,7 +275,7 @@ Page({
           otherFocus: true,
           searchshow: false,
           actIndex: 'drawing',
-          apiUrl: 'https://zsj.itdos.com/v1/wx/searchwxdrawings?projectid=25002' //搜索图纸列表接口地址
+          apiUrl: config.url + '/wx/searchwxdrawings?projectid=25002' //26159搜索图纸列表接口地址
         })
         break;
       case "standard":
@@ -287,7 +290,7 @@ Page({
           otherFocus: true,
           searchshow: false,
           actIndex: 'standard',
-          apiUrl: 'https://zsj.itdos.com/v1/wx/searchwxstandards' //搜索规范列表接口地址
+          apiUrl: config.url + '/wx/searchwxstandards' //搜索规范列表接口地址
         })
         break;
       case "other":
@@ -302,7 +305,7 @@ Page({
           otherFocus: false,
           searchshow: false,
           actIndex: 'other',
-          apiUrl: 'https://zsj.itdos.com/v1/wx/searchwxdrawings?projectid=25004' //搜索其他文件列表接口地址（监理）
+          apiUrl: config.url + '/wx/searchwxdrawings?projectid=25004' //搜索其他文件列表接口地址（监理）
         })
         break;
       default:
@@ -322,7 +325,7 @@ Page({
   },
 
   //详情页面
-  seeDetail: function(e) {
+  seeDetail: function (e) {
     // console.log(e)
     this.setData({
       leassonId: e.currentTarget.dataset.id
@@ -333,16 +336,16 @@ Page({
   },
 
   //用户点击右上角分享
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
-      title: '珠三角设代',
+      title: '珠三角设代plus',
       path: 'pages/index/index'
     }
   },
 
   // 搜索框
   // 显示搜索输入框和搜索历史记录
-  showInput: function() {
+  showInput: function () {
     var that = this;
     if ("" != wx.getStorageSync('searchLog')) {
       that.setData({
@@ -358,7 +361,7 @@ Page({
     }
   },
   // 显示搜索历史记录
-  searchLogShowed: function() {
+  searchLogShowed: function () {
     var that = this;
     if ("" != wx.getStorageSync('searchLog')) {
       that.setData({
@@ -372,7 +375,7 @@ Page({
     }
   },
   // 点击 搜索 按钮后 隐藏搜索记录，并加载数据
-  searchData: function() {
+  searchData: function () {
     var that = this;
     that.setData({
       msgList: [],
@@ -386,7 +389,7 @@ Page({
       var searchLogData = that.data.searchLogList;
       searchLogData.push(searchTitle);
       wx.setStorageSync('searchLog', searchLogData);
-    }else{
+    } else {
       wx.showToast({
         title: '缺少关键字！',
         icon: 'none',
@@ -395,7 +398,7 @@ Page({
     }
   },
   // 点击叉叉icon 清除输入内容，同时清空关键字，并加载数据——没有关键字，就是加载所有数据。
-  clearInput: function() {
+  clearInput: function () {
     var that = this;
     that.setData({
       msgList: [],
@@ -407,7 +410,7 @@ Page({
     // that.loadMsgData(1);
   },
   // 输入内容时 把当前内容赋值给 查询的关键字，并显示搜索记录
-  inputTyping: function(e) {
+  inputTyping: function (e) {
     var that = this;
     // 如果不做这个if判断，会导致 searchLogList 的数据类型由 list 变为 字符串
     if ("" != wx.getStorageSync('searchLog')) {
@@ -424,7 +427,7 @@ Page({
     searchTitle = e.detail.value;
   },
   // 通过搜索记录查询数据
-  searchDataByLog: function(e) {
+  searchDataByLog: function (e) {
     // 从view中获取值，在view标签中定义data-name(name自定义，比如view中是data-log="123" ; 那么e.target.dataset.log=123)
     searchTitle = e.target.dataset.log;
     var that = this;
@@ -439,7 +442,7 @@ Page({
   },
 
   // 清除搜索记录
-  clearSearchLog: function() {
+  clearSearchLog: function () {
     var that = this;
     that.setData({
       hidden: false
@@ -454,7 +457,7 @@ Page({
   },
 
   // 定位数据
-  scroll: function(event) {
+  scroll: function (event) {
     var that = this;
     that.setData({
       scrollTop: event.detail.scrollTop
@@ -462,7 +465,7 @@ Page({
   },
 
   //直接查看pdf文件
-  downloadFile: function(e) {
+  downloadFile: function (e) {
     // console.log(e)
     // 显示加载的icon
     wx.showLoading({
@@ -472,72 +475,53 @@ Page({
     var that = this;
     if (!that.data.standardFocus) {
       that.setData({
-        downloadurl: 'https://zsj.itdos.com/v1/wx/wxstandardpdf/' + e.currentTarget.dataset.id,
+        downloadurl: config.url + '/wx/wxstandardpdf/' + e.currentTarget.dataset.id,
       });
     } else {
       that.setData({
-        downloadurl: 'https://zsj.itdos.com/v1/wx/wxpdf/' + e.currentTarget.dataset.id,
+        downloadurl: config.url + '/wx/wxpdf/' + e.currentTarget.dataset.id,
       });
     };
-
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        if (res.code) {
-          //发起网络请求
-          wx.downloadFile({
-            url: that.data.downloadurl + '?code=' + res.code + '&app_version=1', //'https://zsj.itdos.com/v1/wx/wxpdf/' + e.currentTarget.dataset.id,
-            header: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            // method: "POST",
-            // data: {//download不支持data参数
-            //   code: res.code,
-            //   app_version: 1,
-            // },
-            success: function(res) {
-              // console.log(res)
-              const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
-              wx.openDocument({
-                filePath: filePath,
-                fileType: 'pdf',
-                success: function(res) {
-                  console.log('打开成功');
-                  wx.hideLoading()
-                },
-                fail: function(res) {
-                  // console.log(res);
-                  wx.showToast({
-                    title: res.data.info,
-                    icon: 'loading',
-                    duration: 1500
-                  })
-                }
-              })
-            },
-            fail: function(res) {
-              // console.log(res);
-              wx.showToast({
-                title: res.data.info,
-                icon: 'loading',
-                duration: 1500
-              })
-            },
-
-          })
-        } else {
-          console.log('登录失败！' + res.errMsg);
-          wx.hideLoading()
-        }
+    var sessionId = wx.getStorageSync('sessionId')
+    //发起网络请求
+    wx.downloadFile({
+      url: that.data.downloadurl + '?hotqinsessionid=' + sessionId, //'https://zsj.itdos.com/v1/wx/wxpdf/' + e.currentTarget.dataset.id,
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      // method: "POST",
+      // data: {//download不支持data参数******!!!!!!!!
+      // code: res.code,
+      // hotqinsessionid: sessionId
+      // },
+      success: function (res) {
+        // console.log(res)
+        const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
+        wx.openDocument({
+          filePath: filePath,
+          fileType: 'pdf',
+          success: function (res) {
+            console.log('打开成功');
+            wx.hideLoading()
+          },
+          fail: function (res) {
+            // console.log(res);
+            wx.showToast({
+              title: res.data.info,
+              icon: 'loading',
+              duration: 1500
+            })
+          }
+        })
       },
       fail: function (res) {
         console.log(res);
-        wx.hideLoading()
+        wx.showToast({
+          title: res.data.info,
+          icon: 'loading',
+          duration: 1500
+        })
       },
-      complete: () => {
-        wx.hideLoading()
-      }
     })
   }
 

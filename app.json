@@ -7,9 +7,18 @@
     "pages/addtopic/addtopic",
     "pages/register/register",
     "pages/mine/mine",
+    "pages/updatepass/updatepass",
     "pages/myopus/myopus",
-    "pages/about/about"
+    "pages/about/about",
+    "pages/new/new",
+    "pages/search/search",
+    "pages/calendar/calendar"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于小程序打卡功能"
+    }
+  },
   "window": {
     "backgroundColor": "#eeeeee",
     "backgroundTextStyle": "light",
@@ -28,6 +37,12 @@
         "iconPath": "images/home-aaaaaa.png",
         "selectedIconPath": "images/home-faad14.png",
         "text": "首页"
+      },
+      {
+        "pagePath": "pages/new/new",
+        "text": "新建",
+        "iconPath": "image/new_normal.png",
+        "selectedIconPath": "image/new_pressed.png"
       },
       {
         "pagePath": "pages/addtopic/addtopic",
@@ -52,5 +67,6 @@
   "networkTimeout": {
     "request": 10000,
     "downloadFile": 10000
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
