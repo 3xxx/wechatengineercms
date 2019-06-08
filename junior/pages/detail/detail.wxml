@@ -8,8 +8,10 @@
 <view hidden='{{hidden}}' class='preview'>
   <image src='{{prurl}}' mode='widthFix'></image>
   <button type='primary' size='mini' bindtap='save'>保存分享图</button>
+  <button type='primary' class='openSetting' open-type="openSetting" bindopensetting='handleSetting' hidden='{{openSettingBtnHidden}}'>去授权</button>
 </view>
-<button class='share' bindtap='share'>生成分享图</button>
+<!-- <button class='share' bindtap='share'>生成分享图</button> -->
+<wxc-avatar class="avatar" _pid="{{_pid}}" bindtap='share'>share</wxc-avatar>
 
 <view class='page' catchtap='catchhide' id='contain'>
   <view class='leassonTilte'>{{leassonTilte}}</view>
@@ -26,7 +28,7 @@
           <image wx:else src="../../images/heart-o-faad14.png"></image>
           <text>{{likeNum}}</text>
         </view>
-        <view class="tool-item comment" catchtap='onCommentTap' data-post-id="{{post.postId}}">
+        <view class="tool-item" catchtap='onCommentTap' data-post-id="{{post.postId}}">
           <image src="../../images/news-faad14.png"></image>
           <text>{{commentNum}}</text>
         </view>
@@ -59,37 +61,40 @@
         </view>
       </view>
 
-  <!--评论盒子-->
-  <view class="cf-bg" catchtap="cemojiCfBg" style="display:{{cfBg ? 'block' : 'none'}}"></view>
-  <!-- id="container" cursor-spacing='20'style="{{inputMarBot?'margin-bottom:50rpx':''}}" -->
-  <view class="comment-fixed">
-    <view class="cf-box">
-      <textarea class="cf-content" bindfocus="textAreaFocus" maxlength="200" bindblur="textAreaBlur" auto-height value='{{releaseValue}}' placeholder="我要评论" name='input' cursor-spacing='20'/>
-      
-      <view class="emoji fa fa-smile-o" catchtap="emojiShowHide"></view>
-      <button class='cf-send touch-active' wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" bindtap='send'>发送</button>
-    </view>
+      <!--评论盒子-->
+      <view class="cf-bg" catchtap="cemojiCfBg" style="display:{{cfBg ? 'block' : 'none'}}"></view>
+      <view class="comment-fixed">
+        <form catchsubmit="formSubmit" report-submit="true">
+          <view class="comment-respond">
+            <!-- <input class="comment-input" maxlength="200" name="inputPostID" value="{{detail.id}}" style="display:none" /> -->
+            <view class="comment-box">
+              <image src="../../images/entry-home.png" class="img-plus" style="margin-left:20rpx;margin-right:20rpx" catchtap="goHome"></image>
+              <input class="comment-input" type='text' confirm-type="send" cursor-spacing="10" maxlength="100" name="input" value="{{releaseValue}}" placeholder="输入评论" focus="{{focus}}" bindblur="onReplyBlur" bindfocus="onRepleyFocus" />
+              <!-- <textarea class="comment-input" type='text' confirm-type="send" cursor-spacing="10" maxlength="200" name='input' value='{{releaseValue}}' placeholder="我要评论" focus="{{focus}}" bindblur="textAreaBlur" bindfocus="textAreaFocus"/> -->
 
-    <!--emoji表情盒子-->
-    <view class="emoji-box {{isShow ? 'emoji-move-in' : 'emoji-move-out'}} {{isLoad ? 'no-emoji-move' : ''}}">
-      <scroll-view scroll-y="true" bindscroll="emojiScroll" style="height:200px">
-        <block wx:for="{{emojis}}" wx:key="">
-          <view class="emoji-cell">
-            <image class="touch-active" catchtap="emojiChoose" src="../../wxParse/emojis/{{item.emoji}}.gif" data-emoji="{{item.char}}" data-oxf="{{item.emoji}}"></image>
+              <button class="comment-button touch-active" wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" formType="submit">发送</button>
+              <image src="../../images/plus.png" class="img-plus" catchtap="emojiShowHide" mode=""></image>
+
+            </view>
+            <!--功能图标-->
+            <!--emoji表情盒子-->
+            <view class="emoji-box {{isShow ? 'emoji-move-in' : 'emoji-move-out'}} {{isLoad ? 'no-emoji-move' : ''}}">
+              <scroll-view scroll-y="true" bindscroll="emojiScroll" style="height:200px">
+                <block wx:for="{{emojis}}" wx:key="">
+                  <view class="emoji-cell">
+                    <image class="touch-active" catchtap="emojiChoose" src="../../wxParse/emojis/{{item.emoji}}.gif" data-emoji="{{item.char}}" data-oxf="{{item.emoji}}"></image>
+                  </view>
+                </block>
+              </scroll-view>
+            </view>
+
           </view>
-        </block>
-      </scroll-view>
-    </view>
-  </view>
+        </form>
+      </view>
 
     </view>
+
   </view>
-
-
-
-
-
-
 </view>
 
 <!--发表评论   hidden='{{!releaseFocus}}'-->

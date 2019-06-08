@@ -1,13 +1,22 @@
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
+.container {
+  /* display: flex; */
+  flex-direction: column;
+  align-items: center;
+  /* position: absolute; */
+  width: 100%;
+  height: 800px;
 }
-.myphoto{
-    width: 200rpx;
-    height:200rpx;
-    margin-top: 100rpx;
+.myphoto {
+  width: 20%;
+  height: 20%;
+  /* height:100%; */
+  /* margin-top: 100rpx; */
+}
+.userinfo-avatar { 
+  width: 168rpx;
+  height: 168rpx; 
+  margin: 40rpx;
+  border-radius: 50%;
 }
 .motto{
     margin-top: 10rpx;
@@ -18,13 +27,14 @@
     margin-top: 10rpx;
     font-size: 32rpx;
 }
-.button{
-    margin-top: 10rpx;
-    border: 2rpx solid #f08b07;
-    border-radius:10rpx;
-    height: 60rpx;
-    width:200rpx;
-    text-align: center;
+
+.button {
+  margin-top: 200rpx;
+  border: 2rpx solid #405f80;
+  border-radius: 10rpx;
+  height: 60rpx;
+  width: 200rpx;
+  text-align: center;
 }
 .button-text{
     font-size: 22rpx;

@@ -1,5 +1,5 @@
 /* pages/mine/mine.wxss */
-@import '../../lib/style/fontawesome.wxss';
+@import '../../libs/style/fontawesome.wxss';
 .userinfo { 
   display: flex;
  flex-direction: column;

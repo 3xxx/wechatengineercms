@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "打卡日历",
+  "usingComponents": {
+    "calendar": "../../component/calendar/index"
+  }
+}

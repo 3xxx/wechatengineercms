@@ -1,6 +1,6 @@
 /* detail wxcss */
-@import '../../lib/style/weui.wxss';
-@import '../../lib/style/fontawesome.wxss';
+@import '../../libs/style/weui.wxss';
+@import '../../libs/style/fontawesome.wxss';
 .page {
   padding: 20px 15px;
   box-sizing: border-box;

@@ -2,14 +2,16 @@
   "pages": [
     "pages/index/index",
     "pages/addtopic/addtopic",
-    "pages/about/about",
+    "pages/register/register",
     "pages/mine/mine",
     "pages/myopus/myopus",
-    "pages/detail/detail"
+    "pages/detail/detail",
+    "pages/about/about"
   ],
   "window": {
-    "backgroundTextStyle": "#eeeeee",
-    "navigationBarBackgroundColor": "#faad14",
+    "backgroundColor": "#eeeeee",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#light",
     "navigationBarTitleText": "青少儿书画plus",
     "navigationBarTextStyle": "white",
     "enablePullDownRefresh": true
@@ -42,11 +44,12 @@
         "iconPath": "images/dot-circle-o-aaaaaa.png",
         "selectedIconPath": "images/dot-circle-o-faad14.png",
         "text": "关于"
-      } 
+      }
     ]
   },
   "networkTimeout": {
     "request": 10000,
     "downloadFile": 10000
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

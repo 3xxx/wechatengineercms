@@ -1,5 +1,5 @@
 <view class="container">
-    <image class="myphoto" src="../../images/qse.png"></image>
+    <image class="userinfo-avatar" src="../../images/qse.png"></image>
     <text class="motto">Hi~~欢迎来到青青●青少儿书画~</text>
     <text class="motto1">1.妈咪们发布亲子作品:画作、书法、文章、艺术；\n2.珍藏青少儿时期的记忆；\n3.欣赏他们那美轮美奂的作品，给我们带来美妙的体验；\n4.激发宝贝们的创作热情。</text>
     <view class="button">

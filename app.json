@@ -12,7 +12,9 @@
     "pages/about/about",
     "pages/new/new",
     "pages/search/search",
-    "pages/calendar/calendar"
+    "pages/calendar/calendar",
+    "pages/todo/todo",
+    "pages/logs/logs"
   ],
   "permission": {
     "scope.userLocation": {
@@ -37,6 +39,12 @@
         "iconPath": "images/home-aaaaaa.png",
         "selectedIconPath": "images/home-faad14.png",
         "text": "首页"
+      },
+      {
+        "pagePath": "pages/todo/todo",
+        "text": "待办",
+        "iconPath": "images/todos.png",
+        "selectedIconPath": "images/todos-active.png"
       },
       {
         "pagePath": "pages/new/new",

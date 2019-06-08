@@ -90,7 +90,7 @@ Page({
             },
             data: {
               code: res.code,
-              app_version: 3, //plus用的
+              app_version: 1.2,//正式版用的
               // x: '',
               // y: ''
               // id: options.id
@@ -823,6 +823,46 @@ Page({
   emojiScroll: function(e) {
     console.log(e)
   },
+
+  onReplyBlur: function (e) {
+    this.setData({
+      releaseValue: e.detail.value,
+      // inputMarBot: false
+    })
+    // var self = this;
+    // console.log('onReplyBlur', isFocusing);
+    // if (!isFocusing) {
+    //   {
+    //     const text = e.detail.value.trim();
+    //     if (text === '') {
+    //       self.setData({
+    //         parentID: "0",
+    //         placeholder: "评论...",
+    //         userid: "",
+    //         toFromId: "",
+    //         commentdate: ""
+    //       });
+    //     }
+    //   }
+    // }
+    // console.log(isFocusing);
+  },
+
+  onRepleyFocus: function (e) {
+    // var self = this;
+    // isFocusing = false;
+    // console.log('onRepleyFocus', isFocusing);
+    // if (!self.data.focus) {
+    //   self.setData({ focus: true })
+    // }
+    this.setData({
+      isShow: false,
+      cfBg: false,
+      // inputMarBot: true //
+    })
+  },
+
+
   //文本域失去焦点时 事件处理
   textAreaBlur: function(e) {
     //获取此时文本域值
@@ -836,21 +876,21 @@ Page({
   //文本域获得焦点事件处理
   textAreaFocus: function() {
     //创建节点选择器
-    var query = wx.createSelectorQuery();
+    // var query = wx.createSelectorQuery();
     //选择id
-    query.select('#contain').boundingClientRect()
-    query.exec(function (res) {
+    // query.select('#contain').boundingClientRect()
+    // query.exec(function (res) {
       //res就是 所有标签为myText的元素的信息 的数组
-      console.log(res);
+      // console.log(res);
       //取高度
-      console.log(res[0].height);
+      // console.log(res[0].height);
             // 使页面滚动到底部  
-      wx.pageScrollTo({
-        scrollTop: res[0].bottom, //rect.height
-        duration: 300 //设置滚动时间
-      });
+      // wx.pageScrollTo({
+      //   scrollTop: res[0].bottom, //rect.height
+      //   duration: 300 //设置滚动时间
+      // });
       //   scrollTop: 0,
-    })
+    // })
       //功能代码
       this.setData({
         isShow: false,
@@ -883,10 +923,15 @@ Page({
     })
   },
 
+  goHome: function () {
+    wx.switchTab({
+      url: '../index/index'
+    })
+  },
   //发送评论评论 事件处理
   send: function() {
     var that = this
-    console.log(that.data.releaseValue)
+    // console.log(that.data.releaseValue)
     if (that.data.releaseValue == '') {
       // if (this.data.releaseValue == '') {
       wx.showToast({
