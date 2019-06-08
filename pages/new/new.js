@@ -30,6 +30,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that= this
     if (!app.globalData.hasLocation) {
       // 获取位置
       wx.getLocation({
@@ -45,7 +46,7 @@ Page({
         }
       })
     } else {
-      this.setData({
+      that.setData({
         hasLocation: true,
         activity_location:app.globalData.activity_location
       })

@@ -1,5 +1,5 @@
 /* detail wxcss */
-@import '../../lib/style/fontawesome.wxss';
+@import '../../libs/style/fontawesome.wxss';
 
 .page {
   padding: 20px 15px;

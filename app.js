@@ -11,11 +11,11 @@ App({
     isAdmin: false,
     nickName: null,
     avatarUrl: null,
-    photo: "../../image/avator.jpg",//用户头像
+    photo: null,//用户头像
     hasRegist: false,
     hasLocation: false,
     isLogin: false,
-    activity_location: "",
+    activity_location: null,
     activity_lat: -1,
     activity_lng: -1,
   },

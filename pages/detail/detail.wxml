@@ -19,7 +19,8 @@
   <view class='time'>{{time}}</view>
   <button class="delete" wx:if="{{isAdmin}}" type="primary" size="mini" data-id="{{id}}" bindtap="delete">删除</button>
   <view class="page__bd page__bd_spacing">
-    <view class='dk-show' style='height:{{dkheight}}px;'>
+   <!-- style='height:{{dkheight}}px;' -->
+    <view class='dk-show'>
       <template is="wxParse" data="{{wxParseData:dkcontent.nodes}}" />
 
       <!-- 点赞、评论、收藏 -->

@@ -7,7 +7,7 @@ var config = require('../../config.js');
 Page({
   data: {
     isAdmin: false,
-    dkheight: 300,
+    dkheight: 0,
     dkcontent: "",
     leassonTilte: '',
     time: '',
@@ -66,10 +66,10 @@ Page({
       success: function (res) {
         // let winHeight = res.windowHeight;
         // console.log(winHeight);
-        that.setData({
-          // screenWidth: res.screenWidth,
-          dkheight: res.windowHeight - res.windowHeight * 0.05 - 80
-        })
+        // that.setData({
+        // screenWidth: res.screenWidth,
+        // dkheight: res.windowHeight - res.windowHeight * 0.05 - 80
+        // })
       }
     });
     // var that = this;
@@ -203,9 +203,10 @@ Page({
       };
       that.data.emojis.push(em)
     });
-    // that.setData({******20190501这个没用吧？？？？********
-    //   emojis: that.data.emojis
-    // })
+    // ****** 20190501这个没用吧？？？？********
+    that.setData({
+      emojis: that.data.emojis
+    })
     // console.log(that.data.emojis)
   },
 
