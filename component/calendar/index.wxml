@@ -5,7 +5,7 @@
         <text class="prev-handle iconfont icon-doubleleft" bindtap="chooseDate" data-type="prev_year"></text>
         <text class="prev-handle iconfont icon-left" bindtap="chooseDate" data-type="prev_month"></text>
       </view>
-      <view class="date-area b lr cc" bindtap="doubleClickToToday">{{calendar.curYear || "--"}} 年 {{calendar.curMonth || "--"}} 月</view>
+      <view class="flex date-area b lr cc" bindtap="doubleClickToToday">{{calendar.curYear || "--"}} 年 {{calendar.curMonth || "--"}} 月</view>
       <view class="next fs36">
         <text class="next-handle iconfont icon-right" bindtap="chooseDate" data-type="next_month"></text>
         <text class="next-handle iconfont icon-doubleright" bindtap="chooseDate" data-type="next_year"></text>
@@ -31,9 +31,18 @@
           data-disable="{{item.disable}}"
           data-idx="{{index}}"
           bindtap="tapDayItem">
-            <view wx:if="{{!calendar.todoLabelCircle}}" class="dot-day-height b tb ac pc">
-              <view class="day border-radius {{(item.week === 0 || item.week === 6) ? 'pink-color' : ''}} {{item.choosed ? 'day-choosed-color day-choosed-bg' : ''}} {{ item.disable ? 'disable-day-color disable-day-bg' : '' }} b ac pc">{{item.day}}</view>
-              <view wx:if="{{item.showTodoLabel}}" class="{{item.todoText ? 'todo-text' : 'todo-dot'}} {{calendar.todoLabelPos === 'bottom' ? 'todo-text-bottom' : 'todo-text-top'}}" style="background-color: {{calendar.todoLabelColor}};">{{item.todoText}}</view>
+            <view
+              wx:if="{{!calendar.todoLabelCircle}}"
+              class="dot-day-height b tb ac pc">
+              <view class="day border-radius {{(item.week === 0 || item.week === 6) ? 'pink-color' : ''}} {{item.choosed ? 'day-choosed-color day-choosed-bg' : ''}} {{ item.disable ? 'disable-day-color disable-day-bg' : '' }} b ac pc">
+                {{item.day}}
+              </view>
+              <view
+                wx:if="{{item.showTodoLabel}}"
+                class="{{item.todoText ? 'todo-text' : 'todo-dot'}} {{calendar.todoLabelPos === 'bottom' ? 'todo-text-bottom todo-dot-bottom' : 'todo-text-top todo-dot-top'}}"
+                style="background-color: {{calendar.todoLabelColor}};">
+                  {{item.todoText}}
+                </view>
             </view>
             <view wx:else class="dot-day-height b tb ac pc">
               <view class="day border-radius {{(item.week === 0 || item.week === 6) ? 'pink-color' : ''}} {{item.showTodoLabel ? 'day-circle' : '' }} {{item.choosed ? 'day-choosed-color day-choosed-bg' : ''}} {{ item.disable ? 'disable-day-color disable-day-bg' : '' }} b ac pc">{{item.day}}</view>

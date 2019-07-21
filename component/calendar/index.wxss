@@ -4,7 +4,7 @@
   display: flex;
 }
 
-.box-lr {
+.lr {
   flex-direction: row;
 }
 
@@ -78,7 +78,6 @@
 
 .date-area {
   height: 80rpx;
-  padding: 0 60rpx;
 }
 
 .weeks {
@@ -117,6 +116,7 @@
   height: 10rpx;
   border-radius: 50%;
   background-color: #cc5226;
+  position: absolute;
 }
 
 .todo-text {
@@ -125,12 +125,20 @@
   position: absolute;
 }
 
-.todo-text-bottom {
-  bottom: -8rpx;
+.todo-dot-top {
+  top: 8rpx;
 }
 
-.todo-text-top {
-  top: -8rpx;
+.todo-dot.todo-dot-bottom {
+  bottom: 0;
+}
+
+.todo-text.todo-text-top {
+  top: -6rpx;
+}
+
+.todo-text.todo-text-bottom {
+  bottom: -8rpx;
 }
 
 .dot-day-height {

@@ -6,12 +6,14 @@
     "pages/login/login",
     "pages/addtopic/addtopic",
     "pages/register/register",
+    "pages/bbs/bbs",
     "pages/mine/mine",
     "pages/updatepass/updatepass",
     "pages/myopus/myopus",
     "pages/about/about",
     "pages/new/new",
     "pages/search/search",
+    "pages/searchdraw/searchdraw",
     "pages/calendar/calendar",
     "pages/todo/todo",
     "pages/logs/logs"
@@ -45,6 +47,12 @@
         "text": "待办",
         "iconPath": "images/todos.png",
         "selectedIconPath": "images/todos-active.png"
+      },
+      {
+        "pagePath": "pages/bbs/bbs",
+        "text": "公告",
+        "iconPath": "images/megaphone-aaaaaa.png",
+        "selectedIconPath": "images/megaphone-faad14.png"
       },
       {
         "pagePath": "pages/new/new",

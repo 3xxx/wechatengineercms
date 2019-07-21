@@ -43,6 +43,19 @@ export function getCurrentPage() {
   return pages[last];
 }
 
+export function getComponent(componentId) {
+  let page = getCurrentPage() || {};
+  if (page.selectComponent && typeof page.selectComponent === 'function') {
+    if (componentId) {
+      return page.selectComponent(componentId);
+    } else {
+      warn('请传入组件ID');
+    }
+  } else {
+    warn('该基础库暂不支持多个小程序日历组件');
+  }
+}
+
 /**
  * new Date 区分平台
  * @param {number} year
@@ -50,11 +63,39 @@ export function getCurrentPage() {
  * @param {number} day
  */
 export function newDate(year, month, day) {
-  let cur = `${year}-${month}-${day}`;
+  let cur = `${+year}-${+month}-${+day}`;
   if (isIos()) {
-    cur = `${year}/${month}/${day}`;
+    cur = `${+year}/${+month}/${+day}`;
   }
   return new Date(cur);
+}
+
+/**
+ * 计算指定月份共多少天
+ * @param {number} year 年份
+ * @param {number} month  月份
+ */
+export function getThisMonthDays(year, month) {
+  return new Date(year, month, 0).getDate();
+}
+
+/**
+ * 计算指定月份第一天星期几
+ * @param {number} year 年份
+ * @param {number} month  月份
+ */
+export function getFirstDayOfWeek(year, month) {
+  return new Date(Date.UTC(year, month - 1, 1)).getDay();
+}
+
+/**
+ * 计算指定日期星期几
+ * @param {number} year 年份
+ * @param {number} month  月份
+ * @param {number} date 日期
+ */
+export function getDayOfWeek(year, month, date) {
+  return new Date(Date.UTC(year, month - 1, date)).getDay();
 }
 
 /**
@@ -127,3 +168,9 @@ export function converEnableDaysToTimestamp(enableDays = []) {
   });
   return enableDaysTimestamp;
 }
+
+// 同一页面多个日历组件按先后顺序渲染
+export const initialTasks = {
+  flag: 'finished', // process 处理中，finished 处理完成
+  tasks: []
+};

@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "珠三角设代阅览版●公告",
+  "usingComponents": {
+    "calendar": "../../component/calendar/index",
+    "wux-cell-group": "../../dist/cell-group/index",
+    "wux-cell": "../../dist/cell/index",
+    "wux-input": "../../dist/input/index"
+  }
+}
