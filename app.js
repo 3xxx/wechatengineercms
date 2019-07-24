@@ -35,7 +35,7 @@ App({
     // wx.setStorageSync('logs', logs)
     //开发者在session_key失效时，可以通过重新执行登录流程获取有效的session_key。使用接口wx.checkSession()可以校验session_key是否有效，从而避免小程序反复执行登录流程。
     let loginFlag = wx.getStorageSync('sessionId');
-    console.log(loginFlag)
+    // console.log(loginFlag)
     // wx.getStorage({
     //   key: 'sessionId',
     //   success(res) {
@@ -72,12 +72,12 @@ App({
             header: {
               'content-type': 'application/json',
             },
-            data:{
+            data: {
               hotqinsessionid: sessionId
             },
             success: function (res) {
-              if (res.data.errNo==1) {
-                console.log(res.data.msg)
+              if (res.data.errNo == 1) {
+                // console.log(res.data.msg)
                 // that.setData({//没这个方法**********
                 //   isLogin: true
                 // });
@@ -143,7 +143,7 @@ App({
             success: function (res) {
               //实例化腾通地图sdk
               qqmapsdk = new QQMapWX({
-                key: '?????' //这里自己的key秘钥进行填充
+                key: 'EADBZ-QCZ6Q-FDK54-GBQ4X-QY5B5-CVFFZ' //这里自己的key秘钥进行填充
               });
               // console.log(res)
               // console.log(that.data.activity_lat);
@@ -215,7 +215,7 @@ App({
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: config.url + '/wx/wxlogin/1',//珠三角设代plus 1
+            url: config.url + '/wx/wxlogin/4',//珠三角设代plus 1
             data: {
               code: res.code
             },

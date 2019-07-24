@@ -16,30 +16,30 @@ Page({
     author: '珠三角设代',
     actIndex: 'first',
     leassonId: '',
-    radioo: '',
+    radioo:'',
   },
   // 页面加载
-  onLoad: function (options) {
+  onLoad: function(options) {
     var that = this;
     that.clearCache(); //清本页缓存
     that.setData({
-      radioo: options.id
+      radioo : options.id
     });
     that.getArticles(1); //第一次加载数据:绘画
   },
 
   // 下拉刷新
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     this.clearCache();
     this.getArticles(1); //第一次加载数据
     wx.stopPullDownRefresh();
   },
   // 页面上拉触底事件（上拉加载更多）
-  onReachBottom: function () {
+  onReachBottom: function() {
     this.getArticles(page); //后台获取新数据并追加渲染
   },
   // 清缓存
-  clearCache: function () {
+  clearCache: function() {
     page = 1; //分页标识归零
     this.setData({
       articles: [] //文章列表数组清空
@@ -47,7 +47,7 @@ Page({
   },
   /**************** 界面点击 *****************/
   // 文章点击跳转详情页
-  onArticle: function () {
+  onArticle: function() {
     // 业务逻辑
   },
 
@@ -56,7 +56,7 @@ Page({
    * 获取文章列表
    * @param {int} pg  分页标识 默认0
    */
-  getArticles: function (pg) {
+  getArticles: function(pg) {
     //设置默认值
     pg = pg ? pg : 1;
     var that = this;
@@ -71,50 +71,50 @@ Page({
         var url1 = config.url + "/wx/getwxarticless/26159";
         break;
       case "other":
-        var url1 = config.url + "/wx/getwxarticless/26159";
+        var url1 = config.url +  "/wx/getwxarticless/26159";
         break;
       default:
-        var url1 = config.url + "/wx/getwxarticless/26159";
+        var url1 = config.url +  "/wx/getwxarticless/26159";
     };
     var sessionId = wx.getStorageSync('sessionId')
-    var getData = wx.request({
-      url: url1,
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      // url: url1,
-      // data: postData,
-      method: 'GET',
-      // header: {
-      //   'content-type': 'application/x-www-form-urlencoded'
-      // },
-      data: {
+          var getData = wx.request({
+            url: url1,
+            header: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            // url: url1,
+            // data: postData,
+            method: 'GET',
+            // header: {
+            //   'content-type': 'application/x-www-form-urlencoded'
+            // },
+            data: {
         hotqinsessionid: sessionId,
-        page: pg, //分页标识
-        app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
-      },
-      success: function (res) {
-        if (res.data.info == "SUCCESS") { //成功
-          var tmpArr = that.data.articles;
-          // 这一步实现了上拉加载更多
-          tmpArr.push.apply(tmpArr, res.data.articles);
-          that.setData({
-            articles: tmpArr
-          })
-          // console.log(tmpArr);
-          // console.log(that.data.articles.length);
-          page++;
-        } else { //失败
-          console.log(res.data.info);
-        }
-      },
-      fail: function (e) {
-        console.log(e);
+              page: pg, //分页标识
+              app_version: 4, //当前版本，后台根据版本不同给出不同的数据格式
+            },
+            success: function(res) {
+              if (res.data.info == "SUCCESS") { //成功
+                var tmpArr = that.data.articles;
+                // 这一步实现了上拉加载更多
+                tmpArr.push.apply(tmpArr, res.data.articles);
+                that.setData({
+                  articles: tmpArr
+                })
+                // console.log(tmpArr);
+                // console.log(that.data.articles.length);
+                page++;
+              } else { //失败
+                console.log(res.data.info);
+              }
+            },
+            fail: function(e) {
+              console.log(e);
       }
     })
   },
 
-  tap: function (e) {
+  tap: function(e) {
     for (var i = 0; i < order.length; ++i) {
       if (order[i] === this.data.toView) {
         this.setData({
@@ -124,7 +124,7 @@ Page({
       }
     }
   },
-  tapMove: function (e) {
+  tapMove: function(e) {
     this.setData({
       scrollTop: this.data.scrollTop + 10
     })
@@ -145,7 +145,7 @@ Page({
   },
 
   //详情页面
-  seeDetail: function (e) {
+  seeDetail: function(e) {
     // console.log(e)
     this.setData({
       leassonId: e.currentTarget.dataset.id
@@ -157,9 +157,9 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     return {
-      title: '珠三角设代plus',
+      title: '珠三角设代预览版',
       path: 'pages/myopus/myopus'
     }
   }

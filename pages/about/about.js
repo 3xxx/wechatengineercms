@@ -26,6 +26,10 @@ Page({
   },
   onShareAppMessage: function () {
     // return custom share data when user share.
+    return {
+      title: 'ÖéÈı½ÇÉè´úÔÄÀÀ°æ',
+      path: 'pages/about/about'
+    }
   },
   onPageScroll: function () {
     // Do something when page scroll

@@ -55,7 +55,7 @@ http://blog.csdn.net/sinat_31177681/article/details/53557642
       <!-- <navigator class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active"> -->
       <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-          <image class="weui-media-box__thumb" src="{{Link}}" style="width: 60px; height: 60px;" style="border-radius: 100%"/>
+          <image class="weui-media-box__thumb" src="{{Link}}" style="width: 60px; height: 60px;" style="border-radius: 100%" />
           <!-- <wxc-avatar class="avatar">图</wxc-avatar> -->
         </view>
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg" data-id="{{Id}}" catchtap='downloadFile'>
@@ -69,7 +69,52 @@ http://blog.csdn.net/sinat_31177681/article/details/53557642
     </view>
   </template>
 
-  <!-- <view  class="page"> -->
+  <!-- <view  class="page">  default-current="{{ ['0'] }}"-->
+    <view class="page__bd" hidden='{{searchdrawshow}}'>
+      <wux-accordion-group title="">
+        <wux-accordion thumb="../../images/s.png" title="顺德分部" content="">
+          <view class="page__bd">
+            <wux-cell-group title="">
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="A1标" extra="鲤鱼洲" data-id="26181" data-id2="26179" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="A2标" extra="大金山" data-id="26182" data-id2="26179" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="A3标" extra="勒流" data-id="26183" data-id2="26179" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="A4标" extra="龙洲路" data-id="26184" data-id2="26179" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="A5标" extra="广进汽车城" data-id="26185" data-id2="26179" bindtap="searchDraw"></wux-cell>
+            </wux-cell-group>
+          </view>
+        </wux-accordion>
+        <wux-accordion thumb="../../images/n.png" title="南沙分部" content="">
+          <view class="page__bd">
+            <wux-cell-group title="">
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="A6标" extra="李家沙" data-id="26346" data-id2="26344" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="A7标" extra="榄核河" data-id="26347" data-id2="26344" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="B1标" extra="高新沙" data-id="26348" data-id2="26344" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="B2标" extra="鱼窝头" data-id="26349" data-id2="26344" bindtap="searchDraw"></wux-cell>
+            </wux-cell-group>
+          </view>
+        </wux-accordion>
+        <wux-accordion thumb="../../images/d.png" title="东莞分部" content="">
+          <view class="page__bd">
+            <wux-cell-group title="">
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="B3标" extra="狮子洋" data-id="26511" data-id2="26509" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="B4标" extra="沙田白濠" data-id="26512" data-id2="26509" bindtap="searchDraw"></wux-cell>
+            </wux-cell-group>
+          </view>
+        </wux-accordion>
+        <wux-accordion thumb="../../images/l.png" title="罗田分部" content="">
+          <view class="page__bd">
+            <wux-cell-group title="">
+            <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="C1标" extra="大岭山" data-id="26676" data-id2="26674" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="C2标" extra="马鞍山" data-id="26677" data-id2="26674" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="D1标" extra="罗田" data-id="26678" data-id2="26674" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="D2标" extra="光明" data-id="26679" data-id2="26674" bindtap="searchDraw"></wux-cell>
+              <wux-cell thumb="https://wux.cdn.cloverstd.com/logo.png" title="试验段" extra="公明" data-id="25002" data-id2="25004" bindtap="searchDraw"></wux-cell>
+            </wux-cell-group>
+          </view>
+        </wux-accordion>
+      </wux-accordion-group>
+    </view>
+
   <view class="page__bd" hidden='{{searchshow}}'>
     <scroll-view scroll-top="{{scrollTop}}" style="height: {{windowHeight}}px; width: {{windowWidth}}px;" scroll-y="true" bindscrolltoupper="pullDownRefresh" bindscroll="scroll" bindscrolltolower="pullUpLoad" class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">

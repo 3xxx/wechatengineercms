@@ -20,6 +20,7 @@
     <view class="weui-cells searchbar-result" wx:if="{{inputVal.length >= 0}}">
       <block wx:for='{{processing}}' wx:key="">
         <!-- <navigator url="../detail/detail?activity_id={{item.F_ID}}" class="weui-cell" hover-class="weui-cell_active"> -->
+        <!-- 下面这个url是传递options到calendar里 -->
         <navigator url="../calendar/calendar?activity_id={{item.F_ID}}&activity_caption={{item.F_Caption}}" class="weui-cell" hover-class="weui-cell_active">
           <view class="weui-cell__bd">
             <view class='search_title'>{{item.F_Caption}}</view>

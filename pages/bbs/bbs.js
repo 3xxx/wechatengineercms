@@ -123,7 +123,11 @@ const conf = {
             contract_info3: check_res.data.data[2],
             contract_info4: check_res.data.data[3],
             addtellHidden: false,
-          }
+          },
+          desc1: check_res.data.data[0],
+          desc2: check_res.data.data[1],
+          desc3: check_res.data.data[2],
+          desc4: check_res.data.data[3],
         })
         // console.log(check_res.data.data[0])
         // console.log(that.data.addtell.contract_info4)
@@ -291,8 +295,13 @@ const conf = {
               contract_info2: '',
               contract_info3: '',
               contract_info4: '',
+              
               addtellHidden: true,
-            }
+            },
+            desc1: '',
+            desc2: '',
+            desc3: '',
+            desc4: '',
           })
           //这里更新本月公告记录
           const data = []//check_res.data.data;
@@ -339,6 +348,10 @@ const conf = {
         contract_info4: '',
         addtellHidden: true,
       },
+      desc1: '',
+      desc2: '',
+      desc3: '',
+      desc4: '',
       error: true,
       value: '',
     })
@@ -449,7 +462,10 @@ const conf = {
  * 用户点击右上角分享
  */
   onShareAppMessage: function () {
-
+    return {
+      title: '珠三角设代阅览版',
+      path: 'pages/bbs/bbs'
+    }
   },
 };
 Page(conf);

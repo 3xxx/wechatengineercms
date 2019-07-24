@@ -99,7 +99,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: '珠三角设代阅览版',
+      path: 'pages/searchdraw/searchdraw'
+    }
   },
 
   // 下拉刷新

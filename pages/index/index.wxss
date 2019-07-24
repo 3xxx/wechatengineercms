@@ -1,4 +1,4 @@
-@import '../../lib/style/weui.wxss';
+@import '../../libs/style/weui.wxss';
 .page swiper {
   width: 100%;
   height: 220px;
