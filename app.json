@@ -5,6 +5,7 @@
     "pages/pdfview/pdfview",
     "pages/login/login",
     "pages/addtopic/addtopic",
+    "pages/editortopic/editortopic",
     "pages/register/register",
     "pages/bbs/bbs",
     "pages/mine/mine",

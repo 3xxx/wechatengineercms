@@ -27,7 +27,7 @@ Page({
   onShareAppMessage: function () {
     // return custom share data when user share.
     return {
-      title: 'ÖéÈı½ÇÉè´úÔÄÀÀ°æ',
+      title: '',
       path: 'pages/about/about'
     }
   },

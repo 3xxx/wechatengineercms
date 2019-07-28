@@ -78,15 +78,36 @@ Page({
             success: function (res) {
               if (res.data.info == "SUCCESS") { //成功
                 //注册成功应该修改按钮状态为已注册和登录
-                app.globalData.hasRegist = true
-                app.globalData.user_id = res.data.userId
-                app.globalData.isAdmin = res.data.isAdmin
-                // console.log(app.globalData.isAdmin)
-                // app.ajax.req('/itdragon/register', {
-                //   "account": account,
-                //   "password": password
-                // }, function (res) {
-                //   if (true == res) {
+                // app.globalData.hasRegist = true
+                // app.globalData.user_id = res.data.userId
+                // app.globalData.isAdmin = res.data.isAdmin
+                wx.setStorage({
+                  key: "sessionId",
+                  data: res.data.sessionId//"hotqinsessionid =" +
+                })
+                if (res.data.userId) {
+                  wx.setStorage({
+                    key: "user_id",
+                    data: res.data.userId
+                  })
+                  wx.setStorage({
+                    key: "isAdmin",
+                    data: res.data.isAdmin
+                  })
+                  wx.setStorage({
+                    key: "hasRegist",
+                    data: true
+                  })
+                  wx.setStorage({
+                    key: "photo",
+                    data: res.data.photo
+                  })
+                  app.globalData.user_id = res.data.userId
+                  app.globalData.hasRegist = true
+                  app.globalData.isAdmin = res.data.isAdmin
+                  app.globalData.photo = res.data.photo
+                }
+
                 // 显示模态弹窗
                 wx.showModal({
                   title: '注册状态',

@@ -17,7 +17,9 @@
   <view class='leassonTilte'>{{leassonTilte}}</view>
   <view class='author'>原创: {{author}}</view>
   <view class='time'>{{time}}</view>
+  <!-- <view class='author' wx:if="{{isAdmin}}||{{is_me}}" type="primary" size="mini" data-id="{{id}}" bindtap="editor">编辑</view> -->
   <button class="delete" wx:if="{{isAdmin}}" type="primary" size="mini" data-id="{{id}}" bindtap="delete">删除</button>
+  <button class="editor" wx:if="{{isAdmin}}||{{isArticleMe}}" size="mini" data-id="{{id}}" bindtap="editor">编辑</button>
   <view class="page__bd page__bd_spacing">
    <!-- style='height:{{dkheight}}px;' -->
     <view class='dk-show'>

@@ -1,3 +1,4 @@
+/* pages/editortopic/editortopic.wxss */
 @import "../../common/lib/weui.wxss";
 @import "../../assets/iconfont.wxss";
 

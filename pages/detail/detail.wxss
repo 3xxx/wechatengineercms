@@ -483,7 +483,7 @@ canvas {
   float: right;
   /* background-color: #fff; */
   position: fixed;
-  top: 60px;
+  top: 100px;
   right: 10px;
   /* border: 0 solid #fff; *//* border-radius: 500px; */
   box-shadow: 4px 1px 1px #ccc;
@@ -502,6 +502,17 @@ canvas {
   opacity:0.6;
 }
 
+.editor {
+  float: right;
+  background-color: rgb(236, 40, 40);
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  border: 0 solid rgb(236, 9, 9);
+  border-radius: 500px;
+  box-shadow: 4px 1px 1px #ccc;
+  opacity:0.6;
+}
 /*  comment   */
 
 .commentheader {

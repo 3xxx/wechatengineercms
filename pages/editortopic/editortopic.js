@@ -1,3 +1,4 @@
+// pages/editortopic/editortopic.js
 import {
   promisify
 } from '../../utils/promise.util'
@@ -22,14 +23,18 @@ Page({
     readOnly: false,
     placeholder: '请输入正文...',
     _focus: false,
+    // contract_info1: "",
+    // dkcontent:"",
   },
+
   readOnlyChange() {
     this.setData({
-      readOnly: !this.data.readOnly
+      readOnly: this.data.readOnly //这个有无影响？
     })
   },
+
   onLoad(options) {
-    $init(this)
+    $init(this) //这个干啥？
     if (app.globalData.hasRegist) {
       this.setData({
         hasRegist: true
@@ -40,24 +45,35 @@ Page({
     //   source: 'url("https://sungd.github.io/Pacifico.ttf")',
     //   success: console.log
     // })
+
+    this.setData({
+      id: options.id, //文章的id
+      // title: options.title,
+      // content: options.content,
+      isAdmin: app.globalData.isAdmin,
+      // contract_info1: options.title,
+      // titleCount: options.title.length
+      // isMe:true,//作者本人？
+    })
   },
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
     this.setData({
       hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     })
   },
-  handleTitleInput(e) {
-    const value = e.detail.value
-    this.data.title = value
-    this.data.titleCount = value.length
-    $digest(this)
-  },
+
+  // handleTitleInput(e) {
+  //   const value = e.detail.value
+  //   this.data.title = value
+  //   this.data.titleCount = value.length
+  //   $digest(this)
+  // },
 
   handleContentInput(e) {
-    console.log(e)
+    // console.log(e)
     // const value = e.detail.value
     const value = e.detail.html
     //要将图片的头http://*.*.*.去掉/at/g
@@ -115,7 +131,7 @@ Page({
       var sessionId = wx.getStorageSync('sessionId')
       //发起网络请求
       wx.request({
-        url: config.url + '/wx/addwxeditorarticle',
+        url: config.url + '/wx/updatewxeditorarticle?id=' + that.data.id,
         header: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
@@ -126,7 +142,7 @@ Page({
           content: content
           // images: urls
         },
-        success: function (res) {
+        success: function(res) {
           if (res.data.status == 0) {
             wx.showToast({
               title: res.data.info,
@@ -149,152 +165,68 @@ Page({
               }
             })
             wx.navigateTo({
-              url: `../detail/detail?id=` + res.data.id
+              url: `../detail/detail?id=` + +that.data.id
             })
           }
         }
       })
     } else {
       wx.showToast({
-        title: "标题或正文不能为空！",
+        title: "标题或正文为空！",
         icon: 'loading',
         duration: 1500
       })
     }
   },
 
-  // submitForm(e) {
-  //   // this.editorCtx.getContents({
-  //   //   html:this.data.editor_msg,
-
-  //   //   success:(res)=>{
-  //   //     console.log('succ:'+res)
-  //   //   },
-  //   //   fail:(res)=>{
-  //   //     console.log('fail:'+res)
-  //   //   }
-  //   // })
-  //   const title = this.data.title
-  //   console.log(title)
-  //   const content = this.data.content
-  //   console.log(content)
-  //   if (title && content) {
-  //     const arr = []
-  //     for (let path of this.data.images) {
-  //       arr.push(wxUploadFile({
-  //         // url: config.urls.question + '/image/upload',
-  //         url: 'https://zsj.itdos.com/v1/wx/uploadwximg',
-  //         filePath: path,
-  //         name: 'file',
-  //       }))
-  //     }
-  //     wx.showLoading({
-  //       title: '正在创建...',
-  //       mask: true
-  //     })
-
-  //     Promise.all(arr).then(res => {
-  //       return res.map(item => JSON.parse(item.data).link)
-  //     }).catch(err => {
-  //       console.log(">>>> upload images error:", err)
-  //     }).then(urls => {
-  //       // return createQuestion({
-  //       //   title: title,
-  //       //   content: content,
-  //       //   images: urls
-  //       // })
-  //       // 登录
-  //       var sessionId = wx.getStorageSync('sessionId')
-  //       //发起网络请求
-  //       wx.request({
-  //         url: config.url + '/wx/addwxarticle',
-  //         header: {
-  //           "Content-Type": "application/x-www-form-urlencoded"
-  //         },
-  //         method: "POST",
-  //         data: {
-  //           hotqinsessionid: sessionId,
-  //           title: title,
-  //           content: content,
-  //           images: urls
-  //           // mobile: e.detail.value.mobile,
-  //           // password: e.detail.value.password
-  //         },
-  //         success: function(res) {
-  //           if (res.data.status == 0) {
-  //             wx.showToast({
-  //               title: res.data.info,
-  //               icon: 'loading',
-  //               duration: 1500
-  //             })
-  //           } else {
-  //             wx.showToast({
-  //               title: res.data.info, //这里打印出登录成功
-  //               icon: 'success',
-  //               duration: 1000
-  //             })
-  //             wx.navigateTo({
-  //               url: `../detail/detail?id=` + res.data.id
-  //             })
-  //           }
-  //         }
-  //       })
-
-  //       // wx.request({
-  //       //   url: 'https://zsj.itdos.com/wx/addwxarticle',
-  //       //   header: {
-  //       //     "Content-Type": "application/x-www-form-urlencoded"
-  //       //   },
-  //       //   method: "POST",
-  //       //   data: {
-  //       //     title: title,
-  //       //     content: content,
-  //       //     images: urls
-  //       //     // mobile: e.detail.value.mobile,
-  //       //     // password: e.detail.value.password
-  //       //   },
-  //       //   success: function (res) {
-  //       //     if (res.data.status == 0) {
-  //       //       wx.showToast({
-  //       //         title: res.data.info,
-  //       //         icon: 'loading',
-  //       //         duration: 1500
-  //       //       })
-  //       //     } else {
-  //       //       wx.showToast({
-  //       //         title: res.data.info, //这里打印出登录成功
-  //       //         icon: 'success',
-  //       //         duration: 1000
-  //       //       })
-  //       //       wx.navigateTo({
-  //       //         url: `../detail/detail?id=` + res.data.id
-  //       //       })
-  //       //     }
-  //       //   }
-  //       // })
-  //     }).then(res => {
-
-  //     }).catch(err => {
-  //       console.log(">>>> create question error:", err)
-  //     }).then(() => {
-  //       wx.hideLoading()
-  //     })
-  //   }
-  // },
-
   onEditorReady() {
-    const that = this
-    wx.createSelectorQuery().select('#editor').context(function (res) {
+    // 没必要再去服务端请求数据
+    var that = this
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2];
+    // console.log(prevPage.data)
+    // prevPage.setData({//给上一页面（details)赋值，保留
+    //   user: 'LaternKiwis'
+    // })
+
+    // var getData = wx.request({//没必要再去服务端请求
+    //   url: config.url + '/wx/getwxarticle/' + that.data.id,
+    //   header: {
+    //     "Content-Type": "application/x-www-form-urlencoded",
+    //   },
+    //   data: {
+    //     hotqinsessionid: sessionId
+    //   },
+    // success: function (res1) {
+    wx.createSelectorQuery().select('#editor').context(function(res) {
       that.editorCtx = res.context
+      that.editorCtx.setContents({
+        html: prevPage.data.articlecontent,//that.data.content, //res1.data.html,
+        success: (res) => {
+          console.log(res)
+        },
+        fail: (res) => {
+          console.log(res)
+        }
+      })
     }).exec()
+    that.setData({
+      content: prevPage.data.articlecontent,//假如用户没有点击内容，则用这个内容
+      title: prevPage.data.leassonTilte,//假如用户没有点击标题，则用这个标题
+      titleCount: prevPage.data.leassonTilte.length
+    })
+    // },
+    // })
   },
 
   undo() {
     this.editorCtx.undo()
   },
+
   redo() {
     this.editorCtx.redo()
   },
+
   format(e) {
     let {
       name,
@@ -304,22 +236,25 @@ Page({
     // console.log('format', name, value)
     this.editorCtx.format(name, value)
   },
+
   onStatusChange(e) {
     const formats = e.detail
     this.setData({
       formats
     })
   },
+
   insertDivider() {
     this.editorCtx.insertDivider({
-      success: function () {
+      success: function() {
         console.log('insert divider success')
       }
     })
   },
+
   clear() {
     this.editorCtx.clear({
-      success: function (res) {
+      success: function(res) {
         console.log("clear success")
       }
     })
@@ -372,10 +307,10 @@ Page({
               //   id: 'abcd',
               //   role: 'god'
               // },
-              success: function () {
+              success: function() {
                 console.log('insert image success')
                 that.setData({
-                  images: []//这里清0，否则总是将上次的图片带上
+                  images: [] //这里清0，否则总是将上次的图片带上
                 })
                 // console.log(that.data.images)
               }
@@ -418,28 +353,25 @@ Page({
   //     }
   //   })
   // },
+  onChange1(e) {
+    // console.log('onChange1', e)
+    this.setData({
+      // addtell: {
+      //   contract_info1: e.detail.value,
+      //   addtellHidden: false,
+      // },
+      // error: isTel(e.detail.value),
+      // value: e.detail.value,
+      title: e.detail.value,
+      titleCount: e.detail.value.length,
+    })
+    $digest(this)
+  },
 
-  //初始化富文本编辑器方法
-  // onEditorReady() {
-  //   const that = this
-  //   wx.createSelectorQuery().select('#editor').context(function (res) {
-  //     that.editorCtx = res.context
-  //     that.loadData();//这里拉取需要编辑的数据然后初始化到编辑器里面
-  //   }).exec()
-  // },
-
-  //初始化富文本编辑器方法
-  // that.editorCtx.setContents({
-  //   html: '这里放接口返回的富文本标签数据',
-  //   success: function () {
-  //     console.log('insert html success')
-  //   }
-  // }),
-
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     return {
       title: '珠三角设代plus',
-      path: 'pages/addtopic/addtopic'
+      path: 'pages/editortopic/editortopic'
     }
   }
 })

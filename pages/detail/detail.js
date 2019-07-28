@@ -7,8 +7,10 @@ var config = require('../../config.js');
 Page({
   data: {
     isAdmin: false,
+    isArticleMe:false,//文章作者本人可以编辑
     dkheight: 0,
-    dkcontent: "",
+    dkcontent: "",//文章显示用
+    articlecontent:"",//编辑文章用
     leassonTilte: '',
     time: '',
     id: '',
@@ -103,22 +105,26 @@ Page({
         // y: '',
         // id: options.id
       },
-      // header: {
-      //   'content-type': 'application/json' // 默认值
-      // },
       success: function (res) {
         // console.log(res.data)
         that.setData({
           dkcontent: res.data.html,
+          articlecontent:res.data.html,//给编辑文章用
           leassonTilte: res.data.title,
           time: res.data.time,
-          author: res.data.author,
+          author: res.data.author,//product.Principal
+          isArticleMe: res.data.isArticleMe,
           views: res.data.Views,
           likeNum: res.data.likeNum,
           liked: res.data.liked,
           comment: res.data.comment,
           commentNum: res.data.commentNum,
         })
+        // if (that.data.author == 这里用小程序里存储的nickname不合适){
+        //   that.setData({
+        //     isArticleMe:true
+        //   })
+        // }
         wxparse.wxParse('dkcontent', 'html', that.data.dkcontent, that, 5)
 
         // 生成画布
@@ -254,6 +260,22 @@ Page({
     })
   },
 
+  // 编辑文章
+  editor(e) {
+    var that=this
+    // console.log(that.data.articlecontent)
+    wx.navigateTo({
+      url: '../editortopic/editortopic?id=' + e.currentTarget.dataset.id// + '&title=' + that.data.leassonTilte + '&content=' + that.data.articlecontent
+    })
+  },
+  //详情页面
+  // seeDetail: function (e) {
+  //   // console.log(e)
+  //   wx.navigateTo({
+  //     url: '../detail/detail?id=' + e.currentTarget.dataset.id
+  //   })
+  // },
+
   //点赞切换
   onUpTap: function (event) {
     var that = this;
@@ -319,9 +341,9 @@ Page({
   reviewpage: function (e) {
     var that = this;
     var id = this.data.id;
-    console.log('qqqqqq')
-    console.log(id)
-    console.log('-=-=-=')
+    // console.log('qqqqqq')
+    // console.log(id)
+    // console.log('-=-=-=')
     var page = this.data.page;
     wx.request({
       url: link.reviewpage,
@@ -444,8 +466,6 @@ Page({
 
   // 添加留言
   formSubmit(e) {
-    // console.log(e)
-    // console.log(this.data.id)
     var that = this
     if (e.detail.value.input == '') {
       // if (this.data.releaseValue == '') {
@@ -533,7 +553,7 @@ Page({
               })
             }
           })
-        }else{
+        } else {
           wx.showToast({
             title: '未授权获取用户级别信息，无法添加评论',
           })
@@ -548,7 +568,7 @@ Page({
   },
 
   changeinputVal(e) {
-    console.log(e.detail)
+    // console.log(e.detail)
     this.setData({
       releaseValue: e.detail.value
     })
@@ -570,7 +590,7 @@ Page({
           wx.request({
             url: config.url + "/wx/deletewxrelease/" + e.currentTarget.dataset.id,
             method: "POST",
-            data:{
+            data: {
               hotqinsessionid: sessionId
             },
             success: function (res) {
@@ -860,7 +880,7 @@ Page({
       url: '../index/index'
     })
   },
-  //发送评论评论 事件处理
+  //发送评论 事件处理
   send: function () {
     var that = this
     // console.log(that.data.releaseValue)
