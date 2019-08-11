@@ -295,7 +295,6 @@ const conf = {
               contract_info2: '',
               contract_info3: '',
               contract_info4: '',
-              
               addtellHidden: true,
             },
             desc1: '',
@@ -463,7 +462,7 @@ const conf = {
  */
   onShareAppMessage: function () {
     return {
-      title: '珠三角设代阅览版',
+      title: '珠三角设代plus',
       path: 'pages/bbs/bbs'
     }
   },

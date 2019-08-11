@@ -5,7 +5,7 @@
     <view class='wrapper'>
       <!-- 文章标题  -->
       <view class="question-title-wrap">
-        <!-- <input class="question-title" placeholder="{{leassonTilte}}" maxlength="40" placeholder-style="color:#b3b3b3;font-size:18px;" bindinput="handleTitleInput"></input> -->
+        <!-- <input class="question-title" placeholder="{{leassonTitle}}" maxlength="40" placeholder-style="color:#b3b3b3;font-size:18px;" bindinput="handleTitleInput"></input> -->
         <wux-input bind:change="onChange1" label="输入标题" value="{{title}}" controlled bind:clear="onClear"/>
         <view class="title-input-counter">{{titleCount}}/40</view>
       </view>

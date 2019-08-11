@@ -165,7 +165,7 @@ Page({
               }
             })
             wx.navigateTo({
-              url: `../detail/detail?id=` + +that.data.id
+              url: `../detail/detail?id=` + that.data.id
             })
           }
         }
@@ -212,8 +212,8 @@ Page({
     }).exec()
     that.setData({
       content: prevPage.data.articlecontent,//假如用户没有点击内容，则用这个内容
-      title: prevPage.data.leassonTilte,//假如用户没有点击标题，则用这个标题
-      titleCount: prevPage.data.leassonTilte.length
+      title: prevPage.data.leassonTitle,//假如用户没有点击标题，则用这个标题
+      titleCount: prevPage.data.leassonTitle.length
     })
     // },
     // })

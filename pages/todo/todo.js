@@ -230,7 +230,7 @@ Page({
  */
   onShareAppMessage: function () {
     return {
-      title: '珠三角设代阅览版',
+      title: '珠三角设代plus',
       path: 'pages/todo/todo'
     }
   },

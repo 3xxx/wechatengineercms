@@ -135,7 +135,7 @@ Page({
     var allMsg = that.data.msgList;
     var postData = {
       searchpage: pg, //分页标识
-      app_version: 4, //当前版本，后台根据版本不同给出不同的数据格式
+      app_version: 1, //当前版本plus，后台根据版本不同给出不同的数据格式
       keyword: searchTitle
     }
     // var sessionId = wx.getStorageSync('sessionId')
@@ -201,7 +201,7 @@ Page({
     var apiUrl = config.url + '/wx/getwxarticles'; //文章列表接口地址
     var postData = {
       page: pg, //分页标识
-      app_version: 4, //当前版本，后台根据版本不同给出不同的数据格式
+      app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
     }
     wx.request({
       url: apiUrl,
@@ -362,7 +362,7 @@ Page({
   //用户点击右上角分享
   onShareAppMessage: function() {
     return {
-      title: '珠三角设代阅览版',
+      title: '珠三角设代plus',
       path: 'pages/index/index'
     }
   },

@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "珠三角设代阅览版",
+  "navigationBarTitleText": "珠三角设代plus",
   "enablePullDownRefresh": true,
   "usingComponents": {
     "wux-accordion-group": "../../dist/accordion-group/index",

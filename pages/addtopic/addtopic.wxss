@@ -1,5 +1,5 @@
-@import "../../common/lib/weui.wxss";
-@import "../../assets/iconfont.wxss";
+@import "../../libs/style/weui.wxss";
+@import "../../libs/style/iconfont.wxss";
 
 .wrapper {
   padding: 5px;

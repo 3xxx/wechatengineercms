@@ -14,6 +14,10 @@
     "pages/about/about",
     "pages/new/new",
     "pages/search/search",
+    "pages/diarylist/diarylist",
+    "pages/diary/diary",
+    "pages/diarydetail/diarydetail",
+    "pages/diaryeditor/diaryeditor",
     "pages/searchdraw/searchdraw",
     "pages/calendar/calendar",
     "pages/todo/todo",
@@ -44,22 +48,16 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/todo/todo",
-        "text": "待办",
-        "iconPath": "images/todos.png",
-        "selectedIconPath": "images/todos-active.png"
+        "pagePath": "pages/diarylist/diarylist",
+        "text": "日志",
+        "iconPath": "images/today-aaaaaa.png",
+        "selectedIconPath": "images/today-faad14.png"
       },
       {
         "pagePath": "pages/bbs/bbs",
         "text": "公告",
-        "iconPath": "images/megaphone-aaaaaa.png",
-        "selectedIconPath": "images/megaphone-faad14.png"
-      },
-      {
-        "pagePath": "pages/new/new",
-        "text": "新建",
-        "iconPath": "image/new_normal.png",
-        "selectedIconPath": "image/new_pressed.png"
+        "iconPath": "images/volume-high-aaaaaa.png",
+        "selectedIconPath": "images/volume-high-faad14.png"
       },
       {
         "pagePath": "pages/addtopic/addtopic",
@@ -72,12 +70,6 @@
         "text": "我的",
         "iconPath": "images/person-outline-aaaaaa.png",
         "selectedIconPath": "images/person-faad14.png"
-      },
-      {
-        "pagePath": "pages/about/about",
-        "iconPath": "images/dot-circle-o-aaaaaa.png",
-        "selectedIconPath": "images/dot-circle-o-faad14.png",
-        "text": "关于"
       }
     ]
   },

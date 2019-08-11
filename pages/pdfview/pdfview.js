@@ -185,7 +185,7 @@ Page({
     // var that = this;
     return {
       desc: '来自珠江三角洲水资源配置工程设代处~',
-      title: '珠三角设代-分享文件链接',
+      title: '珠三角设代plus-分享文件链接',
       path: 'pages/pdfview/pdfview?id=' + this.data.Id + '&title=' + this.data.Title + '&actIndex=' + this.data.actIndex + '&link=' + this.data.Link
     }
   },

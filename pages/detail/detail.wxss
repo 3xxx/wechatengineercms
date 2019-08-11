@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-.leassonTilte {
+.leassonTitle {
   margin-bottom: 10px;
   font-size: 18px;
 }

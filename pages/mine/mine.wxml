@@ -82,5 +82,6 @@
   <button wx:if="{{!hasLocation}}" open-type="openSetting" bindopensetting="callback">打开授权信息面板</button>
   <!-- <navigator url="../search/search"> -->
   <button type="primary" bindtap="checkin"> 打卡</button>
+  <!-- <button type="default" bindtap="diarylist"> 设代日记</button> -->
   <!-- </navigator> -->
 </view>

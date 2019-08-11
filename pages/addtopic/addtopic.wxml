@@ -1,6 +1,3 @@
-<!-- <import src="../../common/head.wxml" /> -->
-<!-- <import src="../../common/foot.wxml" /> -->
-
 <view class="container1">
   <!-- <template is="head" data="{{title: 'editor'}}"/> -->
   <view class="page-body1">

@@ -27,7 +27,7 @@ Page({
   onShareAppMessage: function () {
     // return custom share data when user share.
     return {
-      title: '',
+      title: '珠三角设代plus',
       path: 'pages/about/about'
     }
   },

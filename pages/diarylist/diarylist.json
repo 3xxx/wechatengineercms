@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "珠三角设代plus●日志",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index",
+    "wux-icon": "../../dist/icon/index",
+    "wux-avatar": "../../dist/avatar/index",
+    "wux-cell-group": "../../dist/cell-group/index",
+    "wux-cell": "../../dist/cell/index"
+  }
+}

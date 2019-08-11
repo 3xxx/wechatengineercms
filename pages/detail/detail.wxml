@@ -14,7 +14,7 @@
 
 <!-- wxp template -->
 <view class='page' catchtap='catchhide' id='contain'>
-  <view class='leassonTilte'>{{leassonTilte}}</view>
+  <view class='leassonTitle'>{{leassonTitle}}</view>
   <view class='author'>原创: {{author}}</view>
   <view class='time'>{{time}}</view>
   <!-- <view class='author' wx:if="{{isAdmin}}||{{is_me}}" type="primary" size="mini" data-id="{{id}}" bindtap="editor">编辑</view> -->

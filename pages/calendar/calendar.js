@@ -14,7 +14,7 @@ var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 // var qqmapsdk;
 //腾讯地图Key
 var qqmapsdk = new QQMapWX({
-  key: 'EADBZ-QCZ6Q-FDK54-GBQ4X-QY5B5-CVFFZ'
+  key: '???????'
 });
 const app = getApp();
 // var photo_check_url = null;
@@ -151,7 +151,7 @@ const conf = {
       success: function (res) {
         //实例化腾通地图sdk
         // qqmapsdk = new QQMapWX({
-        //   key: 'EADBZ-QCZ6Q-FDK54-GBQ4X-QY5B5-CVFFZ' //这里自己的key秘钥进行填充
+        //   key: '???????' //这里自己的key秘钥进行填充
         // });
         // console.log(res)
         var latitude1 = res.latitude
@@ -276,7 +276,7 @@ const conf = {
   onShareAppMessage: function () {
     // console.log(this.data.activity_id)
     return {
-      title: '珠三角设代阅览版',
+      title: '珠三角设代plus',
       path: 'pages/calendar/calendar?activity_id=' + this.data.activity_id + '&activity_caption=' + this.data.activity_caption
     }
   },

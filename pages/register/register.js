@@ -117,7 +117,7 @@ Page({
                     if (res.confirm) {
                       // 点击确定后跳转登录页面并关闭当前页面
                       // wx.redirectTo({//redirect不能跳转到tabar
-                      //   url: '../mine/mine'
+                      //   url: '../index/index'
                       // })
                       // wx.switchTab({
                       //   url: '../index/index'

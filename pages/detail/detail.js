@@ -11,7 +11,7 @@ Page({
     dkheight: 0,
     dkcontent: "",//文章显示用
     articlecontent:"",//编辑文章用
-    leassonTilte: '',
+    leassonTitle: '',
     time: '',
     id: '',
     liked: true,
@@ -110,7 +110,7 @@ Page({
         that.setData({
           dkcontent: res.data.html,
           articlecontent:res.data.html,//给编辑文章用
-          leassonTilte: res.data.title,
+          leassonTitle: res.data.title,
           time: res.data.time,
           author: res.data.author,//product.Principal
           isArticleMe: res.data.isArticleMe,
@@ -265,7 +265,7 @@ Page({
     var that=this
     // console.log(that.data.articlecontent)
     wx.navigateTo({
-      url: '../editortopic/editortopic?id=' + e.currentTarget.dataset.id// + '&title=' + that.data.leassonTilte + '&content=' + that.data.articlecontent
+      url: '../editortopic/editortopic?id=' + e.currentTarget.dataset.id// + '&title=' + that.data.leassonTitle + '&content=' + that.data.articlecontent
     })
   },
   //详情页面

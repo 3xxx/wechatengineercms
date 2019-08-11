@@ -6,22 +6,22 @@ Page({
    * 页面的初始数据
    */
   data: {
-    hasRegist: false,//是否注册
-    hasUserInfo: false,//是否授权
+    hasRegist: false, //是否注册
+    hasUserInfo: false, //是否授权
     userInfo: null,
     hasLocation: false
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     var that = this
     if (!app.globalData.hasRegist) {
       // 登录——才能查询是否注册
       var sessionId = wx.getStorageSync('sessionId')
       //发起网络请求
       wx.request({
-        url: config.url + '/wx/wxlogin/1',//珠三角设代plus版1
+        url: config.url + '/wx/wxlogin/1', //珠三角设代plus版1
         data: {
           hotqinsessionid: sessionId,
           // uname: account,
@@ -32,7 +32,7 @@ Page({
         header: {
           'content-type': 'application/x-www-form-urlencoded'
         },
-        success: function (res) {
+        success: function(res) {
           if (res.data.userId) {
             console.log(res.data.userId)
             app.globalData.user_id = res.data.userId
@@ -91,13 +91,13 @@ Page({
       // 获取位置
       wx.getLocation({
         type: 'wgs84',
-        success: function (res) {
+        success: function(res) {
           app.globalData.hasLocation = true
           that.setData({
             hasLocation: true
           })
         },
-        fail: function (res) {
+        fail: function(res) {
           // console.log(res)
         }
       })
@@ -108,7 +108,7 @@ Page({
     };
   },
   // 用户点击按钮授权
-  getUserInfo: function (res) {
+  getUserInfo: function(res) {
     // console.log(res)
     app.globalData.userInfo = res.detail.userInfo
     app.globalData.nickName = res.detail.userInfo.nickName
@@ -133,57 +133,57 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
     this.setData({
-      hasRegist: app.globalData.hasRegist//naviback返回此页不会触发onload，但是会触发onshow
+      hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     })
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     return {
       title: '珠三角设代plus',
       path: 'pages/mine/mine'
     }
   },
-  toOrder: function (e) {
+  toOrder: function(e) {
     // console.log(e)
     if (e.target.id == "second")
       wx.switchTab({
@@ -192,7 +192,7 @@ Page({
   },
 
   //详情页面
-  seeDetail: function (e) {
+  seeDetail: function(e) {
     // console.log(e)
     // this.setData({
     var id = e.currentTarget.dataset.id
@@ -203,7 +203,7 @@ Page({
   },
 
   //打卡
-  checkin: function (e) {
+  checkin: function(e) {
     var that = this
     // console.log(that.data.hasLocation)
     if (!that.data.hasRegist) {
@@ -266,8 +266,32 @@ Page({
       })
     }
   },
+
+  //设代日记列表页
+  diarylist: function(e) {
+    // var that = this
+    // if (!that.data.hasRegist) {
+    //   // 显示模态弹窗
+    //   wx.showModal({
+    //     title: '未注册用户！',
+    //     content: '请点击确定后进行注册。',
+    //     success(res) {
+    //       if (res.confirm) {
+    //         wx.navigateTo({
+    //           url: '../register/register'
+    //         })
+    //       }
+    //     }
+    //   })
+    // } else {
+    wx.navigateTo({
+      url: '../diarylist/diarylist'
+    })
+    // }
+  },
+
   // 用户打开权限设置页，选择权限后返回值
-  callback: function (res) {
+  callback: function(res) {
     // console.log(res)
     // console.log(res.detail.authSetting['scope.userLocation'])
     // detail:

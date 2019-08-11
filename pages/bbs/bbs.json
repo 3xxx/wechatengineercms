@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "珠三角设代阅览版●公告",
+  "navigationBarTitleText": "珠三角设代plus●公告",
   "usingComponents": {
     "calendar": "../../component/calendar/index",
     "wux-cell-group": "../../dist/cell-group/index",
