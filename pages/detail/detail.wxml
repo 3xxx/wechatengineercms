@@ -21,13 +21,16 @@
   <button class="delete" wx:if="{{isAdmin}}" type="primary" size="mini" data-id="{{id}}" bindtap="delete">删除</button>
   <button class="editor" wx:if="{{isAdmin}}||{{isArticleMe}}" size="mini" data-id="{{id}}" bindtap="editor">编辑</button>
   <view class="page__bd page__bd_spacing">
-   <!-- style='height:{{dkheight}}px;' -->
+    <!-- style='height:{{dkheight}}px;' -->
     <view class='dk-show'>
       <template is="wxParse" data="{{wxParseData:dkcontent.nodes}}" />
 
       <!-- 点赞、评论、收藏 -->
       <view class="tool">
-        <view class="tool-item" catchtap='onUpTap' data-post-id="{{id}}">
+        <van-button icon="good-job" round type="info" size="small" bind:click="showCustomDialog">平台赞赏</van-button>
+        <van-button icon="wechat" round type="warning" size="small" bind:click="showCustomDialogWx">微信赞赏</van-button>
+
+        <!-- <view class="tool-item" catchtap='onUpTap' data-post-id="{{id}}">
           <image wx:if="{{liked}}" src="../../images/heart-faad14.png"></image>
           <image wx:else src="../../images/heart-o-faad14.png"></image>
           <text>{{likeNum}}</text>
@@ -39,12 +42,12 @@
         <view class="tool-item collect" catchtap='onCollectionTap' data-post-id="{{post.postId}}">
           <image src="../../images/eye-faad14.png"></image>
           <text>{{views}}</text>
-        </view>
+        </view> -->
       </view>
 
       <view class='release_list'>
         <view wx:key="property" wx:for="{{comment}}" class='commentpl' data-id="{{item.id}}">
-          <button wx:if='{{item.is_me}}' class='revoke' bindtap='binddelete' data-id='{{item.id}}' data-index='{{index}}'>撤销</button>
+          <button wx:if='{{item.is_me}}||{{item.isAdmin}}' class='revoke' bindtap='binddelete' data-id='{{item.id}}' data-index='{{index}}'>撤销</button>
 
           <view class='publish'>
             <image src='{{item.avatar}}'></image>
@@ -100,6 +103,44 @@
 
   </view>
 </view>
+
+<van-dialog use-slot title="平台赞赏作者" show="{{ payshow }}" show-cancel-button show-confirm-button="{{showconfirmbutton}}" confirm-button-open-type="getUserInfo" bind:close="onClose" bind:confirm="pay">
+  <image class="demo-image" src="/image/haijun.jpg" />
+  <view class="row">
+    <van-row gutter="15">
+      <van-col span="8">
+        <van-button plain="{{plain1}}" type="warning" data-id="1" bindtap="gold1">1金币</van-button>
+      </van-col>
+      <van-col span="8">
+        <van-button plain="{{plain2}}" type="warning" data-id="2" bindtap="gold2">2金币</van-button>
+      </van-col>
+      <van-col span="8">
+        <van-button plain="{{plain5}}" type="warning" data-id="5" bindtap="gold5">5金币</van-button>
+      </van-col>
+    </van-row>
+  </view>
+  <view class="row">
+    <van-row gutter="15">
+      <van-col span="8">
+        <van-button plain="{{plain10}}" type="warning" data-id="10" bindtap="gold10">10金币</van-button>
+      </van-col>
+      <van-col span="8">
+        <van-button plain="{{plain20}}" type="warning" data-id="20" bindtap="gold20">20金币</van-button>
+      </van-col>
+      <van-col span="8">
+        <van-button plain="{{plain50}}" type="warning" data-id="50" bindtap="gold50">50金币</van-button>
+      </van-col>
+    </van-row>
+  </view>
+  <view class="row">
+    <van-col offset="4">账户余额：{{balance}}金币</van-col>
+  </view>
+  <!-- <button style="background:red;" hover-class="green">123</button> -->
+</van-dialog>
+
+<!-- <van-dialog use-slot title="微信赞赏作者" show="{{ wxpayshow }}" show-cancel-button>
+  <image class="demo-image" src="/image/hotqin999.jpg" />
+</van-dialog> -->
 
 <!--发表评论   hidden='{{!releaseFocus}}'-->
 <!-- <view class='release'>

@@ -1,27 +1,11 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/detail/detail",
-    "pages/pdfview/pdfview",
-    "pages/login/login",
     "pages/addtopic/addtopic",
-    "pages/editortopic/editortopic",
-    "pages/register/register",
     "pages/bbs/bbs",
     "pages/mine/mine",
-    "pages/updatepass/updatepass",
-    "pages/myopus/myopus",
-    "pages/about/about",
-    "pages/new/new",
-    "pages/search/search",
     "pages/diarylist/diarylist",
-    "pages/diary/diary",
-    "pages/diarydetail/diarydetail",
-    "pages/diaryeditor/diaryeditor",
-    "pages/searchdraw/searchdraw",
-    "pages/calendar/calendar",
-    "pages/todo/todo",
-    "pages/logs/logs"
+    "pages/detail/detail"
   ],
   "permission": {
     "scope.userLocation": {
@@ -34,6 +18,7 @@
     "navigationBarBackgroundColor": "#faad14",
     "navigationBarTitleText": " 珠三角设代",
     "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true,
     "navigationStyle": "default"
   },
   "tabBar": {
@@ -73,6 +58,39 @@
       }
     ]
   },
+  "subPackages": [
+    {
+      "root": "packageA",
+      "pages": [
+        "pages/pdfview/pdfview",
+        "pages/editortopic/editortopic",
+        "pages/new/new",
+        "pages/search/search",
+        "pages/diary/diary",
+        "pages/diarydetail/diarydetail",
+        "pages/diaryeditor/diaryeditor",
+        "pages/searchdraw/searchdraw",
+        "pages/calendar/calendar",
+        "pages/logs/logs"
+      ]
+    },
+    {
+      "root": "packageB",
+      "pages": [
+        "pages/login/login",
+        "pages/register/register",
+        "pages/updatepass/updatepass",
+        "pages/myopus/myopus",
+        "pages/about/about",
+        "pages/pay/pay",
+        "pages/mymoney/mymoney",
+        "pages/mypay/mypay",
+        "pages/myappreciation/myappreciation",
+        "pages/mycollect/mycollect",
+        "pages/adduser/adduser"
+      ]
+    }
+  ],
   "networkTimeout": {
     "request": 10000,
     "downloadFile": 10000

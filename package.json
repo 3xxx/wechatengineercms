@@ -1,0 +1,21 @@
+{
+  "name": "minui",
+  "description": "MinUI 小程序组件库",
+  "version": "1.0.8",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meili/minui.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@minui/wxc-example": "^1.0.0",
+    "@minui/wxc-example-demo": "^1.0.0",
+    "@minui/wxc-example-md": "^1.0.0",
+    "@minui/wxc-example-menu": "^1.0.4",
+    "@minui/wxc-icon": "^1.0.9"
+  },
+  "minConfig": {
+    "projectType": "component"
+  }
+}

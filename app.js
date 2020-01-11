@@ -12,6 +12,7 @@ App({
     nickName: null,
     avatarUrl: null,
     photo: null,//用户头像
+    appreciationphoto: null,//用户赞赏码
     hasRegist: false,
     hasLocation: false,
     isLogin: false,
@@ -81,7 +82,7 @@ App({
                 // that.setData({//没这个方法**********
                 //   isLogin: true
                 // });
-                that.globalData.isLogin = true
+                that.globalData.isLogin = wx.getStorageSync('isLogin')
                 // user_id = wx.getStorageSync('user_id')
                 // hasRegist = wx.getStorageSync('hasRegist')
                 // isAdmin = wx.getStorageSync('isAdmin')
@@ -89,6 +90,7 @@ App({
                 that.globalData.hasRegist = wx.getStorageSync('hasRegist')
                 that.globalData.isAdmin = wx.getStorageSync('isAdmin')
                 that.globalData.photo = wx.getStorageSync('photo')
+                that.globalData.appreciationphoto = wx.getStorageSync('appreciationphoto')
                 // console.log(that.globalData.user_id)
                 // console.log(that.globalData.hasRegist)
                 // console.log(that.globalData.isAdmin)
@@ -248,6 +250,10 @@ App({
                   data: res.data.isAdmin
                 })
                 wx.setStorage({
+                  key: "isLogin",
+                  data: true
+                })
+                wx.setStorage({
                   key: "hasRegist",
                   data: true
                 })
@@ -255,13 +261,20 @@ App({
                   key: "photo",
                   data: res.data.photo
                 })
+                //用户赞赏码
+                wx.setStorage({
+                  key: "appreciationphoto",
+                  data: res.data.appreciationphoto
+                })
                 that.globalData.user_id = res.data.userId
-                // console.log(that.globalData.user_id)
+                // console.log(that.globalData.appreciationphoto)
                 // console.log(wx.getStorageSync('isAdmin'))
                 // console.log(wx.getStorage('isAdmin'))
+                that.globalData.isLogin = true
                 that.globalData.hasRegist = true
                 that.globalData.isAdmin = res.data.isAdmin
                 that.globalData.photo = res.data.photo
+                that.globalData.appreciationphoto = res.data.appreciationphoto
               } else {
                 wx.showToast({
                   title: '未注册用户。',

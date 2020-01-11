@@ -38,6 +38,7 @@
   text-align: center;
   line-height: 64rpx;
   margin: 20rpx 28rpx 20rpx 0;
+  padding: 0px 20px 0;
 }
 
 .tool-item {
@@ -803,4 +804,24 @@ canvas {
   text-align: center;
 }
 
+/* van demo-block */
+.demo-image {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0px 20px 0;
+}
+
+.van-row {
+  margin-left: 15px;
+  padding: 0px 20px 0;
+}
+
+.row {
+  height: 44px;
+  margin-bottom: 15px;
+}
+
+/* .green {
+  background: green !important;
+} */
 /*   end menu-box  */

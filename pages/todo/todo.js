@@ -146,34 +146,45 @@ Page({
     var index = e.currentTarget.dataset.index
     // 登录——才能修改待办事项
     var sessionId = wx.getStorageSync('sessionId')
-    wx.request({
-      url: config.url + '/todo/deletetodo',
-      data: {
-        'todoid': e.currentTarget.dataset.id,
-        'hotqinsessionid': sessionId,
-      },
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      success: function (res) {
-        wx.showToast({
-          title: "删除待办成功",
-          icon: 'success',
-          duration: 1500
-        })
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除待办事项吗？',
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          wx.request({
+            url: config.url + '/todo/deletetodo',
+            data: {
+              'todoid': e.currentTarget.dataset.id,
+              'hotqinsessionid': sessionId,
+            },
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            success: function (res) {
+              wx.showToast({
+                title: "删除待办成功",
+                icon: 'success',
+                duration: 1500
+              })
+            }
+          })
+          var todos = this.data.todos
+          var remove = todos.splice(index, 1)[0]
+          var logs = this.data.logs
+          logs.push({ timestamp: new Date(), action: 'Remove', name: remove.name })
+          this.setData({
+            todos: todos,
+            leftCount: this.data.leftCount - (remove.completed ? 0 : 1),
+            logs: logs
+          })
+          this.save()
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
       }
     })
-    var todos = this.data.todos
-    var remove = todos.splice(index, 1)[0]
-    var logs = this.data.logs
-    logs.push({ timestamp: new Date(), action: 'Remove', name: remove.name })
-    this.setData({
-      todos: todos,
-      leftCount: this.data.leftCount - (remove.completed ? 0 : 1),
-      logs: logs
-    })
-    this.save()
   },
 
   toggleAllHandle: function (e) {

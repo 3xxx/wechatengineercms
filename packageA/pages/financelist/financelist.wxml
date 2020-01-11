@@ -1,0 +1,21 @@
+<!--pages/financelist/financelist.wxml-->
+<!-- <wxs module="dateUtil" src="../../utils/timeUtil.wxs"> -->
+<!-- <wxs src="../../utils/timeUtil.wxs" module="dateUtil"></wxs> -->
+
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">财务账目</view>
+    <view class="page__desc">列表</view>
+  </view>
+  <view class="page__bd">
+    <wux-cell-group>
+      <view wx:for="{{finance}}" wx:key="{{item.id}}">
+        <wux-cell title="{{item.Financedate}}" label="{{item.Nickname}}" extra="{{item.amount}}" is-link data-id="{{item.id}}" bindtap="seeDetail"></wux-cell>
+      </view>
+    </wux-cell-group>
+
+    <wxc-avatar class="avatar" bindtap='addfinance'>
+      <wux-icon class="add" type="md-add" size="32" />
+    </wxc-avatar>
+  </view>
+</view>

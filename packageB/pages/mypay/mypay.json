@@ -1,0 +1,16 @@
+{
+  "navigationBarTitleText": "珠三角设代●赞赏花费",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "wxc-avatar": "../../../packages/@minui/wxc-avatar/dist/index",
+    "wux-icon": "../../../dist/icon/index",
+    "wux-avatar": "../../../dist/avatar/index",
+    "van-icon": "../../../component/vant/miniprogram_npm/vant-weapp/icon/index",
+    "van-cell": "../../../component/vant/miniprogram_npm/vant-weapp/cell/index",
+    "van-cell-group": "../../../component/vant/miniprogram_npm/vant-weapp/cell-group/index",
+    "van-search": "../../../component/vant/miniprogram_npm/vant-weapp/search/index",
+    "van-row": "../../../component/vant/miniprogram_npm/vant-weapp/row/index",
+    "van-col": "../../../component/vant/miniprogram_npm/vant-weapp/col/index",
+    "van-button": "../../../component/vant/miniprogram_npm/vant-weapp/button/index"
+  }
+}

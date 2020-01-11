@@ -10,7 +10,7 @@
   <view class="page__bd">
     <wux-cell-group>
       <view wx:for="{{diaries}}" wx:key="{{item.id}}">
-        <wux-cell title="{{item.Diarydate}}" label="{{item.id}}" extra="{{item.Title}}" is-link data-id="{{item.id}}" bindtap="seeDetail"></wux-cell>
+        <wux-cell title="{{item.Diarydate}}" label="{{item.Nickname}}" extra="{{item.Title}}" is-link data-id="{{item.id}}" bindtap="seeDetail"></wux-cell>
       </view>
     </wux-cell-group>
 

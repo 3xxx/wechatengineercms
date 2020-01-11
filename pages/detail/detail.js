@@ -7,10 +7,11 @@ var config = require('../../config.js');
 Page({
   data: {
     isAdmin: false,
-    isArticleMe:false,//文章作者本人可以编辑
+    isLogin: false,
+    isArticleMe: false,//文章作者本人可以编辑
     dkheight: 0,
     dkcontent: "",//文章显示用
-    articlecontent:"",//编辑文章用
+    articlecontent: "",//编辑文章用
     leassonTitle: '',
     time: '',
     id: '',
@@ -30,6 +31,18 @@ Page({
     inputMarBot: false, //评论框聚焦时，让评论框距离底部的距离为50rpx
 
     open: true,
+    payshow: false, //平台赞赏弹框显示
+    wxpayshow: false, //微信赞赏弹框显示
+    plain1: true,
+    plain2: true,
+    plain5: true,
+    plain10: true,
+    plain20: true,
+    plain50: true,
+    showconfirmbutton: false,
+    amount: 0, //用户赞赏金额
+    balance: 0, //用户账户余额
+    appreciationurl: 'https://zsj.itdos.com/static/appreciation/hotqin111.jpg',
 
     shop: [],
     shop_item: {},
@@ -109,7 +122,7 @@ Page({
         // console.log(res.data)
         that.setData({
           dkcontent: res.data.html,
-          articlecontent:res.data.html,//给编辑文章用
+          articlecontent: res.data.html,//给编辑文章用
           leassonTitle: res.data.title,
           time: res.data.time,
           author: res.data.author,//product.Principal
@@ -120,11 +133,9 @@ Page({
           comment: res.data.comment,
           commentNum: res.data.commentNum,
         })
-        // if (that.data.author == 这里用小程序里存储的nickname不合适){
-        //   that.setData({
-        //     isArticleMe:true
-        //   })
-        // }
+        if (res.data.appreciationurl) {
+          that.setData({ appreciationurl: res.data.appreciationurl })
+        }
         wxparse.wxParse('dkcontent', 'html', that.data.dkcontent, that, 5)
 
         // 生成画布
@@ -231,30 +242,41 @@ Page({
   delete(e) {
     // console.log(e.currentTarget.dataset.id)
     var sessionId = wx.getStorageSync('sessionId')
-    //发起网络请求
-    wx.request({
-      url: config.url + "/wx/deletewxarticle",
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      method: "POST",
-      data: {
-        id: e.currentTarget.dataset.id,
-        hotqinsessionid: sessionId
-      },
-      success: function (res) {
-        if (res.data == "ok") {
-          wx.showToast({
-            title: "删除成功！",
-            duration: 1000,
-            icon: "sucess",
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除这个文章吗？',
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          //发起网络请求
+          wx.request({
+            url: config.url + "/wx/deletewxarticle",
+            header: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "POST",
+            data: {
+              id: e.currentTarget.dataset.id,
+              hotqinsessionid: sessionId
+            },
+            success: function (res) {
+              if (res.data == "ok") {
+                wx.showToast({
+                  title: "删除成功！",
+                  duration: 1000,
+                  icon: "sucess",
+                })
+              } else {
+                wx.showToast({
+                  title: "删除失败！",
+                  duration: 1000,
+                  icon: "err",
+                })
+              }
+            }
           })
-        } else {
-          wx.showToast({
-            title: "删除失败！",
-            duration: 1000,
-            icon: "err",
-          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
         }
       }
     })
@@ -262,10 +284,10 @@ Page({
 
   // 编辑文章
   editor(e) {
-    var that=this
+    var that = this
     // console.log(that.data.articlecontent)
     wx.navigateTo({
-      url: '../editortopic/editortopic?id=' + e.currentTarget.dataset.id// + '&title=' + that.data.leassonTitle + '&content=' + that.data.articlecontent
+      url: '../../packageA/pages/editortopic/editortopic?id=' + e.currentTarget.dataset.id// + '&title=' + that.data.leassonTitle + '&content=' + that.data.articlecontent
     })
   },
   //详情页面
@@ -313,7 +335,7 @@ Page({
           title: that.data.liked ? "点赞成功" : "点赞取消",
           duration: 1000,
           icon: "sucess",
-          make: true
+          mask: true,
         })
       }
     })
@@ -333,7 +355,7 @@ Page({
       title: newData.collectionStatus ? "收藏成功" : "收藏取消",
       duration: 1000,
       icon: "sucess",
-      make: true
+      mask: true,
     })
   },
 
@@ -997,6 +1019,287 @@ Page({
     //     })
     //   }
     // }, 100)
+  },
+
+  //平台赞赏弹框
+  showCustomDialog() {
+    // 不允许自己给自己赞赏
+    if (this.data.isArticleMe) {
+      wx.showToast({
+        title: "不能赞赏自己",
+        duration: 1500,
+        icon: "none"
+      })
+      return
+    }
+    // 未登录也不允许赞赏
+    if (!app.globalData.isLogin) {
+      wx.showToast({
+        title: "用户未登录",
+        duration: 1500,
+        icon: "none"
+      })
+      return
+    }
+    // this.setData({
+    // isAdmin: app.globalData.isAdmin
+    // use_id: app.globalData.user_id
+    // })
+    //获取账户余额
+    var that = this;
+    var sessionId = wx.getStorageSync('sessionId')
+    //发起网络请求
+    wx.request({
+      url: config.url + "/wx/getwxusermoney",
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      method: "GET",
+      data: {
+        app_version: 6,
+        hotqinsessionid: sessionId
+      },
+      success: function (res) {
+        // if (res.data.userid == app.globalData.user_id) {
+        //   wx.showToast({
+        //     // title: that.data.liked ? "赞赏成功" : "赞赏取消",
+        //     title: "不能赞赏自己",
+        //     duration: 1500,
+        //     icon: "none"
+        //   })
+        //   return
+        // }
+        that.setData({
+          balance: res.data.amount,
+          payshow: true
+        });
+      }
+    })
+  },
+
+  //微信赞赏弹框，不支持包里的图片
+  showCustomDialogWx() {
+    wx.previewImage({
+      urls: [this.data.appreciationurl],
+    });
+    // this.setData({ wxpayshow: true });
+  },
+
+  //平台赞赏弹框关闭
+  onClose(event) {
+    this.setData({
+      payshow: false
+    });
+  },
+
+  //微信赞赏弹框关闭
+  onCloseWx(event) {
+    this.setData({
+      wxpayshow: false
+    });
+  },
+
+  gold1(event) {
+    this.setData({
+      plain1: !this.data.plain1,
+      plain2: true,
+      plain5: true,
+      plain10: true,
+      plain20: true,
+      plain50: true,
+    })
+    if (!this.data.plain1) {
+      this.setData({
+        showconfirmbutton: true,
+        amount: 1
+      })
+    } else {
+      this.setData({
+        showconfirmbutton: false,
+        amount: 0
+      })
+    }
+  },
+
+  gold2(event) {
+    this.setData({
+      plain2: !this.data.plain2,
+      plain1: true,
+      plain5: true,
+      plain10: true,
+      plain20: true,
+      plain50: true,
+    })
+    if (!this.data.plain2) {
+      this.setData({
+        showconfirmbutton: true,
+        amount: 2
+      })
+    } else {
+      this.setData({
+        showconfirmbutton: false,
+        amount: 0
+      })
+    }
+  },
+
+  gold5(event) {
+    this.setData({
+      plain5: !this.data.plain5,
+      plain1: true,
+      plain2: true,
+      plain10: true,
+      plain20: true,
+      plain50: true,
+    })
+    if (!this.data.plain5) {
+      this.setData({
+        showconfirmbutton: true,
+        amount: 5
+      })
+    } else {
+      this.setData({
+        showconfirmbutton: false,
+        amount: 0
+      })
+    }
+  },
+
+  gold10(event) {
+    this.setData({
+      plain10: !this.data.plain10,
+      plain1: true,
+      plain2: true,
+      plain5: true,
+      plain20: true,
+      plain50: true,
+    })
+    if (!this.data.plain10) {
+      this.setData({
+        showconfirmbutton: true,
+        amount: 10
+      })
+    } else {
+      this.setData({
+        showconfirmbutton: false,
+        amount: 0
+      })
+    }
+  },
+
+  gold20(event) {
+    this.setData({
+      plain20: !this.data.plain20,
+      plain2: true,
+      plain5: true,
+      plain10: true,
+      plain1: true,
+      plain50: true,
+    })
+    if (!this.data.plain20) {
+      this.setData({
+        showconfirmbutton: true,
+        amount: 20
+      })
+    } else {
+      this.setData({
+        showconfirmbutton: false,
+        amount: 0
+      })
+    }
+  },
+
+  gold50(event) {
+    this.setData({
+      plain50: !this.data.plain50,
+      plain2: true,
+      plain5: true,
+      plain10: true,
+      plain20: true,
+      plain1: true,
+    })
+    if (!this.data.plain50) {
+      this.setData({
+        showconfirmbutton: true,
+        amount: 50
+      })
+    } else {
+      this.setData({
+        showconfirmbutton: false,
+        amount: 0
+      })
+    }
+  },
+
+  // setPlain: function (e) {
+  //   this.setData({
+  //     plain: !this.data.plain
+  //   })
+  // },
+  // 平台赞赏金额写入用户
+  pay: function (event) {
+    var that = this;
+    // var liked = that.data.liked;
+    // var amount = that.data.amount; //当前选择数
+    var sessionId = wx.getStorageSync('sessionId')
+    //发起网络请求
+    wx.request({
+      url: config.url + "/wx/addwxuserpays",
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      method: "POST",
+      data: {
+        articleid: that.data.id,
+        amount: that.data.amount,
+        app_version: 6,
+        hotqinsessionid: sessionId
+      },
+      success: function (res) {
+        // if (!liked) {
+        //   // views: ++this.data.views,
+        //   likeNum++;
+        //   liked = true;
+        // } else {
+        //   --likeNum;
+        //   liked = false;
+        // }
+        // break;
+        // that.setData({
+        //   liked: liked,
+        //   likeNum: likeNum,
+        // })
+        // console.log(res.data)
+        if (res.data.id == 0) {
+          wx.showToast({
+            title: "用户未登陆!",
+            duration: 1000,
+            icon: "none"
+          })
+        } else if (res.data.id == 1) {
+          wx.showToast({
+            title: "写入数据错误!",
+            duration: 1000,
+            icon: "none"
+          })
+        } else {
+          wx.showToast({
+            // title: that.data.liked ? "赞赏成功" : "赞赏取消",
+            title: "赞赏成功!",
+            duration: 1000,
+            mask: true,//是否显示透明蒙层，防止触摸穿透，默认：false 
+          })
+        }
+      },
+      fail: function (res) {
+        wx.showToast({
+          // title: that.data.liked ? "赞赏成功" : "赞赏取消",
+          title: "赞赏失败：（",
+          duration: 1000,
+          icon: "none"
+        })
+      }
+    })
   },
 
   //获取容器高度，使页面滚动到容器底部

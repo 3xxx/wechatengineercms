@@ -3,7 +3,7 @@ var app = getApp();
 var config = require('../../config.js');
 var imgUrls1 = []
 var page = 1; //分页标识，第几次下拉，用户传给后台获取新的下拉数据
-
+var limit = 12;
 var searchpage = 1; // 当前页数-搜索页
 var searchTitle = ""; // 搜索关键字
 var msgListKey = ""; // 文章列表本地缓存key
@@ -92,6 +92,7 @@ Page({
     var apiUrl = config.url + '/wx/getwxdiaries'; //文章列表接口地址
     var postData = {
       page: pg, //分页标识
+      page: 12,
       app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
     }
     wx.request({
@@ -133,7 +134,7 @@ Page({
 
   adddiary: function() {
     wx.navigateTo({
-      url: '../diary/diary'
+      url: '../../packageA/pages/diary/diary'
     })
   },
 
@@ -144,7 +145,7 @@ Page({
       leassonId: e.currentTarget.dataset.id
     })
     wx.navigateTo({
-      url: '../diarydetail/diarydetail?id=' + this.data.leassonId
+      url: '/packageA/pages/diarydetail/diarydetail?id=' + this.data.leassonId
     })
   },
 

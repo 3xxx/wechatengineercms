@@ -1,0 +1,18 @@
+<wxs module="tutil" src="../../../utils/date.wxs">
+</wxs>
+
+  <view wx:if="{{!isLogin}}">
+    <navigator url="../login/login">
+      <text class="register_text">还没有登录，点击登录吧</text>
+    </navigator>
+  </view>
+<view wx:if="{{isLogin}}" class='check_image_bd'>
+  <image class='check_image' src='{{appreciationphoto}}' bindtap='addAppreciationPhoto'></image>
+</view>
+<view class="row">
+  <van-col offset="4">账户余额：{{balance}}金币</van-col>
+</view>
+<view class='leassonListOut' wx:for="{{myappreciation}}" wx:key="{{item.id}}">
+  <!-- <van-cell icon="location-o" title="{{item.Article.Subtext}}" is-link link-type="navigateTo" url="" value-class="{{item.Amount<0?'reserve':''}}" value="{{tutil.reverseint(item.Amount)}}" label="{{tutil.formatTime(item.UpdatedAt)}}" /> -->
+  <van-cell icon="location-o" title="{{item.Article.Subtext}}" is-link link-type="navigateTo" url="" value-class="reserve" value="{{0-item.Amount}}" label="{{tutil.formatTime(item.UpdatedAt)}}" />
+</view>

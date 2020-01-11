@@ -1,0 +1,46 @@
+/* pages/mypay/mypay.wxss */
+.avatar {
+  display: block;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #31b0d5;
+  color: #fff;
+  margin: 0 auto;
+  text-align: center;
+  float: right;
+  /* background-color: #fff; */
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  /* border: 0 solid #fff; *//* border-radius: 500px; */
+  box-shadow: 4px 1px 1px #ccc;
+  opacity: 0.6;
+}
+
+.check_image_bd {
+    width: 100%;
+    align-content: center;
+}
+
+.check_image {
+    width: 600rpx;
+    /* height: 600rpx; */
+    padding-left:75rpx; 
+}
+
+.row {
+  height: 44px;
+  margin-bottom: 15px;
+}
+
+.reserve{
+  color:rgb(255, 136, 0) !important;
+}
+
+.register_text{
+  color:darkgray;
+ /* text-align: center; */
+  display: flex;
+  justify-content: center;
+}

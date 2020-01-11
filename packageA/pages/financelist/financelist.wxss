@@ -1,0 +1,22 @@
+/* pages/diarylist/diarylist.wxss */
+@import '../../../libs/style/fontawesome.wxss';
+
+.avatar {
+  display: block;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #31b0d5;
+  color: #fff;
+  margin: 0 auto;
+  text-align: center;
+  float: right;
+  /* background-color: #fff; */
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  /* border: 0 solid #fff; *//* border-radius: 500px; */
+  box-shadow: 4px 1px 1px #ccc;
+  opacity: 0.6;
+}
+

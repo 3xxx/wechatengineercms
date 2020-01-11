@@ -1,0 +1,54 @@
+<view class="page__bd">
+  <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errorMsg}}</view>
+  <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="back_img">
+  </view>
+  <view style="position:absolute;top:{{windowHeight * 0.06}}px;">
+    <image src="../../../images/meBack.jpg" style="width: {{windowWidth * 0.4}}px;height:{{windowWidth * 0.4}}px; margin-left:{{windowWidth * 0.5 - 80}}px;border-radius:{{windowWidth * 0.2}}px;"></image>
+  </view>
+  <form bindsubmit="formSubmit" bindreset="formReset">
+    <view class="login_info" style="top:{{windowHeight * 0.35}}px;width: {{windowWidth * 0.92}}px;">
+      <view class="weui-cells weui-cells_after-title login_form">
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">账号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入账号" type="text" maxlength="20" focus="true" name="account" value="{{account}}" />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">密码</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入密码" type="password" maxlength="10" name="password" value="{{password}}" />
+          </view>
+        </view>
+        <!--
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">验证码</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入验证码" type="text" maxlength="4" name="vcode"/>
+          </view>
+          <view class="weui-cell__ft">
+            <image class="weui-vcode-img" src="{{vcodeImg}}" style="width: 108px"></image>
+          </view>
+        </view>
+        -->
+      </view>
+
+      <view class="weui-btn-area">
+        <button class="weui-btn" type="primary" formType="submit">登录</button>
+      </view>
+      <navigator url="../register/register">
+        <text class="register_text">还没有账号，点击注册吧</text>
+      </navigator>
+      
+      <view class="weui-cells__tips"></view>
+    </view>
+  </form>
+</view>

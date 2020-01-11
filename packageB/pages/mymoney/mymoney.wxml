@@ -1,0 +1,22 @@
+<!--pages/mymoney/mymoney.wxml-->
+<!-- 记得引入上面这个才能格式化日期哦 -->
+<wxs module="tutil" src="../../../utils/date.wxs">
+</wxs>
+<view class="row">
+  <van-col offset="4">账户余额：{{balance}}金币</van-col>
+</view>
+<view class='leassonListOut' wx:for="{{mymoney}}" wx:key="{{item.id}}">
+  <!-- <van-cell icon="location-o" title="{{item.Article.Subtext}}" is-link link-type="navigateTo" url="" value-class="{{item.Amount<0?'reserve':''}}" value="{{0-item.Amount}}" label="{{tutil.formatTime(item.UpdatedAt)}}" /> -->
+  <van-cell wx:if="{{item.User2ID == user_id}}" icon="location-o" title="{{item.Article.Subtext}}" is-link link-type="navigateTo" url="" value-class="reserve" value="{{0-item.Amount}}" label="{{tutil.formatTime(item.UpdatedAt)}}" />
+  <van-cell wx:else icon="location-o" title="{{item.Article.Subtext}}" is-link link-type="navigateTo" url="" value="{{item.Amount}}" label="{{tutil.formatTime(item.UpdatedAt)}}" />
+  
+</view>
+<!-- .reserve{
+  color:rgba(46,164,82,1) !important;
+}
+ 
+<van-cell
+  title="储备金"
+  value-class="reserve"
+  value="￥270.35">
+</van-cell> 参考如上代码，即可知道如何使用VANT的外部样式类-->

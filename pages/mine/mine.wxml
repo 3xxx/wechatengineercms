@@ -2,86 +2,52 @@
 <view class="page">
   <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="userinfo-btn">点击微信授权 </button>
-    <!-- <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">获取用户信息</button> -->
+
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
 
-  <!-- <view class="weui-cell__bd">
-      <navigator url="../login/login">
-        点击登录</navigator>
-    </view> -->
   <view wx:if="{{!hasRegist}}">
-    <navigator url="../register/register">
+    <navigator url="../../packageB/pages/register/register">
       <text class="register_text">还没有账号，点击注册吧</text>
     </navigator>
   </view>
-  <!-- <view wx:if="{{hasRegist && !hasUserInfo}}"> -->
+
   <button wx:if="{{hasRegist && !hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击微信授权 </button>
-  <!-- </view> -->
+
   <view wx:if="{{hasRegist && hasUserInfo}}">
-    <navigator url="../updatepass/updatepass">
+    <navigator url="../../packageB/pages/updatepass/updatepass">
       <text class="register_text">已登录，修改密码</text>
     </navigator>
   </view>
 
-  <view class="separate"></view>
-  <!-- <view class="person-line"></view> -->
-  <view class="order" catchtap="toOrder">
-    <text class="myorder-text">我的作品</text>
-    <text class="myorderlook-text" id='second'>查看全部作品</text>
-  </view>
-  <view class="separate"></view>
+  <van-cell icon="location-o" title="我的钱包" is-link link-type="navigateTo" url="../../packageB/pages/mymoney/mymoney" value="钱包" />
+  <van-cell icon="location-o" title="获得赞赏" is-link link-type="navigateTo" url="../../packageB/pages/myappreciation/myappreciation" value="收入" />
+  <van-cell icon="location-o" title="赞赏花费" is-link link-type="navigateTo" url="../../packageB/pages/mypay/mypay" value="支出" />
+  <van-cell icon="location-o" title="我的收藏" is-link link-type="navigateTo" url="../../packageB/pages/mycollect/mycollect" value="收藏" />
+  <van-cell wx:if="{{isAdmin}}" icon="location-o" title="添加用户" is-link link-type="navigateTo" url="../../packageB/pages/adduser/adduser" value="用户" />
 
-  <!-- <view class="navs">
-    <block wx:for-items="{{orderItems}}" wx:key="name">
-      <view class="nav-item" catchtap="toOrder" data-type="{{item.name}}" data-typeid="{{item.typeId}}">
-        <image src="{{item.imageurl}}" class="nav-image" />
-        <text>{{item.name}}</text>
-      </view>
-    </block>
-  </view> -->
-
-  <view class="separate"></view>
-  <view class="person-list">
-    <view class="list-item" data-id="draw" bindtap="seeDetail">
-      <image class="item-image" src="../../images/color-lens.png"></image>
-      <text class="item-text">日志</text>
-    </view>
-    <view class="list-item" data-id="calligraphy" bindtap="seeDetail">
-      <image class="item-image" src="../../images/paint-brush.png"></image>
-      <text class="item-text">图纸</text>
-    </view>
-
-    <view class="person-line"></view>
-
-    <view class="list-item" data-id="writing" bindtap="seeDetail">
-      <image class="item-image" src="../../images/pencil.png"></image>
-      <text class="item-text">规范</text>
-    </view>
-    <view class="list-item" data-id="other" bindtap="seeDetail">
-      <image class="item-image" src="../../images/livejoumal.png"></image>
-      <text class="item-text">其他</text>
-    </view>
-    <!-- <view class="list-item">
-      <image class="item-image" src="../../images/star3-faad14.png"></image>
-      <text class="item-text">我的收藏</text>
-    </view>
+  <!--
     <view class="list-item">
       <image class="item-image" src="../../images/news-faad14.png"></image>
       <text class="item-text">我的评论</text>
     </view>
-    <view class="list-item">
-      <image class="item-image" src="../../images/heart-faad14.png"></image>
-      <text class="item-text">我的点赞</text>
-    </view> -->
-  </view>
+    <view class="list-item" data-id="other" bindtap="seeDetail">
+      <image class="item-image" src="../../images/star3-faad14.png"></image>
+      <text class="item-text">我的收藏</text>
+    </view>
+    <view wx:if="{{isAdmin}}" class="list-item" data-id="other" bindtap="addUser">
+      <image class="item-image" src="../../images/star3-faad14.png"></image>
+      <text class="item-text">添加用户</text>
+    </view>
+ -->
 
   <button wx:if="{{!hasLocation}}" open-type="openSetting" bindopensetting="callback">打开授权信息面板</button>
-  <!-- <navigator url="../search/search"> -->
   <button type="primary" bindtap="checkin"> 打卡</button>
-  <!-- <button type="default" bindtap="diarylist"> 设代日记</button> -->
-  <!-- </navigator> -->
+  <button type="primary" bindtap="finance"> 财务登记</button>
+  <view class="tool">
+    <van-button icon="wechat" round type="warning" size="small" bind:click="showCustomDialogWx">微信赞赏平台</van-button>
+  </view>
 </view>

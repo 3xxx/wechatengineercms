@@ -1,0 +1,9 @@
+/* pages/mymoney/mymoney.wxss */
+.row {
+  height: 44px;
+  margin-bottom: 15px;
+}
+
+.reserve{
+  color:rgb(255, 136, 0) !important;
+}

@@ -52,18 +52,26 @@ Page({
     that.getArticles(1); //第一次加载数据:绘画
   },
 
-  onChange(e) {//打开手风琴
-    // console.log(e)
-    // if (e.detail.key.indexOf(this.key) !== -1) {
-    //   return wx.showModal({
-    //     title: 'No switching is allowed',
-    //     showCancel: !1,
-    //   })
-    // }
-    // this.setData({
-    //   current: e.detail.key,
-    // })
+  // vant打开手风琴
+  onChange(event) {
+    // console.log(event.detail)
+    this.setData({
+      activeNames: event.detail
+    });
   },
+
+  // onChange(e) {//打开手风琴
+  // console.log(e)
+  // if (e.detail.key.indexOf(this.key) !== -1) {
+  //   return wx.showModal({
+  //     title: 'No switching is allowed',
+  //     showCancel: !1,
+  //   })
+  // }
+  // this.setData({
+  //   current: e.detail.key,
+  // })
+  // },
 
   // 下拉刷新
   onPullDownRefresh: function() {
@@ -198,7 +206,7 @@ Page({
     //设置默认值
     pg = pg ? pg : 1;
     var that = this;
-    var apiUrl = config.url + '/wx/getwxarticles'; //文章列表接口地址
+    var apiUrl = this.data.apiUrl
     var postData = {
       page: pg, //分页标识
       app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
@@ -270,7 +278,7 @@ Page({
   },
 
   // tab切换事件
-  changeMenu: function(e) {
+  onClick(e) {
     // const radioo = this.data.actIndex
     // console.log(e.currentTarget.id)
     switch (e.currentTarget.id) {
@@ -519,6 +527,7 @@ Page({
       // hotqinsessionid: sessionId
       // },
       success: function (res) {
+        wx.hideLoading()
         // console.log(res)
         const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
         wx.openDocument({
@@ -526,23 +535,22 @@ Page({
           fileType: 'pdf',
           success: function (res) {
             console.log('打开成功');
-            wx.hideLoading()
           },
           fail: function (res) {
             // console.log(res);
             wx.showToast({
               title: res.data.info,
-              icon: 'loading',
+              // icon: 'loading',
               duration: 1500
             })
           }
         })
       },
       fail: function (res) {
-        console.log(res);
+        wx.hideLoading();
         wx.showToast({
           title: res.data.info,
-          icon: 'loading',
+          // icon: 'loading',
           duration: 1500
         })
       },
@@ -551,8 +559,8 @@ Page({
 
   //搜索图纸页面
   searchDraw: function (e) {
-    console.log(e)
-    if (!this.data.drawingFocus && this.data.otherFocus){
+    // console.log(e)
+    if (!this.data.drawingFocus && this.data.otherFocus) {
       this.setData({
         searchId: e.currentTarget.dataset.id
       })
