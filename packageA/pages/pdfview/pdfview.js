@@ -176,6 +176,14 @@ Page({
     })
   },
 
+  onShow: function () {
+    if (app.globalData.projectConfig){
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
+  },
+
   bindGetUserInfo(e) {
     console.log(e.detail.userInfo)
   },
@@ -186,7 +194,7 @@ Page({
     return {
       desc: '来自珠江三角洲水资源配置工程设代处~',
       title: '珠三角设代plus-分享文件链接',
-      path: 'pages/pdfview/pdfview?id=' + this.data.Id + '&title=' + this.data.Title + '&actIndex=' + this.data.actIndex + '&link=' + this.data.Link
+      path: 'packageA/pages/pdfview/pdfview?id=' + this.data.Id + '&title=' + this.data.Title + '&actIndex=' + this.data.actIndex + '&link=' + this.data.Link
     }
   },
 
@@ -702,6 +710,10 @@ Page({
       that.setData({
         downloadurl: config.url + '/wx/wxstandardpdf/' + e.currentTarget.dataset.id,
       });
+    } else if (that.data.actIndex == 'draw') {//设计页
+      that.setData({
+        downloadurl: config.url + '/wx/getwxpdf/' + e.currentTarget.dataset.id,
+      });
     } else {
       that.setData({
         downloadurl: config.url + '/wx/wxpdf/' + e.currentTarget.dataset.id,
@@ -720,7 +732,7 @@ Page({
       },
       success: function (res) {
         // console.log(res)
-        wx.hideLoading()
+        wx.hideLoading();
         const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
         wx.openDocument({
           filePath: filePath,
@@ -739,8 +751,8 @@ Page({
         })
       },
       fail: function (res) {
-        wx.hideLoading()
         // console.log(res);
+        wx.hideLoading();
         wx.showToast({
           title: res.data.info,
           // icon: 'loading',

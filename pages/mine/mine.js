@@ -107,6 +107,7 @@ Page({
         hasLocation: true
       })
     };
+
     if (app.globalData.isAdmin){
       that.setData({
         isAdmin:true
@@ -148,8 +149,13 @@ Page({
    */
   onShow: function () {
     this.setData({
-      hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
-    })
+      hasRegist: app.globalData.hasRegist//naviback返回此页不会触发onload，但是会触发onshow
+    });
+    if (app.globalData.projectConfig){
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
   },
 
   /**
@@ -209,11 +215,15 @@ Page({
   },
 
   //详情页面
-  // seeMyMoney: function (e) {
-  //   wx.navigateTo({
-  //     url: '../../packageB/pages/mymoney/mymoney'
-  //   })
-  // },
+  seeMyMoney: function (e) {
+    // console.log(e)
+    // this.setData({
+    // var id = e.currentTarget.dataset.id
+    // })
+    wx.navigateTo({
+      url: '../../packageB/pages/mymoney/mymoney'
+    })
+  },
 
   //打卡
   checkin: function (e) {
@@ -246,6 +256,13 @@ Page({
         url: '../../packageA/pages/search/search'
       })
     }
+  },
+  
+  // 项目切换
+  selectproj:function(){
+    wx.navigateTo({
+      url: '/pages/projectlist/projectlist',
+    })
   },
 
   //财务登记

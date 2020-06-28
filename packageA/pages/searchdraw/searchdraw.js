@@ -25,7 +25,7 @@ Page({
     scrollTop: 100,
     author: '珠三角设代',
     // leassonList: [],//文章列表
-    actIndex: 'article',
+    actIndex: 'draw',//这个为何无法赋值给页面呢？
     apiUrl: config.url + '/wx/searchwxdrawings',
     leassonId: '',
 
@@ -37,9 +37,9 @@ Page({
     inputVal: "", // 搜索的内容
     searchLogShowed: false, // 是否显示搜索历史记录
     articleFocus: false, //是否是文章页
-    // searchFocus: true, //是否搜索框页
-    standardFocus: true, //是否规范页
-    otherFocus: true, //是否其他页
+    drawFocus: true, //是否设计页
+    standardFocus: false, //是否规范页
+    otherFocus: false, //是否其他页
     searchshow: false, //页面是显示搜索（图纸、规范、其他）还是显示文章列表-首页
   },
 
@@ -47,10 +47,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
+    // console.log(options)
     this.setData({
       id: options.id
     })
+    this.loadMsgData(1)
   },
 
   /**
@@ -64,7 +65,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
   },
 
   /**
@@ -101,7 +106,7 @@ Page({
   onShareAppMessage: function () {
     return {
       title: '珠三角设代plus',
-      path: 'pages/searchdraw/searchdraw'
+      path: 'packageA/pages/searchdraw/searchdraw'
     }
   },
 
@@ -112,12 +117,12 @@ Page({
 
   // 页面上拉触底事件（上拉加载更多）
   onReachBottom: function () {
-    if (!this.data.searchshow) {
+    // if (!this.data.searchshow) {
       // console.log(searchpage);
-      if ("" != searchTitle) {
+      // if ("" != searchTitle) {
         this.loadMsgData(searchpage)
-      }
-    }
+      // }
+    // }
   },
   // 清缓存
   clearCache: function () {
@@ -241,7 +246,7 @@ Page({
       searchLogShowed: false
     });
     // pageNum = 1;
-    if ("" != searchTitle) { //20190301修改此处
+    if ("" != searchTitle) { //20190301修改此处 全局变量，不需要加that.data
       that.loadMsgData(1);
       // 搜索后将搜索记录缓存到本地
       // 循环保证不重复的才存进去——20190707
@@ -324,7 +329,7 @@ Page({
     })
 
     var that = this;
-    if (!that.data.standardFocus) {
+    if (that.data.standardFocus) {
       that.setData({
         downloadurl: config.url + '/wx/wxstandardpdf/' + e.currentTarget.dataset.id,
       });
@@ -375,4 +380,88 @@ Page({
       },
     })
   },
+
+  //上传文件
+  uploadPDF(e) {
+    // console.log(e)
+    var that = this
+    that.setData({
+      uploadurl: config.url + '/admin/addwxattachment?pid=' + that.data.id,
+    });
+    wx.chooseMessageFile({
+      count: 10,
+      type: 'file',
+      success(res) {
+        console.log(res)
+        // tempFilePath可以作为img标签的src属性显示图片
+        // let path = res.tempFilePaths[0].path
+        const tempFilePaths = res.tempFiles
+        // that.uploadFile(tempFilePaths)
+        if (tempFilePaths.length > 0) {
+          wx.showLoading({
+            title: '上传中...',
+          })
+          //循环比较
+          for (var i = 0; i < tempFilePaths.length; i++) {
+            var imgUrl = tempFilePaths[i].path;
+            var filename = tempFilePaths[i].name;
+            var sessionId = wx.getStorageSync('sessionId')
+            console.log(that.data.uploadurl)
+            console.log(imgUrl)
+            //发起网络请求
+            wx.uploadFile({
+              //上传图片的网路请求地址
+              url: that.data.uploadurl + '&hotqinsessionid=' + sessionId,
+              //选择
+              filePath: imgUrl,
+              name: 'file',
+              formData: {
+                'filename': filename
+              },
+              success: function (res) {
+                wx.hideLoading();
+                if (res.data.info != "err") {
+                  wx.showToast({
+                    title: "上传成功",
+                    icon: "none",
+                    duration: 1500
+                  })
+                  // 加跳转
+                  wx.navigateBack({
+                    delta: 1,
+                    success: function (e) {
+                      var page = getCurrentPages().pop();
+                      if (page == undefined || page == null) return;
+                      page.onLoad();
+                    }
+                  })
+                } else {
+                  wx.showToast({
+                    title: "上传失败",
+                    icon: "none",
+                    duration: 1500
+                  })
+                }
+              },
+              fail: function (res) {
+                wx.hideLoading();
+                wx.showToast({
+                  title: "文件上传失败",
+                  icon: "none"
+                })
+              }
+            });
+            // var imgname = tempFilePaths[i].split("")[1].substring(tempFilePaths[i].split("")[1].length - 20, tempFilePaths[i].split("_")[1].length);
+            // var newupfilelist = that.data.allpath.concat(tempFilePaths[i]) + ', ';
+            // var newfilename = that.data.allfilename.concat(imgname) + ', ' + '\n';
+            // that.setData({
+            //   allpath: newupfilelist, //将文件的路径保存在页面的变量上,方便 wx.uploadFile调用
+            //   allfilename: newfilename //渲染到wxml方便用户知道自己选择了什么文件
+            // })
+          }
+        }
+      }
+    })
+  },
+
 })

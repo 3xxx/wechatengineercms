@@ -8,23 +8,22 @@
     </block>
   </view>
 
-
-  <!-- <view class="weui-cell__bd">
-      <navigator url="../login/login">
-        点击登录</navigator>
-    </view> -->
+  <view wx:if="{{!hasRegist}}">
   <navigator url="../register/register">
     <text class="register_text">还没有账号，点击注册吧</text>
   </navigator>
-
-  <view class="separate"></view>
-  <!-- <view class="person-line"></view> -->
+</view>
+  <button wx:if="{{hasRegist && !hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击微信授权 </button>
+  <view wx:if="{{hasRegist && hasUserInfo}}">
+    <navigator url="../../packageB/pages/updatepass/updatepass">
+      <text class="register_text">已登录，修改密码</text>
+    </navigator>
+  </view>
   <view class="order" catchtap="toOrder">
     <text class="myorder-text">我的作品</text>
     <text class="myorderlook-text" id='second'>查看全部作品</text>
   </view>
   <view class="separate"></view>
-
   <view class="navs">
     <block wx:for-items="{{orderItems}}" wx:key="name">
       <view class="nav-item" catchtap="toOrder" data-type="{{item.name}}" data-typeid="{{item.typeId}}">
@@ -56,7 +55,7 @@
       <text class="item-text">其他作品</text>
     </view>
 
-    <view class="person-line"></view>
+    <!-- <view class="person-line"></view>
 
     <view class="list-item">
       <image class="item-image" src="../../images/star3-faad14.png"></image>
@@ -69,7 +68,7 @@
     <view class="list-item">
       <image class="item-image" src="../../images/heart-faad14.png"></image>
       <text class="item-text">我的点赞</text>
-    </view>
+    </view> -->
     
   </view>
   <view class="separate"></view>

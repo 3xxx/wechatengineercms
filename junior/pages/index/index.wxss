@@ -1,5 +1,5 @@
-
-.page swiper{
+@import '../../libs/style/weui.wxss';
+.page swiper {
   width: 100%;
   height: 220px;
 }
@@ -59,7 +59,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between
+  justify-content: space-between;
 }
 .leassonTitle .title{
   font-size: 16px;
@@ -92,4 +92,106 @@
 }
 .collect image{
   transform: scale(1.2);
+}
+
+.contain {
+  width: 100%;
+  height: 100%;
+}
+
+.tab {
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  white-space: nowrap;
+  box-sizing: border-box;
+  overflow: hidden;
+  line-height: 100rpx;
+  background: #f7f7f7;
+  font-size: 16px;
+}
+
+tab-h {
+  width: 100%;
+  height: 80rpx;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  white-space: nowrap;
+  box-sizing: border-box;
+  overflow: hidden;
+  line-height: 80rpx;
+  background: #f7f7f7;
+  font-size: 16px;
+}
+
+.tab-item {
+  display: inline-block;
+  width: 20%;
+  text-align: center;
+  font-size: 14px;
+  color: #8f9193;
+}
+
+.active {
+  color: #ff502c;
+}
+
+.content {
+  padding-top: 100rpx;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 14px;
+}
+
+.content-item {
+  overflow-y: scroll;
+}
+
+/* 搜索 */
+/* pages/list/list.wxss */
+.weui-search-bar {
+    position:relative;
+    padding:6px 10px;
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:flex;
+    box-sizing:border-box;
+    background-color:#EFEFF4;
+    border-top:0 solid #D7D6DC;
+    border-bottom:0 solid #D7D6DC;
+    border-radius:4px;
+}
+ 
+.search-log{
+    border:1px solid #eee !important;
+    display:inline-block !important;
+    margin-left:10px !important;
+    margin-top:5px !important;
+    border-radius:5px;
+    padding-left:14px;
+    padding-right:14px;
+    box-sizing:border-box;
+    text-align:center;
+    text-decoration:none;
+    line-height:2.55555556;
+}
+ 
+.clear-search-log{
+    text-align: center;
+}
+
+.avatar {
+  display: block;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: #31b0d5;
+  color: #FFF;
+  margin: 0 auto;
+  text-align:center;
 }

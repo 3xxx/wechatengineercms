@@ -8,12 +8,24 @@
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"nodeModules": true,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.1.1",
-	"appid": "wx94558323cbd2d4e5",
+	"libVersion": "2.10.1",
+	"appid": "wx????",
 	"projectname": "%E8%B7%9F%E6%88%91%E5%AD%A6%E5%BD%A9%E9%93%85",
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
 	"isGameTourist": false,
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},

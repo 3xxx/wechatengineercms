@@ -46,6 +46,7 @@ Page({
           diarydate: res.data.Diarydate,
           leassonTitle: res.data.Title,
           time: res.data.Updated,
+          isArticleMe: res.data.isArticleMe,
           author: res.data.UserId,
           views: res.data.Views
         })
@@ -155,7 +156,7 @@ Page({
   onShareAppMessage: function() {
     return {
       title: '珠三角设代plus',
-      path: 'pages/diarydetail/diarydetail?id=' + this.data.id
+      path: 'packageA/pages/diarydetail/diarydetail?id=' + this.data.id
     }
   }
 })

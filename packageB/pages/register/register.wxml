@@ -33,7 +33,7 @@ subPassword ：确认密码
             <view class="weui-label">密码</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入平台登录密码" type="password" maxlength="10" value="{{password}}" name="password" />
+            <input class="weui-input" placeholder="请输入平台登录密码" type="password" maxlength="20" value="{{password}}" name="password" />
           </view>
         </view>
 

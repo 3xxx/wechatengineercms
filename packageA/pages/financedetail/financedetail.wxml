@@ -9,7 +9,7 @@
   <view class='author'>原创: 珠三角设代</view>
   <view class='author'>数额: {{amount}}</view>
   <!-- <view class='time'>{{time}}</view> -->
-
+  <view class='author'>是否统筹: {{consider}}</view>
   <view class="page__bd page__bd_spacing">
     <!-- style='height:{{dkheight}}px;' -->
     <view class='dk-show'>

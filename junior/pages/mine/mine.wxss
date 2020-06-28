@@ -1,5 +1,5 @@
 /* pages/mine/mine.wxss */
-@import '../../lib/style/fontawesome.wxss';
+@import '../../libs/style/fontawesome.wxss';
 .userinfo { 
   display: flex;
  flex-direction: column;
@@ -110,3 +110,34 @@
   display: flex;
   justify-content: center;
 }
+
+.tool {
+  height: 64rpx;
+  text-align: center;
+  line-height: 64rpx;
+  margin: 20rpx 28rpx 20rpx 0;
+  padding: 0px 20px 0;
+}
+
+/* 有赞字体 */
+
+@font-face {
+    font-family:'vant-icon';
+    src:url('https://img.yzcdn.cn/vant/vant-icon-3a7dc2.woff2') format('truetype');
+}
+.van-icon {
+    position:relative;
+    display:inline-block;
+    font:normal normal normal 14px/1 vant-icon;
+    font-size:inherit;
+    text-rendering:auto;
+}
+.van-icon-upgrade::before {
+    content:"\F058";
+}
+.test {
+    font-size:50px;
+    font-family:'youth';
+}
+
+button {margin: 10px;}

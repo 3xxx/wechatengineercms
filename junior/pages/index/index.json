@@ -1,3 +1,18 @@
 {
-  "navigationBarTitleText": "青少儿书画+"
+  "navigationBarTitleText": "青少儿书画",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "wux-accordion-group": "../../dist/accordion-group/index",
+    "wux-accordion": "../../dist/accordion/index",
+    "wux-cell-group": "../../dist/cell-group/index",
+    "wux-cell": "../../dist/cell/index",
+    "van-collapse": "../../component/vant/miniprogram_npm/vant-weapp/collapse/index",
+    "van-collapse-item": "../../component/vant/miniprogram_npm/vant-weapp/collapse-item/index",
+    "van-icon": "../../component/vant/miniprogram_npm/vant-weapp/icon/index",
+    "van-tab": "../../component/vant/miniprogram_npm/vant-weapp/tab/index",
+    "van-tabs": "../../component/vant/miniprogram_npm/vant-weapp/tabs/index",
+    "van-cell": "../../component/vant/miniprogram_npm/vant-weapp/cell/index",
+    "van-cell-group": "../../component/vant/miniprogram_npm/vant-weapp/cell-group/index",
+    "van-search": "../../component/vant/miniprogram_npm/vant-weapp/search/index"
+  }
 }

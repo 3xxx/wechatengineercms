@@ -1,0 +1,319 @@
+/* detail wxcss */
+@import '../../libs/style/weui.wxss';
+@import '../../libs/style/fontawesome.wxss';
+.page {
+  padding: 20px 15px;
+  box-sizing: border-box;
+}
+
+.leassonTilte {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.author {
+  font-size: 15px;
+  color: #888;
+}
+
+.time {
+  font-size: 13px;
+  color: #888;
+  margin: 10px 0 20px 0;
+}
+
+.wxParse-p {
+  font-size: 16px;
+  padding: 10px 0;
+  line-height: 26px;
+  color: #888;
+}
+
+.wxParse-img {
+  width: 100% !important;
+}
+
+.tool {
+  height: 64rpx;
+  text-align: center;
+  line-height: 64rpx;
+  margin: 20rpx 28rpx 20rpx 0;
+}
+
+.tool-item {
+  display: inline-block;
+  vertical-align: bottom;
+  margin-right: 30rpx;
+}
+
+.tool-item image {
+  height: 35rpx;
+  width: 35rpx;
+  /* vertical-align: -3px; */
+  margin-right: 10rpx;
+}
+
+.comment image {
+  transform: scale(1.0);
+}
+
+.collect image {
+  transform: scale(1.2);
+}
+
+/* pages/canvas/canvas.wxss */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 400px;
+}
+
+.share {
+  /* position: absolute;
+  bottom: 100rpx;
+  width: 70%;
+  left: 15%;
+  height: 100rpx;
+  line-height: 100rpx; *//* border: #ff6a38 1px solid; */
+  left: 30%;
+  border-radius: 20rpx;
+  width: 250rpx;
+  height: 70rpx;
+  text-align: center;
+  line-height: 70rpx;
+  font-size: 30rpx;
+  background-color: #fff;
+  letter-spacing: 2px;
+  color: #e97855;
+}
+
+.preview {
+  width: 100%;
+  height: 100%;
+  background: rgba(223, 221, 216, 0.9);
+  position: absolute;
+  z-index: 2;
+}
+
+.preview image {
+  width: 70%;
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  z-index: 3;
+  border: 1px dashed #fff;
+}
+
+.preview button {
+  width: 40%;
+  position: absolute;
+  bottom: 150rpx;
+  left: 30%;
+}
+
+
+/* 评论 */
+.release_list {
+  overflow-y: scroll;
+  background: #eee;
+  margin-bottom: 100rpx;
+}
+
+.revoke {
+  width: 108rpx;
+  margin-right: 20rpx;
+  padding: 0;
+  font-size: 25rpx;
+  background: #faad14;
+  color: white;
+  border-radius: 10rpx;
+  line-height: 2;
+}
+
+.release {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 20rpx;
+  background: white;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.release .text {
+  width: 80%;
+  font-size: 28rpx;
+  border: solid 2rpx #eee;
+  margin-right: 10rpx;
+  padding: 8rpx 10rpx;
+  border-radius: 8rpx;
+}
+
+.release text {
+  font-size: 28rpx;
+  color: #565656;
+}
+
+.releaseFocus {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  padding: 20rpx 20rpx 10rpx;
+  box-sizing: border-box;
+}
+
+.release_text {
+  padding: 10rpx;
+  width: 100%;
+  border: solid 2rpx #e6e7e9;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  border-radius: 8rpx;
+  margin-bottom: 10rpx;
+}
+
+.releaseFocus button {
+  padding: 0;
+  color: white;
+  background: green;
+  width: 112rpx;
+  height: 70rpx;
+  font-size: 30rpx;
+  margin-right: 0;
+  line-height: 70rpx;
+}
+
+.publish {
+  width: 100%; 
+  background: white;
+  display: flex;
+  margin-top: 20rpx;
+  padding-top: 40rpx;
+}
+
+.publish_list {
+  margin-bottom: 100rpx;
+  width: 100%;
+  flex: 1;
+}
+
+.publish_list text {
+  display: block;
+}
+
+.publish_list_item {
+  color: #8b3331;
+  font-size: 28rpx;
+}
+
+.publish_time {
+  font-size: 20rpx;
+  color: #555;
+  margin-top: 20rpx;
+}
+
+.like {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-dianzan2 {
+  font-size: 26rpx;
+  margin-right: 10rpx;
+}
+
+.like_num {
+  font-size: 26rpx;
+}
+
+.like_num_list {
+  display: flex;
+  align-items: center;
+  width: 10%;
+  margin-right: 10rpx;
+}
+
+/*暂无评论  */
+
+.Nocomment {
+  padding: 20rpx;
+  font-size: 30rpx;
+}
+
+.loadmore {
+  margin-bottom: 200rpx;
+}
+
+.shoppcall {
+  display: flex;
+  box-sizing: border-box;
+  padding: 20rpx;
+  align-items: center;
+  border-bottom: solid 2rpx #eee;
+}
+
+.commentpl {
+  display: block;
+  width: 100%;
+  margin-top: 30rpx;
+  padding: 0;
+}
+
+.commentpl image {
+  width: 90rpx;
+  height: 90rpx;
+  margin: 0 20rpx;
+}
+
+.redtree {
+  display: block;
+  height: 160rpx;
+  width: 100%;
+  background: white;
+  box-sizing: border-box;
+}
+
+.redtree_text {
+  font-size: 28rpx;
+  display: block;
+  word-break: break-all;
+  background: white;
+  width: 86%;
+  margin-top: 20rpx;
+  padding-bottom: 20rpx;
+}
+
+.share2 {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  overflow: inherit;
+  line-height: 1;
+  background: 0;
+}
+
+.share1 {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  overflow: inherit;
+  line-height: 1;
+  background: 0;
+}
+
+.share2::after {
+  border: none;
+}
+
+.icon:after{
+  font-family: 'iconfont';
+  font-weight: 500;
+  font-style: normal;
+  content: '\e698;'
+}

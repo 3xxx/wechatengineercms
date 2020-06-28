@@ -1,0 +1,57 @@
+<!--pages/updatepass/updatepass.wxml-->
+<!-- <text>pages/updatepass/updatepass.wxml</text> -->
+<!--
+变量说明：
+showTopTips ： 是否显示提示信息
+errorMsg ： 错误信息
+windowHeight ：设备的窗口的高度
+windowWidth ： 设备的窗口的宽度
+account ： 账号
+password ：密码
+subPassword ：确认密码
+-->
+<view class="page__bd">
+  <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errorMsg}}</view>
+  <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="back_img">
+  </view>
+  <view style="position:absolute;top:{{windowHeight * 0.06}}px;">
+    <image src="../../images/meBack.jpg" style="width: {{windowWidth * 0.4}}px;height:{{windowWidth * 0.4}}px; margin-left:{{windowWidth * 0.5 - 80}}px;border-radius:{{windowWidth * 0.2}}px;"></image>
+  </view>
+  <form bindsubmit="formSubmit" bindreset="formReset">
+    <view class="login_info" style="top:{{windowHeight * 0.35}}px;width: {{windowWidth * 0.92}}px;">
+      <view class="weui-cells weui-cells_after-title login_form">
+
+        <!-- <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">用户名</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入平台用户名" type="text" maxlength="20" value="{{account}}" focus="true" name="account" />
+          </view>
+        </view> -->
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">旧密码</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入旧密码" type="password" maxlength="10" value="{{password}}" name="password" />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">新密码</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="输入新密码" type="password" maxlength="10" value="{{subPassword}}" name="subPassword" />
+          </view>
+        </view>
+ 
+      </view>
+<view class="weui-btn-area">
+          <button class="weui-btn" type="primary" formType="submit">修改</button>
+        </view>
+    </view>
+  </form>
+</view>

@@ -32,10 +32,12 @@ const {
 } = getDateString()
 Page({
   data: {
+    financeProjId: '', //财务对应的项目id
     radio: '1',
+    radio2: '1',
     // titleCount: 0,
     contentCount: 0,
-    amount: 0,//金额
+    amount: 0, //金额
     content: '',
     images: [],
     hasRegist: false, //是否注册
@@ -90,7 +92,15 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+      this.setData({
+        financeProjId: app.globalData.projectConfig.financeprojid,
+      })
+    }
     this.setData({
       hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     })
@@ -153,20 +163,22 @@ Page({
     // console.log(financeweather)
     const content = this.data.content
     const radio = this.data.radio
-    console.log(radio)
+    const radio2 = this.data.radio2
+    // console.log(radio)
     if (content) {
       // 登录
       var sessionId = wx.getStorageSync('sessionId')
       //发起网络请求
       wx.request({
-        url: config.url + '/wx/addwxfinance/25002',//本地笔记本170592
+        url: config.url + '/wx/addwxfinance/' + thata.data.financeProjId, //25002本地笔记本170592
         header: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         method: "POST",
         data: {
           hotqinsessionid: sessionId,
-          radio:radio,
+          radio: radio,
+          radio2: radio2,
           amount: amount,
           financedate: financedate,
           financeactivity: financeactivity,
@@ -174,14 +186,14 @@ Page({
           content: content
           // images: urls
         },
-        success: function(res) {
+        success: function (res) {
           if (res.data.status == 0) {
             wx.showToast({
               title: res.data.info,
               icon: 'loading',
               duration: 1500
             })
-          } else if(res.data.status == 1){
+          } else if (res.data.status == 1) {
             wx.showToast({
               title: res.data.info, //这里打印出成功
               icon: 'success',
@@ -199,7 +211,7 @@ Page({
             wx.navigateTo({
               url: `../financedetail/financedetail?id=` + res.data.id
             })
-          }else{
+          } else {
             wx.showToast({
               title: "调用接口出错",
               icon: 'wrong',
@@ -207,7 +219,7 @@ Page({
             })
           }
         },
-        fail: function(res) {
+        fail: function (res) {
           wx.showToast({
             title: "小程序调用出错",
             icon: 'wrong',
@@ -226,7 +238,7 @@ Page({
 
   onEditorReady() {
     const that = this
-    wx.createSelectorQuery().select('#editor').context(function(res) {
+    wx.createSelectorQuery().select('#editor').context(function (res) {
       that.editorCtx = res.context
     }).exec()
   },
@@ -254,14 +266,14 @@ Page({
   },
   insertDivider() {
     this.editorCtx.insertDivider({
-      success: function() {
+      success: function () {
         console.log('insert divider success')
       }
     })
   },
   clear() {
     this.editorCtx.clear({
-      success: function(res) {
+      success: function (res) {
         console.log("clear success")
       }
     })
@@ -295,7 +307,7 @@ Page({
         for (let path of that.data.images) {
           arr.push(wxUploadFile({
             // url: config.urls.question + '/image/upload',
-            url: config.url + '/wx/uploadwximgs/25002',//本地笔记本170592
+            url: config.url + '/wx/uploadwximgs/25002', //本地笔记本170592
             filePath: path,
             name: 'file',
           }))
@@ -314,7 +326,7 @@ Page({
               //   id: 'abcd',
               //   role: 'god'
               // },
-              success: function() {
+              success: function () {
                 console.log('insert image success')
                 that.setData({
                   images: [] //这里清0，否则总是将上次的图片带上
@@ -342,10 +354,19 @@ Page({
       amount: e.detail.value,
     })
   },
-//单选按钮
+  //单选按钮
   onRadioChange(e) {
-    this.setData({ radio: e.detail.value })
-    console.log(this.data.radio)
+    this.setData({
+      radio: e.detail.value
+    })
+    // console.log(this.data.radio)
+  },
+  //单选按钮
+  onRadioChange2(e) {
+    this.setData({
+      radio2: e.detail.value
+    })
+    console.log(this.data.radio2)
   },
 
   handler(e) {
@@ -353,7 +374,7 @@ Page({
   },
 
   //多选分部和天气
-  bindMultiPickerChange: function(e) {
+  bindMultiPickerChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       multiIndex: e.detail.value
@@ -369,8 +390,8 @@ Page({
       [`displayValue${key}`]: values.label,
       // [`displayValue${key}`]: values.displayValue.join(' '),
     })
-    console.log(`value${key}`)
-    console.log(`displayValue${key}`)
+    // console.log(`value${key}`)
+    // console.log(`displayValue${key}`)
   },
 
   onConfirm(e) {
@@ -382,7 +403,7 @@ Page({
     console.log(`onConfirm${index}`, e.detail)
   },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: '珠三角设代plus',
       path: 'packageA/pages/finance/finance'

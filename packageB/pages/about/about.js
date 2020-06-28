@@ -1,4 +1,5 @@
 //index.js
+var app = getApp();
 Page({
   data: {
     text: "This is page data."
@@ -11,6 +12,11 @@ Page({
   },
   onShow: function () {
     // Do something when page show.
+      if (app.globalData.projectConfig){
+        wx.setNavigationBarTitle({
+          title: app.globalData.projectConfig.projecttitle,
+        });
+      }
   },
   onHide: function () {
     // Do something when page hide.

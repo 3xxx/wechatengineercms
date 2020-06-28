@@ -1,0 +1,47 @@
+<template name="msgItem">
+  <!-- <view> -->
+  <modal title="公告内容列表" confirm-text="确认" cancel-text="取消" hidden="{{addtellHidden}}" bindconfirm="modalConfirm" bindcancel="modalCancel">
+    <!-- <label> -->
+    <!-- <view class="tellsection">
+          <input class="tellinput" bindinput="saveUsertell" placeholder="请输入QQ" value="{{addtell.contract_info}}" />
+          <input class="tellinput" bindinput="saveUsertell" placeholder="请输入微信号" value="{{addtell.contract_info}}" />
+        </view> -->
+    <!-- <view class="page__bd"> -->
+    <!-- <form bindsubmit="formSubmit" bindreset="formReset"> -->
+      <wux-cell-group title="{{datetime}}">
+        <wux-cell hover-class="none">
+          <wux-input bind:change="onChange1" label="1#车-顺德" value="{{contract_info1}}" controlled bind:clear="onClear"/>
+        </wux-cell>
+        <wux-cell hover-class="none">
+          <wux-input bind:change="onChange2" label="2#车-南沙" value="{{contract_info2}}" controlled bind:clear="onClear"/>
+        </wux-cell>
+        <wux-cell hover-class="none">
+          <wux-input bind:change="onChange3" label="3#车-东莞" value="{{contract_info3}}" controlled bind:clear="onClear"/>
+        </wux-cell>
+        <wux-cell hover-class="none">
+          <wux-input bind:change="onChange4" label="4#车-罗田" value="{{contract_info4}}" controlled bind:clear="onClear"/>
+        </wux-cell>
+      </wux-cell-group>
+      <!-- <view class="btn-area">
+        <button form-type="submit">Submit</button>
+        <button form-type="reset">Reset</button>
+      </view>
+    </form> -->
+    <!-- </view> -->
+    <!-- </label> -->
+  </modal>
+  <!-- </view> -->
+</template>
+
+<!-- <view wx:for='{{[1, 2, 3, 4, 5, 6, 7, 8, 9]}}' wx:key=''> -->
+<!--用is 使用模版-->
+<template is="msgItem" data="{{...addtell}}" />
+<!-- </view> -->
+<!-- <view class="page">
+  <view class="page_check_hd">
+    <view class="page_check_title">公告</view>
+  </view>
+</view> -->
+<view style="width: 90%;margin: 0 auto;">
+  <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="afterTapDay" bind:whenChangeMonth="whenChangeMonth" bind:onTapDay="onTapDay" bind:afterCalendarRender="afterCalendarRender"></calendar>
+</view>

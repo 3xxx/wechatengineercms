@@ -12,6 +12,7 @@ var app = getApp();
 const wxUploadFile = promisify(wx.uploadFile)
 Page({
   data: {
+    articleProjId: '', //文章对应的projectid
     titleCount: 0,
     contentCount: 0,
     title: '',
@@ -59,10 +60,18 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
     this.setData({
       hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     })
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+      this.setData({
+        articleProjId: app.globalData.projectConfig.articleid,
+      })
+    }
   },
 
   // handleTitleInput(e) {
@@ -142,7 +151,7 @@ Page({
           content: content
           // images: urls
         },
-        success: function(res) {
+        success: function (res) {
           if (res.data.status == 0) {
             wx.showToast({
               title: res.data.info,
@@ -198,10 +207,10 @@ Page({
     //     hotqinsessionid: sessionId
     //   },
     // success: function (res1) {
-    wx.createSelectorQuery().select('#editor').context(function(res) {
+    wx.createSelectorQuery().select('#editor').context(function (res) {
       that.editorCtx = res.context
       that.editorCtx.setContents({
-        html: prevPage.data.articlecontent,//that.data.content, //res1.data.html,
+        html: prevPage.data.articlecontent, //that.data.content, //res1.data.html,
         success: (res) => {
           console.log(res)
         },
@@ -211,8 +220,8 @@ Page({
       })
     }).exec()
     that.setData({
-      content: prevPage.data.articlecontent,//假如用户没有点击内容，则用这个内容
-      title: prevPage.data.leassonTitle,//假如用户没有点击标题，则用这个标题
+      content: prevPage.data.articlecontent, //假如用户没有点击内容，则用这个内容
+      title: prevPage.data.leassonTitle, //假如用户没有点击标题，则用这个标题
       titleCount: prevPage.data.leassonTitle.length
     })
     // },
@@ -246,7 +255,7 @@ Page({
 
   insertDivider() {
     this.editorCtx.insertDivider({
-      success: function() {
+      success: function () {
         console.log('insert divider success')
       }
     })
@@ -254,7 +263,7 @@ Page({
 
   clear() {
     this.editorCtx.clear({
-      success: function(res) {
+      success: function (res) {
         console.log("clear success")
       }
     })
@@ -288,7 +297,7 @@ Page({
         for (let path of that.data.images) {
           arr.push(wxUploadFile({
             // url: config.urls.question + '/image/upload',
-            url: config.url + '/wx/uploadwxeditorimg',
+            url: config.url + '/wx/uploadwxeditorimg?projectid=' + articleProjId,
             filePath: path,
             name: 'file',
           }))
@@ -307,7 +316,7 @@ Page({
               //   id: 'abcd',
               //   role: 'god'
               // },
-              success: function() {
+              success: function () {
                 console.log('insert image success')
                 that.setData({
                   images: [] //这里清0，否则总是将上次的图片带上
@@ -368,7 +377,7 @@ Page({
     $digest(this)
   },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: '珠三角设代plus',
       path: 'packageA/pages/pages/editortopic/editortopic'

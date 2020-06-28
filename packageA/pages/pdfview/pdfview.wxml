@@ -1,5 +1,5 @@
 <!-- detail wxml -->
-<import src="../../wxParse/wxParse.wxml" />
+<import src="../../../wxParse/wxParse.wxml" />
 <!-- 画布大小按需定制 这里我按照背景图的尺寸定的 hidden='{{hidden}}'  -->
 <canvas canvas-id="shareImg" style="width:545px;height:771px"></canvas>
 <!-- 预览区域  -->

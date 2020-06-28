@@ -19,6 +19,8 @@ App({
     activity_location: null,
     activity_lat: -1,
     activity_lng: -1,
+    projectConfig:null,//全局项目配置
+    //pppid:null,
   },
   data: {
     // haveLocation: false,
@@ -34,7 +36,8 @@ App({
     // var logs = wx.getStorageSync('logs') || []
     // logs.unshift(Date.now())
     // wx.setStorageSync('logs', logs)
-    //开发者在session_key失效时，可以通过重新执行登录流程获取有效的session_key。使用接口wx.checkSession()可以校验session_key是否有效，从而避免小程序反复执行登录流程。
+    //开发者在session_key失效时，可以通过重新执行登录流程获取有效的session_key。
+    // 使用接口wx.checkSession()可以校验session_key是否有效，从而避免小程序反复执行登录流程。
     let loginFlag = wx.getStorageSync('sessionId');
     // console.log(loginFlag)
     // wx.getStorage({
@@ -90,8 +93,9 @@ App({
                 that.globalData.hasRegist = wx.getStorageSync('hasRegist')
                 that.globalData.isAdmin = wx.getStorageSync('isAdmin')
                 that.globalData.photo = wx.getStorageSync('photo')
-                that.globalData.appreciationphoto = wx.getStorageSync('appreciationphoto')
-                // console.log(that.globalData.user_id)
+                that.globalData.appreciationphoto = wx.getStorageSync('appreciationphoto')//用户赞赏码
+                that.globalData.projectConfig = wx.getStorageSync('projectConfig')
+                //console.log(that.globalData.projectConfig)
                 // console.log(that.globalData.hasRegist)
                 // console.log(that.globalData.isAdmin)
               } else {//ecms中session失效了
@@ -197,6 +201,88 @@ App({
       }
     })
 
+    //获取项目配置文件
+    //如果本机没有存储，则弹出跳转项目选择框
+    var value = wx.getStorageSync('projectConfig')
+    if (value) {
+      // Do something with return value
+      that.globalData.projectConfig =value
+    }else{
+      console.log('读取key发生错误')
+        wx.showModal({
+          title: '提示',
+          content: '未选定项目，是否前去选择？',
+          success (res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              wx.navigateTo({
+                url: '/pages/projectlist/projectlist',
+                events: {
+                  // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+                  acceptDataFromOpenedPage: function(data) {
+                    console.log(data)
+                  },
+                  someEvent: function(data) {
+                    console.log(data)
+                  }
+                },
+                success: function(res) {
+                  // 通过eventChannel向被打开页面传送数据
+                  res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
+                }
+              })
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+              wx.showToast({
+                title: '未选择项目！',
+                icon: 'none',
+                duration: 2000
+              });
+            }
+          }
+        })
+    }
+
+    // wx.getStorage({
+    //   key: 'projectconfig',
+    //   success(res) {
+    //     console.log(res.data)
+    //     that.globalData.pppid = "789789"
+    //     that.globalData.projectConfig = wx.getStorageSync('projectConfig')
+    //     console.log(that.globalData.pppid)
+    //   },
+    //   fail: function() {
+    //     console.log('读取key发生错误')
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '未选定项目，是否前去选择？',
+    //       success (res) {
+    //         if (res.confirm) {
+    //           console.log('用户点击确定')
+    //           wx.navigateTo({
+    //             url: '/pages/projectlist/projectlist',
+    //             events: {
+    //               // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+    //               acceptDataFromOpenedPage: function(data) {
+    //                 console.log(data)
+    //               },
+    //               someEvent: function(data) {
+    //                 console.log(data)
+    //               }
+    //             },
+    //             success: function(res) {
+    //               // 通过eventChannel向被打开页面传送数据
+    //               res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
+    //             }
+    //           })
+    //         } else if (res.cancel) {
+    //           console.log('用户点击取消')
+    //         }
+    //       }
+    //     })
+    //   }
+    // })
+    
     // 获取位置_没必要在这里获取位置，需要的地方再获取
     // wx.getLocation({
     //   type: 'wgs84',
@@ -217,7 +303,7 @@ App({
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: config.url + '/wx/wxlogin/4',//珠三角设代plus 1
+            url: config.url + '/wx/wxlogin/1',//珠三角设代plus 1
             data: {
               code: res.code
             },

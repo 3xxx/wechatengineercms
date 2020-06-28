@@ -15,6 +15,7 @@ Page({
     financecontent:'',
     leassonTitle: '',
     amount:0,
+    consider:false,
     // time:'',
     // author:'',
     // financedate:'',
@@ -47,9 +48,11 @@ Page({
           financedate: res.data.Financedate,
           // leassonTitle: res.data.Title,
           time: res.data.Updated,
+          isArticleMe: res.data.isArticleMe,
           author: res.data.UserId,
           views: res.data.Views,
-          amount:res.data.amount
+          amount:res.data.amount,
+          consider:res.data.consider
         })
         wxparse.wxParse('dkcontent', 'html', that.data.dkcontent, that, 5)
       }

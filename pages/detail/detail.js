@@ -7,7 +7,7 @@ var config = require('../../config.js');
 Page({
   data: {
     isAdmin: false,
-    isLogin: false,
+    // isLogin: false,
     isArticleMe: false,//文章作者本人可以编辑
     dkheight: 0,
     dkcontent: "",//文章显示用
@@ -72,8 +72,6 @@ Page({
       id: options.id,
       isAdmin: app.globalData.isAdmin
     })
-    // this.data.isAdmin = app.globalData.isAdmin
-    // console.log(this.data.isAdmin)
     // 获得高度
     // let winPage = this;
     var that = this;
@@ -108,7 +106,6 @@ Page({
       url: config.url + '/wx/getwxarticle/' + options.id,
       header: {
         "Content-Type": "application/x-www-form-urlencoded",
-        // 'Cookie': sessionId,
       },
       data: {
         hotqinsessionid: sessionId
@@ -225,6 +222,14 @@ Page({
       emojis: that.data.emojis
     })
     // console.log(that.data.emojis)
+  },
+
+  onShow: function () {
+    if (app.globalData.projectConfig){
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
   },
 
   bindGetUserInfo(e) {
@@ -486,8 +491,17 @@ Page({
     })
   },
 
-  // 添加留言
+  // 添加留言_使用这个
   formSubmit(e) {
+    // 未登录也不允许评论
+    if (!app.globalData.isLogin) {
+      wx.showToast({
+        title: "用户未登录",
+        duration: 1500,
+        icon: "none"
+      })
+      return
+    }
     var that = this
     if (e.detail.value.input == '') {
       // if (this.data.releaseValue == '') {
@@ -541,25 +555,37 @@ Page({
                 //   'mbcore-auth-token': wx.getStorageSync('auth_token')
                 // },
                 success: function (res) {
-                  // 再通过setData更改Page()里面的data，动态更新页面的数据  
-                  a.push({
-                    content: e.detail.value.input, //this.data.releaseValue
-                    username: nickName,
-                    is_me: true,
-                    publish_time: time,
-                    // likes_count: 5,
-                    avatar: avatarUrl,
-                  })
-                  wx.setStorage({
-                    key: 'info',
-                    data: a,
-                  })
-                  that.setData({
-                    comment: a,
-                    releaseValue: '',
-                    releaseFocus: true, //隐藏输入框
-                    // releaselength: comments_count //更新页面发表评论总数
-                  })
+                  if (res.data.info == "SUCCESS") {
+                    // 再通过setData更改Page()里面的data，动态更新页面的数据  
+                    a.push({
+                      content: e.detail.value.input, //this.data.releaseValue
+                      username: nickName,
+                      is_me: true,
+                      publish_time: time,
+                      // likes_count: 5,
+                      avatar: avatarUrl,
+                    })
+                    wx.setStorage({
+                      key: 'info',
+                      data: a,
+                    })
+                    that.setData({
+                      comment: a,
+                      releaseValue: '',
+                      releaseFocus: true, //隐藏输入框
+                      // releaselength: comments_count //更新页面发表评论总数
+                    })
+                    wx.showToast({
+                      title: "评论成功！",
+                      icon: 'success',
+                      duration: 2000
+                    })
+                  } else {
+                    wx.showModal({
+                      title: '评论失败！',
+                      content: res.data.data,
+                    })
+                  }
                   // console.log(avatarUrl)
                 },
                 fail: function (err) {
@@ -902,7 +928,7 @@ Page({
       url: '../index/index'
     })
   },
-  //发送评论 事件处理
+  //发送评论 事件处理——这个作废
   send: function () {
     var that = this
     // console.log(that.data.releaseValue)

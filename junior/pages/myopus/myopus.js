@@ -2,6 +2,7 @@
 // var getData = require('../../data/data.js');
 var page = 1; //分页标识，第几次下拉，用户传给后台获取新的下拉数据
 const app = getApp();
+var config = require('../../config.js');
 Page({
   data: {
     articles: [], //文章列表数组
@@ -31,6 +32,7 @@ Page({
   onPullDownRefresh: function() {
     this.clearCache();
     this.getArticles(1); //第一次加载数据
+    wx.stopPullDownRefresh();
   },
   // 页面上拉触底事件（上拉加载更多）
   onReachBottom: function() {
@@ -60,41 +62,36 @@ Page({
     var that = this;
     switch (that.data.radioo) {
       case "draw":
-        var url1 = "https://zsj.itdos.com/v1/wx/getwxarticless/26175";
+        var url1 = config.url + "/wx/getwxarticless/26175";
         break;
       case "calligraphy":
-        var url1 = "https://zsj.itdos.com/v1/wx/getwxarticless/26174";
+        var url1 = config.url + "/wx/getwxarticless/26174";
         break;
       case "writing":
-        var url1 = "https://zsj.itdos.com/v1/wx/getwxarticless/26173";
+        var url1 = config.url + "/wx/getwxarticless/26173";
         break;
       case "other":
-        var url1 = "https://zsj.itdos.com/v1/wx/getwxarticless/26172";
+        var url1 = config.url + "/wx/getwxarticless/26172";
         break;
       default:
-        var url1 = "https://zsj.itdos.com/v1/wx/getwxarticless/26175";
+        var url1 = config.url + "/wx/getwxarticless/26175";
     };
-
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        if (res.code) {
-          var getData = wx.request({
-            url: url1,
-            header: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            url: url1,
-            // data: postData,
-            method: 'GET',
-            header: {
-              'content-type': 'application/x-www-form-urlencoded'
-            },
-            data: {
-              code: res.code,
+    var sessionId = wx.getStorageSync('sessionId')
+    var getData = wx.request({
+      url: url1,
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      // url: url1,
+      // data: postData,
+      method: 'GET',
+      // header: {
+      //   'content-type': 'application/x-www-form-urlencoded'
+      // },
+      data: {
+        hotqinsessionid: sessionId,
               page: pg, //分页标识
-              app_version: 3, //当前版本，后台根据版本不同给出不同的数据格式
+              app_version: 2, //当前版本，后台根据版本不同给出不同的数据格式
             },
             success: function(res) {
               if (res.data.info == "SUCCESS") { //成功
@@ -113,10 +110,6 @@ Page({
             },
             fail: function(e) {
               console.log(e);
-            }
-
-          })
-        }
       }
     })
   },
@@ -166,8 +159,8 @@ Page({
    */
   onShareAppMessage: function() {
     return {
-      title: '青少儿书画+我的',
-      path: 'pages/index/index'
+      title: '青少儿书画',
+      path: 'pages/myopus/myopus'
     }
   }
 })

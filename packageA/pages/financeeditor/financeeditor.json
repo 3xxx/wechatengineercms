@@ -1,3 +1,14 @@
 {
-  "usingComponents": {}
+  "navigationBarTitleText": "珠三角设代plus●财务",
+  "usingComponents": {
+    "wux-cell-group": "../../../dist/cell-group/index",
+    "wux-cell": "../../../dist/cell/index",
+    "wux-input": "../../../dist/input/index",
+    "wux-date-picker": "../../../dist/date-picker/index",
+    "wux-button": "../../../dist/button/index",
+    "wux-input-number": "../../../dist/input-number/index",
+    "wux-radio-group": "../../../dist/radio-group/index",
+    "wux-radio": "../../../dist/radio/index",
+    "wux-field": "../../../dist/field/index"
+  }
 }

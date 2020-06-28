@@ -7,19 +7,53 @@ var config = require('../../../config.js');
 var util = require('../../../utils/util.js');
 var app = getApp();
 
+function getDateString(date = new Date) {
+  return {
+    year: date.getFullYear(),
+    year2: date.getFullYear() + 10,
+    month: date.getMonth(),
+    month2: date.getMonth() + 1,
+    day: date.getDate(),
+    hour: date.getHours(),
+    minute: date.getMinutes(),
+  }
+}
+
+const {
+  year,
+  year2,
+  month,
+  month2,
+  day,
+  hour,
+  minute
+} = getDateString()
+
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    start_date: "2019-05-01",
-    end_date: "2019-05-02",
-    checkboxItems: [
-      { name: '拍照打卡', value: '1' },
-      { name: '地点打卡', value: '2', checked: true },
-      { name: '人脸打卡', value: '3' }
+    start_date: year + '-' + month2 + '-' + day,
+    end_date: year + '-' + month2 + '-' + day,
+    value2: [year, month2, day],
+    displayValue2: year + '-' + month2 + '-' + day,
+    displayValue3: year2 + '-' + month2 + '-' + day,
+    checkboxItems: [{
+        name: '拍照打卡',
+        value: '1'
+      },
+      {
+        name: '地点打卡',
+        value: '2',
+        checked: true
+      },
+      {
+        name: '人脸打卡',
+        value: '3'
+      }
     ],
-    activity_location: "",//address
+    activity_location: "", //address
     activity_lat: "",
     activity_lng: "",
     // address: "",
@@ -30,15 +64,33 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that= this
+    var that = this
     if (!app.globalData.hasLocation) {
       // 获取位置
       wx.getLocation({
         type: 'wgs84',
-        success: function (res) {
-          app.globalData.hasLocation = true
-          that.setData({
-            hasLocation: true
+        success: function (res) { //实例化腾通地图sdk
+          qqmapsdk = new QQMapWX({
+            key: 'EADBZ-QCZ6Q-FDK54-GBQ4X-QY5B5-CVFFZ' //这里自己的key秘钥进行填充
+          });
+          var latitude1 = res.latitude
+          var longitude1 = res.longitude
+          qqmapsdk.reverseGeocoder({
+            location: {
+              latitude: latitude1,
+              longitude: longitude1
+            },
+            success: function (res) {
+              app.globalData.activity_lat = res.result.location.lat;
+              app.globalData.activity_lng = res.result.location.lng;
+              app.globalData.activity_location = res.result.address;
+              that.setData({
+                hasLocation: true,
+                activity_lat: res.result.location.lat,
+                activity_lng: res.result.location.lng,
+                activity_location: res.result.address
+              })
+            }
           })
         },
         fail: function (res) {
@@ -46,12 +98,35 @@ Page({
         }
       })
     } else {
+      //app.userLocatioCallback = res => {
       that.setData({
         hasLocation: true,
-        activity_location:app.globalData.activity_location
+        activity_lat: app.globalData.activity_lat,
+        activity_lng: app.globalData.activity_lng,
+        activity_location: app.globalData.activity_location
       })
     };
 
+    // if (!app.globalData.hasLocation) {
+    //   // 获取位置
+    //   wx.getLocation({
+    //     type: 'wgs84',
+    //     success: function (res) {
+    //       app.globalData.hasLocation = true
+    //       that.setData({
+    //         hasLocation: true
+    //       })
+    //     },
+    //     fail: function (res) {
+    //       // console.log(res)
+    //     }
+    //   })
+    // } else {
+    //   that.setData({
+    //     hasLocation: true,
+    //     activity_location: app.globalData.activity_location
+    //   })
+    // };
   },
 
   /**
@@ -69,50 +144,50 @@ Page({
     that.setData({
       isAdmin: app.globalData.isAdmin
     })
-    if (!app.globalData.hasLocation) {
-      // 获取位置
-      wx.getLocation({
-        type: 'wgs84',
-        success: function (res) {//实例化腾通地图sdk
-          qqmapsdk = new QQMapWX({
-            key: '****' //这里自己的key秘钥进行填充
-          });
-          var latitude1 = res.latitude
-          var longitude1 = res.longitude
-          qqmapsdk.reverseGeocoder({
-            location: {
-              latitude: latitude1,
-              longitude: longitude1
-            },
-            success: function (res) {
-              app.globalData.activity_lat = res.result.location.lat;
-              app.globalData.activity_lng = res.result.location.lng;
-              app.globalData.activity_location = res.result.address;
-              that.setData({
-                hasLocation: true,
-                // activity_location: res.result.address
-              })
-            }
-          })
-        },
-        fail: function (res) {
-          // console.log(res)
-        }
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+      that.setData({
+        projectid: app.globalData.projectConfig.projectid
       })
     } else {
-      //app.userLocatioCallback = res => {
-      that.setData({
-        hasLocation: true,
-        // activity_location: app.globalData.activity_location
+      wx.showModal({
+        title: '提示',
+        content: '未选定项目，是否前去选择？',
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            wx.navigateTo({
+              url: '../../../pages/projectlist/projectlist',
+              events: {
+                // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+                acceptDataFromOpenedPage: function (data) {
+                  console.log(data)
+                },
+                someEvent: function (data) {
+                  console.log(data)
+                }
+              },
+              success: function (res) {
+                // 通过eventChannel向被打开页面传送数据
+                res.eventChannel.emit('acceptDataFromOpenerPage', {
+                  data: 'test'
+                })
+              }
+            })
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+            wx.showToast({
+              title: '未选择项目！',
+              icon: 'none',
+              duration: 2000
+            });
+          }
+        }
       })
-      // console.log(that.data.hasLocation)
-      // console.log(that.data.activity_location)
-      //}
-      // that.setData({
-      //   hasLocation: true,
-      //   activity_location: app.data.activity_location
-      // })
-    };
+    }
+
     // console.log(getApp().data.activity_location);//从position跳转过来，可以
     // console.log(this.data.address);
     // location = getApp().data.activity_location;
@@ -160,8 +235,8 @@ Page({
    */
   onShareAppMessage: function () {
     return {
-      title: '珠三角设代plus',
-      path: 'pages/new/new'
+      title: '湾区防腐蚀',
+      path: '../../../packageA/pages/new/new'
     }
   },
   /**
@@ -181,7 +256,8 @@ Page({
 
   checkboxChange: function (e) {
     console.log('checkbox发生change事件，携带value值为：', e.detail.value);
-    var checkboxItems = this.data.checkboxItems, values = e.detail.value;
+    var checkboxItems = this.data.checkboxItems,
+      values = e.detail.value;
     for (var i = 0, lenI = checkboxItems.length; i < lenI; ++i) {
       checkboxItems[i].checked = false;
       for (var j = 0, lenJ = values.length; j < lenJ; ++j) {
@@ -233,14 +309,14 @@ Page({
         // app.data.activity_lat = res.latitude;
         // app.data.activity_lng = res.longitude;
         // app.data.activity_location = res.name;
-        wx.navigateBack({
-          delta: 1
-        });
+        // wx.navigateBack({
+        //   delta: 1//这个在这里无效
+        // });
         //console.log(that.data.activity_location);
         // }
         //选择地点之后返回到原来页面
         // wx.navigateTo({
-        //   url: "/pages/new/new?address=" + res.name
+        //   url: "/pages/new/new"//?address=" + res.name
         // });
       },
       fail: function (err) {
@@ -314,13 +390,14 @@ Page({
         'activity_name': value.activity_name,
         'activity_desc': value.activity_desc,
         'location': value.activity_location,
-        'lat': app.data.activity_lat,
-        'lng': app.data.activity_lng,
+        'lat': that.data.activity_lat,
+        'lng': that.data.activity_lng,
         'startDate': value.start_date,
         'endDate': value.end_date,
         'ifFace': ifFace,
         'ifPhoto': ifPhoto,
-        'ifLocation': ifLocation
+        'ifLocation': ifLocation,
+        'projectid': that.data.projectid
       },
       method: 'POST',
       header: {

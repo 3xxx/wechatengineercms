@@ -23,7 +23,7 @@
             <view class="weui-label">密码</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入密码" type="password" maxlength="10" name="password" value="{{password}}" />
+            <input class="weui-input" placeholder="请输入密码" type="password" maxlength="20" name="password" value="{{password}}" />
           </view>
         </view>
         <!--

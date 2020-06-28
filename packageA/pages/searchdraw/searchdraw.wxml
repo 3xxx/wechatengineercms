@@ -1,4 +1,6 @@
 <!--pages/search/searchdraw.wxml-->
+<wxs module="tutil" src="../../../utils/date.wxs">
+</wxs>
 <view class="page">
 <!--
 参数说明：
@@ -36,7 +38,7 @@ http://blog.csdn.net/sinat_31177681/article/details/53557642
         </view>
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg" data-id="{{Id}}" catchtap='downloadFile'>
           <view class="weui-media-box__title">{{Title}}</view>
-          <view class="weui-media-box__desc">{{Created}}</view>
+          <view class="weui-media-box__desc">{{tutil.formatTime(Created)}}</view>
           <view class="weui-media-box__desc">{{LiNumber}}</view>
         </view>
         <navigator class="weui-media-box__desc" url="../pdfview/pdfview?id={{Id}}&title={{Title}}&actIndex={{ActIndex}}&link={{Link}}">分享</navigator>
@@ -44,6 +46,8 @@ http://blog.csdn.net/sinat_31177681/article/details/53557642
       </view>
     </view>
   </template>
+
+  <wxc-avatar class="avatar" _pid="{{_pid}}" bindtap='uploadPDF'>upload</wxc-avatar>
 
   <!-- <view  class="page"> {{ ['0'] }}-->
   <view class="page__bd" hidden='{{searchshow}}'>

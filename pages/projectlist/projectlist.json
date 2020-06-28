@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "鲁班工程宝",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index",
+    "wux-icon": "../../dist/icon/index",
+    "wux-avatar": "../../dist/avatar/index",
+    "van-icon": "../../component/vant/miniprogram_npm/vant-weapp/icon/index",
+    "van-cell": "../../component/vant/miniprogram_npm/vant-weapp/cell/index",
+    "van-cell-group": "../../component/vant/miniprogram_npm/vant-weapp/cell-group/index",
+    "van-radio": "../../component/vant/miniprogram_npm/vant-weapp/radio/index",
+    "van-radio-group": "../../component/vant/miniprogram_npm/vant-weapp/radio-group/index"
+  }
+}

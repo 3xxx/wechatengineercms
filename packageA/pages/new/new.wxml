@@ -19,13 +19,13 @@
       <view class="weui-label">起止日期</view>
     </view>
     <view class="weui-cell__bd">
-      <picker name="start_date" mode="date" value="{{start_date}}" start="2019-01-01" end="2030-12-31" bindchange="bindStartDateChange">
-        <view class="weui-input">{{start_date}}</view>
+      <picker name="start_date" mode="date" value="{{ displayValue2 }}" start="{{ displayValue2 }}" end="{{ displayValue3 }}" bindchange="bindStartDateChange">
+        <view class="weui-input">{{ start_date }}</view>
       </picker>
     </view>
     <view class="weui-cell__bd">
-      <picker name='end_date' mode="date" value="{{end_date}}" start="2019-01-01" end="2030-12-31" bindchange="bindEndDateChange">
-        <view class="weui-input">{{end_date}}</view>
+      <picker name='end_date' mode="date" value="{{ displayValue2 }}" start="{{ displayValue2 }}" end="{{ displayValue3 }}" bindchange="bindEndDateChange">
+        <view class="weui-input">{{ end_date }}</view>
       </picker>
     </view>
   </view>

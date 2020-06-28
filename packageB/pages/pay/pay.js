@@ -16,6 +16,17 @@ Page({
     price: 0.01
   },
 
+    /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
+  },
+
   //保存本地数据
   save: function () {
     //将data保存到本地指定的key中。或覆盖掉该key对应的内容,同步线程推送数据到服务器

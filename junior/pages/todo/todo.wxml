@@ -1,0 +1,30 @@
+<view class="icon van-icon van-icon van-icon-upgrade van-icon-upgrade" style="font-size: 32rpx;"></view> 
+<view class="container1">
+  <view class="header">
+    <image class="plus" src="../../image/plus.png"/>
+    <input class="new-todo" value="{{ input }}" placeholder="请输入事件主题" auto-focus bindinput="inputChangeHandle" bindconfirm="addTodoHandle"/>
+  </view>
+  <block wx:if="{{ todos.length }}">
+    <view class="todos">
+      <!-- List items should get the class `completed` when marked as completed -->
+      <view class="item{{ item.completed ? ' completed' : '' }}" wx:for="{{ todos }}" wx:key="{{ index }}" bindtap="toggleTodoHandle" data-index="{{ index }}" data-id="{{ item.todoid }}">
+        <!-- completed: success, todo: circle -->
+        <icon class="checkbox" type="{{ item.completed ? 'success' : 'circle' }}"/>
+        <text class="name">{{ item.todoname }}</text>
+        <icon class="remove" wx:if="{{isAdmin}}" type="clear" size="16" catchtap="removeTodoHandle" data-index="{{ index }}" data-id="{{ item.todoid }}"/>
+      </view>
+    </view>
+    <view class="footer">
+      <text class="btn" bindtap="toggleAllHandle">Toggle all</text>
+      <text wx:if="{{ leftCount }}">{{ leftCount }} {{ leftCount === 1 ? 'item' : 'items' }} left</text>
+      <text class="btn" wx:if="{{ todos.length > leftCount }}" bindtap="clearCompletedHandle">Clear completed</text>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="empty">
+      <text class="title">Congratulations!</text>
+      <text class="content">There's no more work left.</text>
+    </view>
+  </block>
+  <button type="primary" bindtap="finished">已完成事件</button>
+</view>

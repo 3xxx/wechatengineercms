@@ -1,5 +1,14 @@
-
+<!--pages/home/index.wxml-->
+<!-- <view class='container' wx:for="{{articles}}"> -->
+<!-- 文章列表  -->
+<!-- <view  bindtap="onArticle"  data-aid="{{item.id}}"> -->
+<!-- <view class='a-title '>{{item.id}}</view> -->
+<!-- <image class='a-thumb' src="{{item.imgUrl}}" mode="widthFix"></image>  -->
+<!-- </view>
+</view> -->
 <view class="page">
+
+  <!-- 轮播图片 -->
   <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
     <block wx:key="property" wx:for="{{imgUrls}}">
       <swiper-item>
@@ -13,7 +22,98 @@
     <view class='menuLis {{actIndex=="writing"?"actColor":""}}' id='writing' bindtap="changeMenu">文章</view>
     <view class='menuLis {{actIndex=="other"?"actColor":""}}' id='other' bindtap="changeMenu">其他</view>
   </view>
-  <scroll-view scroll-y style="flex:1;overflow:hidden;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+
+  <!--
+参数说明：
+id ：文章id
+src ：文章图片路径
+title ：文章标题
+time ：文章创建时间
+scrollTop ：距顶部位置
+windowHeight ：设备的高
+windowWidth ：设备的宽
+inputVal ：输入框的值
+inputShowed ：搜索输入框的 boolean
+searchLogShowed ：是否显示搜索历史记录 boolean
+hidden ：是否显示加载提示框 boolean
+msgList ：文章列表
+对于wx-for循环提示警告错误 ："Now you can provide attr "wx:key" for a "wx:for" to improve performance." 可以参考
+http://blog.csdn.net/sinat_31177681/article/details/53557642
+-->
+  <!--用name 定义模版-->
+  <template name="msgTemp">
+    <!--
+    1. scaleToFill : 图片全部填充显示，可能导致变形 默认
+    2. aspectFit ： 图片全部显示，以最长边为准
+    3. aspectFill ： 图片全部显示，以最短边为准
+    4. widthFix ： 宽不变，全部显示图片
+    index页面加这个：catchtap='downloadFile'直接在当前页预览么？？
+    另开一个页面，就可以分享页面了。 data-id="{{Id}}" catchtap='downloadFile'
+    -->
+    <view class="weui-panel__bd">
+      <!-- <navigator class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active"> -->
+      <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{Link}}" style="width: 60px; height: 60px;" style="border-radius: 100%" />
+          <!-- <wxc-avatar class="avatar">图</wxc-avatar> -->
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg" data-id="{{Id}}" catchtap='downloadFile'>
+          <view class="weui-media-box__title">{{Title}}</view>
+          <view class="weui-media-box__desc">{{Created}}</view>
+          <view class="weui-media-box__desc">{{LiNumber}}</view>
+        </view>
+        <navigator class="weui-media-box__desc" url="../pdfview/pdfview?id={{Id}}&title={{Title}}&actIndex={{ActIndex}}&link={{Link}}">分享</navigator>
+        <!-- </navigator> -->
+      </view>
+    </view>
+  </template>
+
+  
+
+  <view class="page__bd" hidden='{{searchshow}}'>
+    <scroll-view scroll-top="{{scrollTop}}" style="height: {{windowHeight}}px; width: {{windowWidth}}px;" scroll-y="true" bindscrolltoupper="pullDownRefresh" bindscroll="scroll" bindscrolltolower="pullUpLoad" class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">
+        <view class="weui-search-bar">
+          <view class="weui-search-bar__form">
+            <view class="weui-search-bar__box">
+              <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+              <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" bindtap="searchLogShowed" />
+              <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+                <icon type="clear" size="14"></icon>
+              </view>
+            </view>
+            <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+              <icon class="weui-icon-search" type="search" size="14"></icon>
+              <view class="weui-search-bar__text">搜索</view>
+            </label>
+          </view>
+          <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="searchData">搜索</view>
+        </view>
+        <view wx:if="{{searchLogShowed}}">
+          <view class="search-log" wx:for-item="searchLog" wx:for="{{searchLogList}}" wx:key="searchLogListId" bindtap="searchDataByLog" data-log="{{searchLog}}">
+            {{searchLog}}
+          </view>
+          <view class="clear-search-log" bindtap="clearSearchLog">清除搜索记录</view>
+        </view>
+      </view>
+      <view wx:for-items="{{msgList}}" wx:key="{{item.id}}">
+        <view class="kind-list__item">
+          <!--用is 使用模版-->
+          <template is="msgTemp" data="{{...item}}" />
+        </view>
+      </view>
+    </scroll-view>
+    <!-- <view>
+      <loading hidden="{{hidden}}" bindchange="loadingChange">
+        加载中...在页面中使用这种会导致死掉，比如空关键字搜索！应该放js中
+      </loading>
+    </view> -->
+  </view>
+  <view class="page__ft">
+  </view>
+  <!-- </view> -->
+
+  <scroll-view scroll-y style="flex:1;overflow:hidden;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}" hidden='{{!articleFocus}}'>
     <!-- <view class='leassonListOut' wx:for="{{leassonList}}" wx:key="{{item.id}}"> -->
     <view class='leassonListOut' wx:for="{{articles}}" wx:key="{{item.id}}">
       <view class='leassonList' data-id="{{item.id}}" bindtap="seeDetail">
@@ -28,8 +128,7 @@
             <view class='author'>
               作者：{{item.author}}
               <!-- {{author}} -->
-
-              <view class="tool">
+              <!-- <view class="tool">
                 <view class="tool-item">
                   <image src="../../images/heart-faad14.png"></image>
                   <text>{{item.likeNum}}</text>
@@ -42,8 +141,7 @@
                   <image src="../../images/eye-faad14.png"></image>
                   <text>{{item.Views}}</text>
                 </view>
-              </view>
-
+              </view> -->
             </view>
           </view>
         </view>

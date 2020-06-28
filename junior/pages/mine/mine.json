@@ -1,3 +1,9 @@
 {
-  "navigationBarTitleText": "青少儿书画+●个人中心"
+  "navigationBarTitleText": "青少儿书画●个人中心",
+  "usingComponents": {
+    "van-button": "../../component/vant/miniprogram_npm/vant-weapp/button/index",
+    "van-icon": "../../component/vant/miniprogram_npm/vant-weapp/icon/index",
+    "van-cell": "../../component/vant/miniprogram_npm/vant-weapp/cell/index",
+    "van-cell-group": "../../component/vant/miniprogram_npm/vant-weapp/cell-group/index"
+  }
 }

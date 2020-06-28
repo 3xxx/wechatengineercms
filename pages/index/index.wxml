@@ -1,11 +1,5 @@
 <!--pages/home/index.wxml-->
-<!-- <view class='container' wx:for="{{articles}}"> -->
-<!-- 文章列表  -->
-<!-- <view  bindtap="onArticle"  data-aid="{{item.id}}"> -->
-<!-- <view class='a-title '>{{item.id}}</view> -->
-<!-- <image class='a-thumb' src="{{item.imgUrl}}" mode="widthFix"></image>  -->
-<!-- </view>
-</view> -->
+<view class="icon van-icon van-icon van-icon-upgrade van-icon-upgrade" style="font-size: 32rpx;"></view>
 <view class="page">
 
   <!-- 轮播图片 -->
@@ -17,30 +11,38 @@
     </block>
   </swiper>
 
-<!-- 标签页 -->
-  <van-tabs sticky bind:click="onClick">
-    <van-tab title="新闻">
-      <view class='leassonListOut' wx:for="{{articles}}" wx:key="{{item.id}}">
-        <view class='leassonList' data-id="{{item.id}}" bindtap="seeDetail">
-          <view class='listIn'>
-            <view class='leassonImg'>
-              <image src="{{item.imgUrl||spec.productFirstImage}}" class='leassonImgs' mode='aspectFill' />
-            </view>
-            <view class='leassonTitle'>
-              <view class='title'>
-                {{item.title}}
-              </view>
-              <view class='author'>
-                作者：{{item.author}}
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </van-tab>
+	<!-- 标签页 -->
+	<van-tabs sticky bind:click="onClick">
+		<van-tab title="新闻">
+			<view class='leassonListOut' wx:for="{{articles}}" wx:key="id">
+				<view class='leassonList' data-id="{{item.id}}" bindtap="seeDetail">
+					<view class='listIn'>
+						<view class='leassonImg'>
+							<image src="{{item.imgUrl||spec.productFirstImage}}" class='leassonImgs' mode='aspectFill' />
+						</view>
+						<view class='leassonTitle'>
+							<view class='title'>
+								{{item.title}}
+							</view>
+							<view class='author'>
+								作者：{{item.author}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</van-tab>
 
-    <van-tab title="图纸">
-      <van-collapse value="{{ activeNames }}" bind:change="onChange" accordion>
+		<van-tab title="图纸">
+			<van-collapse wx:key="property" wx:for="{{collapse}}" value="{{ activeNames }}" bind:change="onChange" accordion>
+				<van-collapse-item name="{{item.name}}" icon="shop-o" value="{{item.value}}">
+					<view slot="title">{{item.title}}</view>
+					<view wx:key="property" wx:for="{{item.cell}}" wx:for-item="cellitem">
+						<van-cell icon="{{cellitem.icon}}" title="{{cellitem.title}}" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id={{cellitem.url}}" value="{{cellitem.value}}" label="{{cellitem.label}}" />
+					</view>
+				</van-collapse-item>
+			</van-collapse>
+			<!-- <van-collapse value="{{ activeNames }}" bind:change="onChange" accordion>
         <van-collapse-item name="1" icon="shop-o" value="鲤鱼洲">
           <view slot="title">A1标</view>
           <van-cell icon="location-o" title="全部" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26181" value="All" label="所有图纸" />
@@ -83,83 +85,76 @@
           <van-cell icon="location-o" title="地质" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26904" value="地质" label="地质专业" />
           <van-cell icon="location-o" title="其他" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26904" value="其他" label="其他图纸" />
         </van-collapse-item>
-      </van-collapse>
-    </van-tab>
-    <van-tab title="其他">
-      <van-collapse value="{{ activeNames }}" bind:change="onChange" accordion>
-        <van-collapse-item name="5" icon="shop-o" value="业主">
-          <view slot="title">建设单位</view>
-          <van-cell icon="location-o" title="会议纪要" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26902" value="纪要" label="纪要" />
-          <van-cell icon="location-o" title="来函" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26902" value="函件" label="函件" />
-          <van-cell icon="location-o" title="联系单" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26902" value="联系单" label="联系单" />
-        </van-collapse-item>
-        <van-collapse-item name="6" icon="shop-o" value="监理">
-          <view slot="title">监理单位</view>
-          <van-cell icon="location-o" title="会议纪要" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26909" value="监理纪要" label="纪要" />
-        </van-collapse-item>
-        <van-collapse-item name="7" icon="shop-o" value="施工单位">
-          <view slot="title">施工单位</view>
-          <van-cell icon="location-o" title="报告单" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26917" value="报告单" label="报告单" />
-        </van-collapse-item>
-        <van-collapse-item name="8" icon="shop-o" value="监测">
-          <view slot="title">监测单位</view>
-          <van-cell icon="location-o" title="监测结果" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26925" value="监测数据" label="监测" />
-        </van-collapse-item>
-        <van-collapse-item name="9" icon="shop-o" value="检测">
-          <view slot="title">检测单位</view>
-          <van-cell icon="location-o" title="检测结果" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26925" value="检测数据" label="检测" />
-        </van-collapse-item>
-      </van-collapse>
-    </van-tab>
+      </van-collapse> -->
+		</van-tab>
+		<van-tab title="其他">
+			<van-collapse value="{{ activeNames }}" bind:change="onChange" accordion>
+				<van-collapse-item name="5" icon="shop-o" value="业主">
+					<view slot="title">建设单位</view>
+					<van-cell icon="location-o" title="会议纪要" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26902" value="纪要" label="纪要" />
+					<van-cell icon="location-o" title="来函" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26902" value="函件" label="函件" />
+					<van-cell icon="location-o" title="联系单" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26902" value="联系单" label="联系单" />
+				</van-collapse-item>
+				<van-collapse-item name="6" icon="shop-o" value="监理">
+					<view slot="title">监理单位</view>
+					<van-cell icon="location-o" title="会议纪要" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26909" value="监理纪要" label="纪要" />
+				</van-collapse-item>
+				<van-collapse-item name="7" icon="shop-o" value="施工单位">
+					<view slot="title">施工单位</view>
+					<van-cell icon="location-o" title="报告单" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26917" value="报告单" label="报告单" />
+				</van-collapse-item>
+				<van-collapse-item name="8" icon="shop-o" value="监测">
+					<view slot="title">监测单位</view>
+					<van-cell icon="location-o" title="监测结果" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26925" value="监测数据" label="监测" />
+				</van-collapse-item>
+				<van-collapse-item name="9" icon="shop-o" value="检测">
+					<view slot="title">检测单位</view>
+					<van-cell icon="location-o" title="检测结果" is-link link-type="navigateTo" url="../../packageA/pages/searchdraw/searchdraw?id=26925" value="检测数据" label="检测" />
+				</van-collapse-item>
+			</van-collapse>
+		</van-tab>
 
-    <van-tab title="标准">
-      <view class="page__bd">
-        <scroll-view scroll-top="{{scrollTop}}" style="height: {{windowHeight}}px; width: {{windowWidth}}px;" scroll-y="true" bindscrolltoupper="pullDownRefresh" bindscroll="scroll" bindscrolltolower="pullUpLoad" class="weui-panel weui-panel_access">
-          <view class="weui-panel__hd">
-            <view class="weui-search-bar">
-              <view class="weui-search-bar__form">
-                <view class="weui-search-bar__box">
-                  <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-                  <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" bindtap="searchLogShowed" />
-                  <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
-                    <icon type="clear" size="14"></icon>
-                  </view>
-                </view>
-                <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
-                  <icon class="weui-icon-search" type="search" size="14"></icon>
-                  <view class="weui-search-bar__text">搜索</view>
-                </label>
-              </view>
-              <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="searchData">搜索</view>
-            </view>
-            <view wx:if="{{searchLogShowed}}">
-              <view class="search-log" wx:for-item="searchLog" wx:for="{{searchLogList}}" wx:key="searchLogListId" bindtap="searchDataByLog" data-log="{{searchLog}}">
-                {{searchLog}}
-              </view>
-              <view class="clear-search-log" bindtap="clearSearchLog">清除搜索记录</view>
-            </view>
-          </view>
-          <view wx:for-items="{{msgList}}" wx:key="{{item.id}}">
-            <view class="kind-list__item">
-              <!--用is 使用模版-->
-              <template is="msgTemp" data="{{...item}}" />
-            </view>
-          </view>
-        </scroll-view>
-      </view>
-      <view class="page__ft">
-      </view>
-    </van-tab>
-  </van-tabs>
+		<van-tab title="标准">
+			<view class="page__bd">
+				<scroll-view scroll-top="{{scrollTop}}" style="height: {{windowHeight}}px; width: {{windowWidth}}px;" scroll-y="true" bindscrolltoupper="pullDownRefresh" bindscroll="scroll" bindscrolltolower="pullUpLoad" class="weui-panel weui-panel_access">
+					<view class="weui-panel__hd">
+						<view class="weui-search-bar">
+							<view class="weui-search-bar__form">
+								<view class="weui-search-bar__box">
+									<icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+									<input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" bindtap="searchLogShowed" />
+									<view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+										<icon type="clear" size="14"></icon>
+									</view>
+								</view>
+								<label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+									<icon class="weui-icon-search" type="search" size="14"></icon>
+									<view class="weui-search-bar__text">搜索</view>
+								</label>
+							</view>
+							<view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="searchData">搜索</view>
+						</view>
+						<view wx:if="{{searchLogShowed}}">
+							<view class="search-log" wx:for-item="searchLog" wx:for="{{searchLogList}}" wx:key="searchLogListId" bindtap="searchDataByLog" data-log="{{searchLog}}">
+								{{searchLog}}
+							</view>
+							<view class="clear-search-log" bindtap="clearSearchLog">清除搜索记录</view>
+						</view>
+					</view>
+					<view wx:for-items="{{msgList}}" wx:key="id">
+						<view class="kind-list__item">
+							<!--用is 使用模版-->
+							<template is="msgTemp" data="{{...item}}" />
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+			<view class="page__ft">
+			</view>
+		</van-tab>
+	</van-tabs>
 
-  <!-- <view class='menuTab'>
-    <view class='menuLis {{actIndex=="article"?"actColor":""}}' id='article' bindtap="changeMenu">文章</view>
-    <view class='menuLis {{actIndex=="drawing"?"actColor":""}}' id='drawing' bindtap="changeMenu">图纸</view>
-    <view class='menuLis {{actIndex=="standard"?"actColor":""}}' id='standard' bindtap="changeMenu">规范</view>
-    <view class='menuLis {{actIndex=="other"?"actColor":""}}' id='other' bindtap="changeMenu">其他</view>
-  </view> -->
-
-  <!--
+	<!--
 参数说明：
 id ：文章id
 src ：文章图片路径

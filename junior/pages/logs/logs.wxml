@@ -1,0 +1,9 @@
+<view class="container1">
+  <view class="logs" wx:if="{{ logs.length }}">
+    <view class="item" wx:for="{{ logs }}" wx:key="{{ index }}">
+      <text class="name">Name: {{ item.name }}</text>
+      <text class="action">{{ item.action }}</text>
+      <text class="timestamp">[{{ item.timestamp }}]</text>
+    </view>
+  </view>
+</view>

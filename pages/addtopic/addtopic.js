@@ -22,6 +22,7 @@ Page({
     readOnly: false,
     placeholder: '请输入正文...',
     _focus: false,
+    wxarticleid: '',
   },
   readOnlyChange() {
     this.setData({
@@ -30,16 +31,11 @@ Page({
   },
   onLoad(options) {
     $init(this)
-    if (app.globalData.hasRegist) {
-      this.setData({
-        hasRegist: true
-      })
-    }
-    // wx.loadFontFace({
-    //   family: 'Pacifico',
-    //   source: 'url("https://sungd.github.io/Pacifico.ttf")',
-    //   success: console.log
-    // })
+    // if (app.globalData.hasRegist) {
+    //   this.setData({
+    //     hasRegist: true
+    //   })
+    // }
   },
   /**
    * 生命周期函数--监听页面显示
@@ -48,6 +44,15 @@ Page({
     this.setData({
       hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     })
+    if (app.globalData.projectConfig) {
+      // console.log(app.globalData.projectConfig.articleid)
+      this.setData({
+        wxarticleid: app.globalData.projectConfig.articleid,
+      })
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
   },
   handleTitleInput(e) {
     const value = e.detail.value
@@ -57,7 +62,7 @@ Page({
   },
 
   handleContentInput(e) {
-    console.log(e)
+    // console.log(e)
     // const value = e.detail.value
     const value = e.detail.html
     //要将图片的头http://*.*.*.去掉/at/g
@@ -115,7 +120,7 @@ Page({
       var sessionId = wx.getStorageSync('sessionId')
       //发起网络请求
       wx.request({
-        url: config.url + '/wx/addwxeditorarticle',
+        url: config.url + '/wx/addwxarticles/' + that.data.wxarticleid,
         header: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
@@ -163,6 +168,124 @@ Page({
     }
   },
 
+  // submitForm(e) {
+  //   // this.editorCtx.getContents({
+  //   //   html:this.data.editor_msg,
+
+  //   //   success:(res)=>{
+  //   //     console.log('succ:'+res)
+  //   //   },
+  //   //   fail:(res)=>{
+  //   //     console.log('fail:'+res)
+  //   //   }
+  //   // })
+  //   const title = this.data.title
+  //   console.log(title)
+  //   const content = this.data.content
+  //   console.log(content)
+  //   if (title && content) {
+  //     const arr = []
+  //     for (let path of this.data.images) {
+  //       arr.push(wxUploadFile({
+  //         // url: config.urls.question + '/image/upload',
+  //         url: 'https://zsj.itdos.com/v1/wx/uploadwximg',
+  //         filePath: path,
+  //         name: 'file',
+  //       }))
+  //     }
+  //     wx.showLoading({
+  //       title: '正在创建...',
+  //       mask: true
+  //     })
+
+  //     Promise.all(arr).then(res => {
+  //       return res.map(item => JSON.parse(item.data).link)
+  //     }).catch(err => {
+  //       console.log(">>>> upload images error:", err)
+  //     }).then(urls => {
+  //       // return createQuestion({
+  //       //   title: title,
+  //       //   content: content,
+  //       //   images: urls
+  //       // })
+  //       // 登录
+  //       var sessionId = wx.getStorageSync('sessionId')
+  //       //发起网络请求
+  //       wx.request({
+  //         url: config.url + '/wx/addwxarticle',
+  //         header: {
+  //           "Content-Type": "application/x-www-form-urlencoded"
+  //         },
+  //         method: "POST",
+  //         data: {
+  //           hotqinsessionid: sessionId,
+  //           title: title,
+  //           content: content,
+  //           images: urls
+  //           // mobile: e.detail.value.mobile,
+  //           // password: e.detail.value.password
+  //         },
+  //         success: function(res) {
+  //           if (res.data.status == 0) {
+  //             wx.showToast({
+  //               title: res.data.info,
+  //               icon: 'loading',
+  //               duration: 1500
+  //             })
+  //           } else {
+  //             wx.showToast({
+  //               title: res.data.info, //这里打印出登录成功
+  //               icon: 'success',
+  //               duration: 1000
+  //             })
+  //             wx.navigateTo({
+  //               url: `../detail/detail?id=` + res.data.id
+  //             })
+  //           }
+  //         }
+  //       })
+
+  //       // wx.request({
+  //       //   url: 'https://zsj.itdos.com/wx/addwxarticle',
+  //       //   header: {
+  //       //     "Content-Type": "application/x-www-form-urlencoded"
+  //       //   },
+  //       //   method: "POST",
+  //       //   data: {
+  //       //     title: title,
+  //       //     content: content,
+  //       //     images: urls
+  //       //     // mobile: e.detail.value.mobile,
+  //       //     // password: e.detail.value.password
+  //       //   },
+  //       //   success: function (res) {
+  //       //     if (res.data.status == 0) {
+  //       //       wx.showToast({
+  //       //         title: res.data.info,
+  //       //         icon: 'loading',
+  //       //         duration: 1500
+  //       //       })
+  //       //     } else {
+  //       //       wx.showToast({
+  //       //         title: res.data.info, //这里打印出登录成功
+  //       //         icon: 'success',
+  //       //         duration: 1000
+  //       //       })
+  //       //       wx.navigateTo({
+  //       //         url: `../detail/detail?id=` + res.data.id
+  //       //       })
+  //       //     }
+  //       //   }
+  //       // })
+  //     }).then(res => {
+
+  //     }).catch(err => {
+  //       console.log(">>>> create question error:", err)
+  //     }).then(() => {
+  //       wx.hideLoading()
+  //     })
+  //   }
+  // },
 
   onEditorReady() {
     const that = this
@@ -235,7 +358,7 @@ Page({
         for (let path of that.data.images) {
           arr.push(wxUploadFile({
             // url: config.urls.question + '/image/upload',
-            url: config.url + '/wx/uploadwxeditorimg',
+            url: config.url + '/wx/uploadwximgs/' + that.data.wxarticleid,
             filePath: path,
             name: 'file',
           }))
@@ -257,7 +380,7 @@ Page({
               success: function () {
                 console.log('insert image success')
                 that.setData({
-                  images: []//这里清0，否则总是将上次的图片带上
+                  images: [] //这里清0，否则总是将上次的图片带上
                 })
                 // console.log(that.data.images)
               }

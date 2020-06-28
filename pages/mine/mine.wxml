@@ -21,14 +21,17 @@
     <navigator url="../../packageB/pages/updatepass/updatepass">
       <text class="register_text">已登录，修改密码</text>
     </navigator>
+		<navigator url="../../packageB/pages/register/register">
+			<text class="register_text">切换用户</text>
+		</navigator>
   </view>
-
+<!-- <van-cell icon="location-o" title="发布新闻" is-link link-type="navigateTo" url="/pages/addtopic/addtopic" value="新闻" /> -->
   <van-cell icon="location-o" title="我的钱包" is-link link-type="navigateTo" url="../../packageB/pages/mymoney/mymoney" value="钱包" />
   <van-cell icon="location-o" title="获得赞赏" is-link link-type="navigateTo" url="../../packageB/pages/myappreciation/myappreciation" value="收入" />
   <van-cell icon="location-o" title="赞赏花费" is-link link-type="navigateTo" url="../../packageB/pages/mypay/mypay" value="支出" />
   <van-cell icon="location-o" title="我的收藏" is-link link-type="navigateTo" url="../../packageB/pages/mycollect/mycollect" value="收藏" />
   <van-cell wx:if="{{isAdmin}}" icon="location-o" title="添加用户" is-link link-type="navigateTo" url="../../packageB/pages/adduser/adduser" value="用户" />
-
+  <van-cell wx:if="{{isAdmin}}" icon="location-o" title="添加活动" is-link link-type="navigateTo" url="../../packageA/pages/new/new" value="活动" />
   <!--
     <view class="list-item">
       <image class="item-image" src="../../images/news-faad14.png"></image>
@@ -47,6 +50,7 @@
   <button wx:if="{{!hasLocation}}" open-type="openSetting" bindopensetting="callback">打开授权信息面板</button>
   <button type="primary" bindtap="checkin"> 打卡</button>
   <button type="primary" bindtap="finance"> 财务登记</button>
+  <button type="primary" bindtap="selectproj"> 切换项目</button>
   <view class="tool">
     <van-button icon="wechat" round type="warning" size="small" bind:click="showCustomDialogWx">微信赞赏平台</van-button>
   </view>

@@ -20,6 +20,15 @@ Page({
     });
   },
 
+  onShow: function () {
+    // Do something when page show.
+      if (app.globalData.projectConfig){
+        wx.setNavigationBarTitle({
+          title: app.globalData.projectConfig.projecttitle,
+        });
+      }
+  },
+
   formSubmit: function (e) {
     var accountVal = e.detail.value.account;
     var passwordVal = e.detail.value.password;

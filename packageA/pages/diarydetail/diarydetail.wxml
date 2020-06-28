@@ -5,7 +5,7 @@
 <view class='page' id='contain'>
   <button class="delete" wx:if="{{isAdmin}}" type="primary" size="mini" data-id="{{id}}" bindtap="delete">删除</button>
   <button class="editor" wx:if="{{isAdmin}}||{{isArticleMe}}" size="mini" data-id="{{id}}" bindtap="editor">编辑</button>
-  <view class='leassonTilte'>{{diarydate}} {{leassonTitle}}</view>
+  <view class='leassonTilte'>{{diarydate}}-{{leassonTitle}}</view>
   <view class='author'>原创: 珠三角设代</view>
   <!-- <view class='time'>{{time}}</view> -->
 

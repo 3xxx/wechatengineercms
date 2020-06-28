@@ -1,6 +1,6 @@
 /* detail wxcss */
 @import '../../libs/style/fontawesome.wxss';
-
+@import '../../component/vant/miniprogram_npm/vant-weapp/common/index.wxss';
 .page {
   padding: 20px 15px;
   box-sizing: border-box;
@@ -819,6 +819,10 @@ canvas {
 .row {
   height: 44px;
   margin-bottom: 15px;
+}
+
+image {
+  box-shadow: 0rpx 10rpx 30rpx 10rpx rgba(138, 136, 127, 0.884);
 }
 
 /* .green {

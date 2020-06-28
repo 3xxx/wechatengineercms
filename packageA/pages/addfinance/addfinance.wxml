@@ -2,9 +2,13 @@
 <view class="container1">
   <view class="page-body1">
     <view class='wrapper'>
-      <wux-radio-group name="radio" value="{{ radio }}" title="选择：" bind:change="onRadioChange">
+      <wux-radio-group name="radio" value="{{ radio }}" title="选择" bind:change="onRadioChange">
         <wux-radio title="支出" value="1" />
         <wux-radio title="收入" value="2" />
+      </wux-radio-group>
+      <wux-radio-group name="radio2" value="{{ radio2 }}" title="统筹/报销" bind:change="onRadioChange2">
+        <wux-radio title="统筹" value="1" />
+        <wux-radio title="报销" value="2" />
       </wux-radio-group>
       <wux-cell-group title="输入数值">
         <wux-cell title="数额" hover-class="none">

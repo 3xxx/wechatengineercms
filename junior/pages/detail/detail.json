@@ -1,8 +1,13 @@
 {
-  "navigationBarTitleText": "青少儿书画+●内容",
+  "navigationBarTitleText": "青少儿书画●内容",
   "usingComponents": {
     "layout-head": "../../common/layout/head",
     "layout-foot": "../../common/layout/foot",
-    "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index"
+    "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index",
+    "van-icon": "../../component/vant/miniprogram_npm/vant-weapp/icon/index",
+    "van-button": "../../component/vant/miniprogram_npm/vant-weapp/button/index",
+    "van-dialog": "../../component/vant/miniprogram_npm/vant-weapp/dialog/index",
+    "van-row": "../../component/vant/miniprogram_npm/vant-weapp/row/index",
+    "van-col": "../../component/vant/miniprogram_npm/vant-weapp/col/index"
   }
 }

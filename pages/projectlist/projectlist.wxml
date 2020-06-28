@@ -1,0 +1,16 @@
+<!--pages/projetlist/projectlist.wxml  -->
+<view class="icon van-icon van-icon van-icon-upgrade van-icon-upgrade" style="font-size: 32rpx;"></view> 
+<view class="page">
+	<van-radio-group value="{{ radio }}" bind:change="onChange">
+		<van-cell-group wx:for="{{projects}}" wx:key="projectid">
+			<van-cell title="{{item.Code}}{{item.Title}}" clickable data-name="{{item.Code}}" data-id="{{item.Id}}" bind:click="onClick">
+				<van-radio slot="right-icon" name="{{item.Code}}" />
+			</van-cell>
+		</van-cell-group>
+	</van-radio-group>
+
+</view>
+<wxc-avatar class="avatar" bindtap='getprojectconfig'>
+	<!-- <wux-icon class="success" type="md-add" size="32" /> -->
+	<van-icon name="certificate" size="40px" />
+</wxc-avatar>

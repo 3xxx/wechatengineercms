@@ -207,3 +207,7 @@ tab-h {
   margin: 0 auto;
   text-align:center;
 }
+
+image {
+  box-shadow: 0rpx 10rpx 30rpx 10rpx rgba(138, 136, 127, 0.884);
+}

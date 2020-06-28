@@ -28,6 +28,17 @@ Page({
     that.getArticles(1); //第一次加载数据:绘画
   },
 
+   /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
+  },
+
   // 下拉刷新
   onPullDownRefresh: function () {
     this.clearCache();
@@ -65,7 +76,7 @@ Page({
         var url1 = config.url + "/wx/getwxarticless/26159";
         break;
       case "calligraphy":
-        var url1 = config.url + "1/wx/getwxarticless/26159";
+        var url1 = config.url + "/wx/getwxarticless/26159";
         break;
       case "writing":
         var url1 = config.url + "/wx/getwxarticless/26159";

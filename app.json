@@ -71,7 +71,11 @@
         "pages/diaryeditor/diaryeditor",
         "pages/searchdraw/searchdraw",
         "pages/calendar/calendar",
-        "pages/logs/logs"
+        "pages/logs/logs",
+        "pages/financelist/financelist",
+        "pages/addfinance/addfinance",
+        "pages/financedetail/financedetail",
+        "pages/financeeditor/financeeditor"
       ]
     },
     {
@@ -87,7 +91,9 @@
         "pages/mypay/mypay",
         "pages/myappreciation/myappreciation",
         "pages/mycollect/mycollect",
-        "pages/adduser/adduser"
+        "pages/adduser/adduser",
+	"pages/myproject/myproject",
+        "pages/mybrand/mybrand"
       ]
     }
   ],

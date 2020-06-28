@@ -7,7 +7,8 @@ Page({
     todos: [],
     leftCount: 0,
     allCompleted: false,
-    logs: []
+    logs: [],
+    projectid: ''
   },
 
   save: function () {
@@ -18,7 +19,7 @@ Page({
   load: function () {
     var that = this;
     wx.request({
-      url: config.url + '/todo/gettodo',
+      url: config.url + '/todo/gettodo?projectid=' + that.data.projectid,
       method: 'GET',
       success: function (res) {
         // that.setData({
@@ -54,7 +55,18 @@ Page({
   onLoad: function () {
     this.setData({
       isAdmin: app.globalData.isAdmin
-    })
+    }) 
+  },
+
+  onShow: function () {
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+      this.setData({
+        projectid: app.globalData.projectConfig.projectid
+      })
+    }
     this.load()
   },
 
@@ -63,6 +75,15 @@ Page({
   },
 
   addTodoHandle: function (e) {
+    // 未登录也不允许
+    if (!app.globalData.isLogin) {
+      wx.showToast({
+        title: "用户未登录",
+        duration: 1500,
+        icon: "none"
+      })
+      return
+    }
     if (!this.data.input || !this.data.input.trim()) return
     var value = this.data.input
     // 登录——才能添加待办事项
@@ -74,6 +95,7 @@ Page({
       data: {
         'name': value,
         'hotqinsessionid': sessionId,
+        'projectid': that.data.projectid
       },
       method: 'POST',
       header: {
@@ -104,6 +126,7 @@ Page({
 
   toggleTodoHandle: function (e) {
     var index = e.currentTarget.dataset.index
+    var that=this
     console.log(e)
     // 登录——才能修改待办事项
     var sessionId = wx.getStorageSync('sessionId')
@@ -112,6 +135,7 @@ Page({
       data: {
         'todoid': e.currentTarget.dataset.id,
         'hotqinsessionid': sessionId,
+        'projectid': that.data.projectid
       },
       method: 'POST',
       header: {
@@ -125,20 +149,20 @@ Page({
         })
       }
     })
-    var todos = this.data.todos
+    var todos = that.data.todos
     todos[index].completed = !todos[index].completed
-    var logs = this.data.logs
+    var logs = that.data.logs
     logs.push({
       timestamp: new Date(),
       action: todos[index].completed ? 'Finish' : 'Restart',
       name: todos[index].name
     })
-    this.setData({
+    that.setData({
       todos: todos,
-      leftCount: this.data.leftCount + (todos[index].completed ? -1 : 1),
+      leftCount: that.data.leftCount + (todos[index].completed ? -1 : 1),
       logs: logs
     })
-    this.save()
+    that.save()
   },
 
   //管理员删除待办
@@ -146,6 +170,7 @@ Page({
     var index = e.currentTarget.dataset.index
     // 登录——才能修改待办事项
     var sessionId = wx.getStorageSync('sessionId')
+    var that=this
     wx.showModal({
       title: '提示',
       content: '确定要删除待办事项吗？',
@@ -157,6 +182,7 @@ Page({
             data: {
               'todoid': e.currentTarget.dataset.id,
               'hotqinsessionid': sessionId,
+              'projectid': that.data.projectid
             },
             method: 'POST',
             header: {
@@ -170,16 +196,20 @@ Page({
               })
             }
           })
-          var todos = this.data.todos
+          var todos = that.data.todos
           var remove = todos.splice(index, 1)[0]
-          var logs = this.data.logs
-          logs.push({ timestamp: new Date(), action: 'Remove', name: remove.name })
-          this.setData({
+          var logs = that.data.logs
+          logs.push({
+            timestamp: new Date(),
+            action: 'Remove',
+            name: remove.name
+          })
+          that.setData({
             todos: todos,
-            leftCount: this.data.leftCount - (remove.completed ? 0 : 1),
+            leftCount: that.data.leftCount - (remove.completed ? 0 : 1),
             logs: logs
           })
-          this.save()
+          that.save()
         } else if (res.cancel) {
           console.log('用户点击取消')
         }

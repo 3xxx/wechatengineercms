@@ -32,6 +32,7 @@ const {
 } = getDateString()
 Page({
   data: {
+    diaryProjId:'',
     titleCount: 0,
     contentCount: 0,
     title: '',
@@ -50,42 +51,42 @@ Page({
       ['顺德部', '南沙部', '东莞部', '罗田部'],
       ['晴', '阴', '雨', '风']
     ],
-    objectMultiArray: [
-      [{
-          id: 0,
-          name: '顺德部'
-        },
-        {
-          id: 1,
-          name: '南沙部'
-        },
-        {
-          id: 1,
-          name: '东莞部'
-        },
-        {
-          id: 1,
-          name: '罗田部'
-        }
-      ],
-      [{
-          id: 0,
-          name: '晴'
-        },
-        {
-          id: 1,
-          name: '阴'
-        },
-        {
-          id: 2,
-          name: '雨'
-        },
-        {
-          id: 3,
-          name: '风'
-        }
-      ]
-    ],
+    // objectMultiArray: [
+    //   [{
+    //       id: 0,
+    //       name: '顺德部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '南沙部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '东莞部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '罗田部'
+    //     }
+    //   ],
+    //   [{
+    //       id: 0,
+    //       name: '晴'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '阴'
+    //     },
+    //     {
+    //       id: 2,
+    //       name: '雨'
+    //     },
+    //     {
+    //       id: 3,
+    //       name: '风'
+    //     }
+    //   ]
+    // ],
     multiIndex: [1, 0],
     lang: 'zh_CN',
   },
@@ -111,6 +112,14 @@ Page({
     this.setData({
       hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     })
+    if (app.globalData.projectConfig){
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+      this.setData({
+        diaryProjId: app.globalData.projectConfig.diaryprojid,
+      })
+    }
   },
 
   handleTitleInput(e) {
@@ -184,6 +193,7 @@ Page({
         method: "POST",
         data: {
           hotqinsessionid: sessionId,
+          projectid:that.data.diaryProjId,
           title: title,
           diarydate: diarydate,
           diaryactivity: diaryactivity,
@@ -241,10 +251,21 @@ Page({
     }
   },
 
+  // style='text-indent: 2em;'
   onEditorReady() {
     const that = this
     wx.createSelectorQuery().select('#editor').context(function(res) {
       that.editorCtx = res.context
+      that.editorCtx.setContents({
+        html: "<p>填写人签名：</p><hr><p>气温：</p><hr><p>现场设代人员：</p><hr><p>工程形象：</p><p><br></p><hr><p>会议情况：</p><p><br></p><hr><p style='text-align: center;'>设代工作记录</p><p><br><br></p><hr>",
+        // html:"<table border='1'><tr><td>现场设代人员：</td><td>现场设代人员2：</td></tr></table>",
+        success: (res) => {
+          console.log(res)
+        },
+        fail: (res) => {
+          console.log(res)
+        }
+      })
     }).exec()
   },
 
@@ -304,7 +325,7 @@ Page({
       sourceType: ['album', 'camera'],
       success: res => {
         const images = that.data.images.concat(res.tempFilePaths)
-        console.log(res.tempFilePaths)
+        // console.log(res.tempFilePaths)
         that.data.images = images.length <= 6 ? images : images.slice(0, 6)
         $digest(that)
         const arr = []
@@ -312,7 +333,7 @@ Page({
         for (let path of that.data.images) {
           arr.push(wxUploadFile({
             // url: config.urls.question + '/image/upload',
-            url: config.url + '/wx/uploadwxeditorimg',
+            url: config.url + '/wx/uploadwxeditorimg?projectid='+that.data.diaryProjId,
             filePath: path,
             name: 'file',
           }))

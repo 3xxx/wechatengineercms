@@ -11,8 +11,11 @@ var msgListKey = ""; // 文章列表本地缓存key
 
 Page({
   data: {
+    projectConfig: '',
+    collapse: '', //资料页面树状目录
     current: [],//手风琴默认打开的部分
-
+    activeNames: ['1'],
+    value: '',
     articles: [], //文章列表数组
     imgUrls: [],
     indicatorDots: true,
@@ -24,7 +27,8 @@ Page({
     author: '珠三角设代',
     // leassonList: [],//文章列表
     actIndex: 'article',
-    apiUrl: config.url + "/wx/getwxarticles",
+    // apiUrl: config.url + "/wx/getwxarticles",
+    apiUrl: '',
     leassonId: '',
 
     msgList: [], //搜索结果列表
@@ -34,22 +38,39 @@ Page({
     inputShowed: false, // 搜索输入框是否显示
     inputVal: "", // 搜索的内容
     searchLogShowed: false, // 是否显示搜索历史记录
-    articleFocus: false, //是否是文章页
+    articleFocus: true, //是否是文章页
     // searchFocus: true, //是否搜索框页
-    standardFocus: true, //是否规范页
-    otherFocus: true, //是否其他页
-    searchshow: true, //页面是显示搜索（图纸、规范、其他）还是显示文章列表-首页
+    
+    standardFocus: false, //是否规范页
+    otherFocus: false, //是否其他页
+    searchshow: false, //页面是显示搜索（图纸、规范、其他）还是显示文章列表-首页
     searchdrawshow: true,//页面显示顺德分部-南沙分部……
   },
   // 页面加载
   onLoad: function() {
     this.key = String(Math.floor(Math.random() * 3))
-
-    var that = this;
-    that.clearCache(); //清本页缓存
+  },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    if (app.globalData.projectConfig){
+      // console.log(app.globalData.projectConfig.articleid)
+      this.setData({
+        apiUrl:config.url + "/wx/getwxarticless/" + app.globalData.projectConfig.articleid,
+        collapse: app.globalData.projectConfig.collapse
+      })
+      this.clearCache();
+      this.getArticles(1);
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
+    // var that = this;
+    // that.clearCache(); //清本页缓存
     //顶部轮播图片
     // that.carousel();
-    that.getArticles(1); //第一次加载数据:绘画
+    // that.getArticles(1); //第一次加载数据:绘画
   },
 
   // vant打开手风琴
@@ -74,33 +95,25 @@ Page({
   // },
 
   // 下拉刷新
-  onPullDownRefresh: function() {
-    if (!this.data.articleFocus) {
+  onPullDownRefresh: function () {
+    if (this.data.articleFocus) {
       this.clearCache();
       this.getArticles(1); //第一次加载数据
       wx.stopPullDownRefresh();
     }
-    // if (!this.data.searchFocus) {
-    //   //清理缓存的作用
-    //   searchpage = 1;
-    //   this.setData({
-    //     msgList: [],
-    //     scrollTop: 0
-    //   });
-    //   this.loadMsgData(1)
-    // }
   },
 
   // 页面上拉触底事件（上拉加载更多）
-  onReachBottom: function() {
-    if (!this.data.articleFocus) {
+  onReachBottom: function () {
+    if (this.data.articleFocus) {
       this.getArticles(page); //后台获取新数据并追加渲染
     }
-    if (!this.data.searchshow) {
-      // console.log(searchpage);
-      if ("" != searchTitle) {
-        this.loadMsgData(searchpage)
-      }
+    // console.log(this.data.searchshow)
+    if (this.data.searchshow) {
+      // 搜索页的加载
+      // if ("" != searchTitle) {
+      this.loadMsgData(searchpage)
+      // }
     }
   },
   // 清缓存
@@ -130,15 +143,11 @@ Page({
   loadMsgData: function(pg) {
     pg = pg ? pg : 1;
     var that = this;
-    // console.log(that)
     msgListKey = "msgList" + pg;
     // 显示加载的icon
     wx.showLoading({
       title: '加载中...',
     })
-    // that.setData({
-    //   hidden: false
-    // });
     // 获取上一页数据
     var allMsg = that.data.msgList;
     var postData = {
@@ -206,7 +215,7 @@ Page({
     //设置默认值
     pg = pg ? pg : 1;
     var that = this;
-    var apiUrl = this.data.apiUrl
+    var apiUrl = that.data.apiUrl; //config.url + '/wx/getwxarticles'; //文章列表接口地址
     var postData = {
       page: pg, //分页标识
       app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
@@ -277,83 +286,71 @@ Page({
 
   },
 
-  // tab切换事件
+  // van tab切换事件
   onClick(e) {
-    // const radioo = this.data.actIndex
-    // console.log(e.currentTarget.id)
-    switch (e.currentTarget.id) {
-      case "article":
+    switch (e.detail.title) {
+      case "新闻":
         this.setData({
-          articleFocus: false,
-          drawingFocus: true,
-          standardFocus: true,
-          otherFocus: true,
-          searchshow: true,
-          searchdrawshow: true
-        })
-        break;
-      case "drawing":
-        //清理缓存的作用
-        searchpage = 1;
-        this.setData({
-          msgList: [],
-          scrollTop: 0,
           articleFocus: true,
           drawingFocus: false,
-          standardFocus: true,
-          otherFocus: true,
-          searchshow: true,
-          searchdrawshow: false,
-          actIndex: 'drawing',
-          apiUrl: config.url + '/wx/searchwxdrawings?projectid=25002' //搜索图纸列表接口地址
+          standardFocus: false,
+          otherFocus: false,
+          searchshow: false,
+          // searchdrawshow: false
         })
         break;
-      case "standard":
-        //清理缓存的作用
+      case "图纸":
         searchpage = 1;
         this.setData({
           msgList: [],
           scrollTop: 0,
-          articleFocus: true,
+          articleFocus: false,
           drawingFocus: true,
           standardFocus: false,
-          otherFocus: true,
-          searchshow: false,
-          searchdrawshow: true,
-          actIndex: 'standard',
-          apiUrl: config.url + '/wx/searchwxstandards' //搜索规范列表接口地址
+          otherFocus: false,
+          searchshow: true,
+          // searchdrawshow: true,
+          // actIndex: 'drawing',
+          // apiUrl: config.url + '/wx/searchwxdrawings?projectid=25002' //搜索图纸列表接口地址
         })
         break;
-      case "other":
+      case "标准":
         //清理缓存的作用
         searchpage = 1;
         this.setData({
           msgList: [],
           scrollTop: 0,
-          articleFocus: true,
-          drawingFocus: true,
+          articleFocus: false,
+          drawingFocus: false,
           standardFocus: true,
           otherFocus: false,
           searchshow: true,
-          searchdrawshow: false,
-          actIndex: 'other',
-          apiUrl: config.url + '/wx/searchwxdrawings?projectid=25004' //搜索其他文件列表接口地址（监理）
+          // searchdrawshow: false,
+          // actIndex: 'standard',
+          apiUrl: config.url + '/wx/searchwxstandards' //搜索规范列表接口地址
         })
         break;
-      default:
-        var url1 = "26175";
+      case "其他":
+        searchpage = 1;
+        this.setData({
+          msgList: [],
+          scrollTop: 0,
+          articleFocus: false,
+          drawingFocus: false,
+          standardFocus: false,
+          otherFocus: true,
+          searchshow: true,
+          // searchdrawshow: false,
+          // actIndex: 'other',
+          // apiUrl: config.url + '/wx/searchwxdrawings?projectid=25004' //搜索其他文件列表接口地址（监理）
+        })
+        break;
     }
-    this.setData({
-      actIndex: e.currentTarget.id
-    })
-    // console.log(this.data.actIndex)
-    // var imgUrls1 = [];
-    var that = this;
-    that.clearCache(); //清本页缓存
-    //顶部轮播图片
-    // that.carousel();
-    //加载文章列表
-    that.getArticles(1);
+    // console.log(e.detail)
+    // wx.showToast({
+    //   title: `点击标签 ${e.detail.title}`,
+    //   icon: 'none'
+    // });
   },
 
   //详情页面
@@ -416,6 +413,11 @@ Page({
     });
     // pageNum = 1;
     if ("" != searchTitle) { //20190301修改此处
+      searchpage = 1;
+      that.setData({
+        msgList: [],
+        apiUrl: config.url + '/wx/searchwxstandards' //搜索规范列表接口地址
+      })
       that.loadMsgData(1);
       // 搜索后将搜索记录缓存到本地
       var searchLogData = that.data.searchLogList;
@@ -505,7 +507,7 @@ Page({
     })
 
     var that = this;
-    if (!that.data.standardFocus) {
+    if (that.data.standardFocus) {
       that.setData({
         downloadurl: config.url + '/wx/wxstandardpdf/' + e.currentTarget.dataset.id,
       });

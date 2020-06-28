@@ -1,16 +1,12 @@
 /* detail wxcss */
-@import '../../lib/style/fontawesome.wxss';
-
-/* @import "../../lib/style/iconfont1.wxss"; */
-
-/* @import "../../lib/style/base.wxss"; */
+@import '../../libs/style/fontawesome.wxss';
 
 .page {
   padding: 20px 15px;
   box-sizing: border-box;
 }
 
-.leassonTilte {
+.leassonTitle {
   margin-bottom: 10px;
   font-size: 18px;
 }
@@ -42,6 +38,7 @@
   text-align: center;
   line-height: 64rpx;
   margin: 20rpx 28rpx 20rpx 0;
+  padding: 0px 20px 0;
 }
 
 .tool-item {
@@ -66,7 +63,6 @@
 }
 
 /* pages/canvas/canvas.wxss */
-
 canvas {
   position: fixed;
   top: 0;
@@ -116,8 +112,8 @@ canvas {
   left: 30%;
 }
 
-/* 评论 */
 
+/* 评论 */
 .release_list {
   overflow-y: scroll;
   background: #eee;
@@ -193,7 +189,7 @@ canvas {
 }
 
 .publish {
-  width: 100%;
+  width: 100%; 
   background: white;
   display: flex;
   margin-top: 20rpx;
@@ -318,11 +314,11 @@ canvas {
   border: none;
 }
 
-.icon:after {
+.icon:after{
   font-family: 'iconfont';
   font-weight: 500;
   font-style: normal;
-  content: '\e698;'
+  content: '\e698;';
 }
 
 /* emoji评论相关 */
@@ -481,14 +477,44 @@ canvas {
   height: 120rpx;
   border-radius: 50%;
   background: #31b0d5;
-  color: #FFF;
+  color: #fff;
   margin: 0 auto;
-  text-align:center;
-  }
+  text-align: center;
+  float: right;
+  /* background-color: #fff; */
+  position: fixed;
+  top: 100px;
+  right: 10px;
+  /* border: 0 solid #fff; *//* border-radius: 500px; */
+  box-shadow: 4px 1px 1px #ccc;
+  opacity:0.6;
+}
 
-   
-  
-  /*  comment   */
+.delete {
+  float: right;
+  background-color: #fff;
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  border: 0 solid #fff;
+  border-radius: 500px;
+  box-shadow: 4px 1px 1px #ccc;
+  opacity:0.6;
+}
+
+.editor {
+  float: right;
+  background-color: rgb(236, 40, 40);
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  border: 0 solid rgb(236, 9, 9);
+  border-radius: 500px;
+  box-shadow: 4px 1px 1px #ccc;
+  opacity:0.6;
+}
+/*  comment   */
+
 .commentheader {
   padding: 20rpx 0;
   text-align: left;
@@ -774,4 +800,51 @@ canvas {
   display: inline-block;
   text-align: center;
 }
+
+/* van demo-block */
+.demo-image {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0px 20px 0;
+}
+
+.van-row {
+  margin-left: 15px;
+  padding: 0px 20px 0;
+}
+
+.row {
+  height: 44px;
+  margin-bottom: 15px;
+}
+
+/* 联系客服 */
+.time .btn{
+  /* display: inline-block; */
+  font-size: 26rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border: none;
+  /* background: transparent;  */
+  width: 150rpx;
+  padding: 0;
+  margin: 0;
+  /* position: absolute;  */
+  /* bottom: 30rpx;  */
+  /* left: 260rpx;   */
+}
+.time .btn image{
+  display: inline-block;
+  width: 28rpx;
+  height: 28rpx;
+  vertical-align: -4rpx;
+  margin-right: 10rpx;
+}
+.time .btn text{
+  color:rgb(14, 18, 238);
+}
+
+/* .green {
+  background: green !important;
+} */
 /*   end menu-box  */

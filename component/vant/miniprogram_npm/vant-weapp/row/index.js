@@ -10,10 +10,10 @@ VantComponent({
         }
     },
     props: {
-        gutter: Number
-    },
-    watch: {
-        gutter: 'setGutter'
+        gutter: {
+            type: Number,
+            observer: 'setGutter'
+        }
     },
     mounted() {
         if (this.data.gutter) {
@@ -27,7 +27,7 @@ VantComponent({
             const style = gutter
                 ? `margin-right: ${margin}; margin-left: ${margin};`
                 : '';
-            this.set({ style });
+            this.setData({ style });
             this.getRelationNodes('../col/index').forEach(col => {
                 col.setGutter(this.data.gutter);
             });

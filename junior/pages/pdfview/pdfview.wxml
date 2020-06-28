@@ -1,0 +1,33 @@
+<!-- detail wxml -->
+<import src="../../wxParse/wxParse.wxml" />
+<!-- 画布大小按需定制 这里我按照背景图的尺寸定的 hidden='{{hidden}}'  -->
+<canvas canvas-id="shareImg" style="width:545px;height:771px"></canvas>
+<!-- 预览区域  -->
+<view hidden='{{hidden}}' class='preview'>
+  <image src='{{prurl}}' mode='widthFix'></image>
+  <button type='primary' size='mini' bindtap='save'>保存分享图</button>
+</view>
+<!-- <button class='share' bindtap='share'>生成分享图</button> -->
+
+<view class='page' catchtap='catchhide'>
+  <view class='leassonTilte'>{{leassonTilte}}</view>
+  <view class='author'>原创: 珠三角设代</view>
+  <view class='time'>{{time}}</view>
+  <view class="page__bd page__bd_spacing" data-id="{{Id}}" data-actindex="{{actIndex}}" catchtap='downloadFile'>
+    <view class='dk-show' style='height:{{dkheight}}px;'>
+      <!-- <template is="wxParse" data="{{wxParseData:dkcontent.nodes}}" /> -->
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <image class="weui-media-box__thumb" src="{{Link}}" style="width: 60px; height: 60px;border-radius: 100%" />
+          </view>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title">{{Title}}</view>
+            <view class="weui-media-box__desc">{{Title}}</view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+</view>

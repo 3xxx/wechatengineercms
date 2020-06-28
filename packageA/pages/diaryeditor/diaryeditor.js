@@ -12,6 +12,7 @@ var app = getApp();
 const wxUploadFile = promisify(wx.uploadFile)
 Page({
   data: {
+    diaryProjId: '',
     titleCount: 0,
     contentCount: 0,
     title: '',
@@ -54,6 +55,14 @@ Page({
     this.setData({
       hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     })
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+      this.setData({
+        diaryProjId: app.globalData.projectConfig.diaryprojid,
+      })
+    }
   },
 
   handleContentInput(e) {
@@ -169,8 +178,8 @@ Page({
       })
     }).exec()
     that.setData({
-      content: prevPage.data.diarycontent,//假如用户没有点击内容，则用这个内容
-      title: prevPage.data.leassonTitle,//假如用户没有点击标题，则用这个标题
+      content: prevPage.data.diarycontent, //假如用户没有点击内容，则用这个内容
+      title: prevPage.data.leassonTitle, //假如用户没有点击标题，则用这个标题
       titleCount: prevPage.data.leassonTitle.length
     })
     console.log(that.data.title)
@@ -245,7 +254,7 @@ Page({
         for (let path of that.data.images) {
           arr.push(wxUploadFile({
             // url: config.urls.question + '/image/upload',
-            url: config.url + '/wx/uploadwxeditorimg',
+            url: config.url + '/wx/uploadwxeditorimg?projectid=' + that.data.diaryProjId,
             filePath: path,
             name: 'file',
           }))
@@ -274,7 +283,7 @@ Page({
     })
   },
 
-   onChange1(e) {
+  onChange1(e) {
     // console.log('onChange1', e)
     this.setData({
       title: e.detail.value,

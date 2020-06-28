@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "珠三角设代●赞赏",
+  "navigationBarTitleText": "珠三角设代●获得赞赏",
   "enablePullDownRefresh": true,
   "usingComponents": {
     "wxc-avatar": "../../../packages/@minui/wxc-avatar/dist/index",
