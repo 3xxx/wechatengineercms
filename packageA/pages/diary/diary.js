@@ -32,7 +32,7 @@ const {
 } = getDateString()
 Page({
   data: {
-    diaryProjId:'',
+    diaryProjId: '',
     titleCount: 0,
     contentCount: 0,
     title: '',
@@ -48,9 +48,10 @@ Page({
     value2: [year, month, day],
     displayValue2: year + '-' + month1 + '-' + day,
     multiArray: [
-      ['顺德部', '南沙部', '东莞部', '罗田部'],
+      [],
       ['晴', '阴', '雨', '风']
     ],
+    //'顺德部', '南沙部', '东莞部', '罗田部'
     // objectMultiArray: [
     //   [{
     //       id: 0,
@@ -87,7 +88,7 @@ Page({
     //     }
     //   ]
     // ],
-    multiIndex: [1, 0],
+    multiIndex: [0, 1],
     lang: 'zh_CN',
   },
 
@@ -99,25 +100,48 @@ Page({
 
   onLoad(options) {
     $init(this)
+    // var that = this
     if (app.globalData.hasRegist) {
       this.setData({
         hasRegist: true
       })
     }
+    
   },
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
+    var that=this
     this.setData({
       hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     })
-    if (app.globalData.projectConfig){
+    if (app.globalData.projectConfig) {
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,
       });
       this.setData({
         diaryProjId: app.globalData.projectConfig.diaryprojid,
+        projectid: app.globalData.projectConfig.projectid
+      })
+      console.log(this.data.diaryProjId)
+      let multiArray = that.data.multiArray
+      wx.request({
+        url: config.url + '/checkin/activity/getall?projectid=' + that.data.projectid,
+        method: 'POST',
+        success: function (res) {
+          // that.setData({
+          //   processing: res.data.processing
+          // });
+          for (var i = 0; i < res.data.processing.length; i++) {
+            that.data.multiArray[0][i] = res.data.processing[i].F_Caption;
+          }
+          that.setData({
+            multiArray //必须要用setdata页面才会显示
+          });
+          // console.log(that.data.processing)
+          console.log(that.data.multiArray)
+        }
       })
     }
   },
@@ -128,8 +152,6 @@ Page({
     this.data.titleCount = value.length
     $digest(this)
   },
-
-
 
   handleContentInput(e) {
     // console.log(e)
@@ -193,7 +215,7 @@ Page({
         method: "POST",
         data: {
           hotqinsessionid: sessionId,
-          projectid:that.data.diaryProjId,
+          projectid: that.data.diaryProjId,
           title: title,
           diarydate: diarydate,
           diaryactivity: diaryactivity,
@@ -201,14 +223,14 @@ Page({
           content: content
           // images: urls
         },
-        success: function(res) {
+        success: function (res) {
           if (res.data.status == 0) {
             wx.showToast({
               title: res.data.info,
               icon: 'loading',
               duration: 1500
             })
-          } else if(res.data.status == 1){
+          } else if (res.data.status == 1) {
             wx.showToast({
               title: res.data.info, //这里打印出成功
               icon: 'success',
@@ -226,7 +248,7 @@ Page({
             wx.navigateTo({
               url: `../diarydetail/diarydetail?id=` + res.data.id
             })
-          }else{
+          } else {
             wx.showToast({
               title: "调用接口出错",
               icon: 'wrong',
@@ -234,7 +256,7 @@ Page({
             })
           }
         },
-        fail: function(res) {
+        fail: function (res) {
           wx.showToast({
             title: "小程序调用出错",
             icon: 'wrong',
@@ -254,7 +276,7 @@ Page({
   // style='text-indent: 2em;'
   onEditorReady() {
     const that = this
-    wx.createSelectorQuery().select('#editor').context(function(res) {
+    wx.createSelectorQuery().select('#editor').context(function (res) {
       that.editorCtx = res.context
       that.editorCtx.setContents({
         html: "<p>填写人签名：</p><hr><p>气温：</p><hr><p>现场设代人员：</p><hr><p>工程形象：</p><p><br></p><hr><p>会议情况：</p><p><br></p><hr><p style='text-align: center;'>设代工作记录</p><p><br><br></p><hr>",
@@ -292,14 +314,14 @@ Page({
   },
   insertDivider() {
     this.editorCtx.insertDivider({
-      success: function() {
+      success: function () {
         console.log('insert divider success')
       }
     })
   },
   clear() {
     this.editorCtx.clear({
-      success: function(res) {
+      success: function (res) {
         console.log("clear success")
       }
     })
@@ -333,7 +355,7 @@ Page({
         for (let path of that.data.images) {
           arr.push(wxUploadFile({
             // url: config.urls.question + '/image/upload',
-            url: config.url + '/wx/uploadwxeditorimg?projectid='+that.data.diaryProjId,
+            url: config.url + '/wx/uploadwxeditorimg?projectid=' + that.data.diaryProjId,
             filePath: path,
             name: 'file',
           }))
@@ -352,8 +374,8 @@ Page({
               //   id: 'abcd',
               //   role: 'god'
               // },
-              success: function() {
-                console.log('insert image success')
+              success: function () {
+                // console.log('insert image success')
                 that.setData({
                   images: [] //这里清0，否则总是将上次的图片带上
                 })
@@ -382,13 +404,13 @@ Page({
   },
 
   //多选分部和天气
-  bindMultiPickerChange: function(e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
+  bindMultiPickerChange: function (e) {
+    // console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       multiIndex: e.detail.value
     })
-    console.log(this.data.multiIndex)
-    console.log(this.data.multiIndex[0])
+    // console.log(this.data.multiIndex)
+    // console.log(this.data.multiIndex[0])
   },
 
   //选择日期wux
@@ -398,8 +420,8 @@ Page({
       [`displayValue${key}`]: values.label,
       // [`displayValue${key}`]: values.displayValue.join(' '),
     })
-    console.log(`value${key}`)
-    console.log(`displayValue${key}`)
+    // console.log(`value${key}`)
+    // console.log(`displayValue${key}`)
   },
 
   onConfirm(e) {
@@ -408,10 +430,10 @@ Page({
       mode
     } = e.currentTarget.dataset
     this.setValue(e.detail, index, mode)
-    console.log(`onConfirm${index}`, e.detail)
+    // console.log(`onConfirm${index}`, e.detail)
   },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: '珠三角设代plus',
       path: 'packageA/pages/diary/diary'

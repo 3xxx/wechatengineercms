@@ -1,4 +1,3 @@
-
 var config = require('../../config.js');
 var util = require('../../utils/util.js');
 const app = getApp();
@@ -28,6 +27,11 @@ const conf = {
   },
   onShow: function () {
     // initCalendar();
+    if (app.globalData.projectConfig) {
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    }
     this.setTodo();
   },
 
@@ -61,7 +65,7 @@ const conf = {
           }, 1000);
         } else {
           wx.showToast({
-            title: '出错！',//在前端处理？，不用后端处理
+            title: '出错！', //在前端处理？，不用后端处理
             icon: 'error',
             duration: 2000
           });
@@ -185,7 +189,7 @@ const conf = {
           }, 1000);
         } else {
           wx.showToast({
-            title: '出错！',//在前端处理？，不用后端处理
+            title: '出错！', //在前端处理？，不用后端处理
             icon: 'error',
             duration: 2000
           });
@@ -223,40 +227,40 @@ const conf = {
     //     'content-type': 'application/x-www-form-urlencoded'
     //   },
     //   success: function (check_res) {
-        // console.log(check_res.data.data[0])
-        // if (check_res.data.code == 1) {
-          this.setData({
-            addtell: {
-              datetime: e.year + '-' + e.month + '-' + e.day,
-              // contract_info1: check_res.data.data[0],
-              // contract_info2: check_res.data.data[1],
-              // contract_info3: check_res.data.data[2],
-              // contract_info4: check_res.data.data[3],
-              addtellHidden: false,
-            }
-          })
-          // console.log(check_res.data.data[0])
-          // console.log(that.data.addtell.contract_info4)
-          // 异步请求
-          // setTimeout(() => {
+    // console.log(check_res.data.data[0])
+    // if (check_res.data.code == 1) {
+    this.setData({
+      addtell: {
+        datetime: e.year + '-' + e.month + '-' + e.day,
+        // contract_info1: check_res.data.data[0],
+        // contract_info2: check_res.data.data[1],
+        // contract_info3: check_res.data.data[2],
+        // contract_info4: check_res.data.data[3],
+        addtellHidden: false,
+      }
+    })
+    // console.log(check_res.data.data[0])
+    // console.log(that.data.addtell.contract_info4)
+    // 异步请求
+    // setTimeout(() => {
 
-          // }, 1000);
-        // } else {
-        //   wx.showToast({
-        //     title: '出错！',//在前端处理？，不用后端处理
-        //     icon: 'error',
-        //     duration: 2000
-        //   });
-        // }
-      // },
-      // fail: function (res) {
-      //   // console.log(res);
-      //   wx.showToast({
-      //     title: '获取数据失败',
-      //     icon: 'error',
-      //     duration: 2000
-      //   });
-      // },
+    // }, 1000);
+    // } else {
+    //   wx.showToast({
+    //     title: '出错！',//在前端处理？，不用后端处理
+    //     icon: 'error',
+    //     duration: 2000
+    //   });
+    // }
+    // },
+    // fail: function (res) {
+    //   // console.log(res);
+    //   wx.showToast({
+    //     title: '获取数据失败',
+    //     icon: 'error',
+    //     duration: 2000
+    //   });
+    // },
     // })
   },
   //弹出框确认操作
@@ -303,7 +307,7 @@ const conf = {
             desc4: '',
           })
           //这里更新本月公告记录
-          const data = []//check_res.data.data;
+          const data = [] //check_res.data.data;
           data.push({ // 获取返回结果，放到mks数组中
             year: that.data.currentSelectyear,
             month: that.data.currentSelectmonth,
@@ -321,7 +325,7 @@ const conf = {
 
         } else {
           wx.showToast({
-            title: '出错！',//在前端处理？，不用后端处理
+            title: '出错！', //在前端处理？，不用后端处理
             icon: 'error',
             duration: 2000
           });
@@ -458,8 +462,8 @@ const conf = {
   //   console.log('form发生了reset事件')
   // }
   /**
- * 用户点击右上角分享
- */
+   * 用户点击右上角分享
+   */
   onShareAppMessage: function () {
     return {
       title: '珠三角设代plus',

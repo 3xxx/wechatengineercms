@@ -10,16 +10,16 @@
     <!-- <form bindsubmit="formSubmit" bindreset="formReset"> -->
       <wux-cell-group title="{{datetime}}">
         <wux-cell hover-class="none">
-          <wux-input bind:change="onChange1" label="1#车-顺德" value="{{contract_info1}}" controlled bind:clear="onClear"/>
+          <wux-input bind:change="onChange1" label="1#-车辆情况" value="{{contract_info1}}" controlled bind:clear="onClear"/>
         </wux-cell>
         <wux-cell hover-class="none">
-          <wux-input bind:change="onChange2" label="2#车-南沙" value="{{contract_info2}}" controlled bind:clear="onClear"/>
+          <wux-input bind:change="onChange2" label="2#-会议情况" value="{{contract_info2}}" controlled bind:clear="onClear"/>
         </wux-cell>
         <wux-cell hover-class="none">
-          <wux-input bind:change="onChange3" label="3#车-东莞" value="{{contract_info3}}" controlled bind:clear="onClear"/>
+          <wux-input bind:change="onChange3" label="3#-接待用餐" value="{{contract_info3}}" controlled bind:clear="onClear"/>
         </wux-cell>
         <wux-cell hover-class="none">
-          <wux-input bind:change="onChange4" label="4#车-罗田" value="{{contract_info4}}" controlled bind:clear="onClear"/>
+          <wux-input bind:change="onChange4" label="4#-其他" value="{{contract_info4}}" controlled bind:clear="onClear"/>
         </wux-cell>
       </wux-cell-group>
       <!-- <view class="btn-area">
@@ -41,7 +41,7 @@
   <view class="page_check_hd">
     <view class="page_check_title">公告</view>
   </view>
-</view> -->
-<view style="width: 90%;margin: 0 auto;">
+</view> style="width: 90%;margin: 0 auto;" -->
+<view>
   <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="afterTapDay" bind:whenChangeMonth="whenChangeMonth" bind:onTapDay="onTapDay" bind:afterCalendarRender="afterCalendarRender"></calendar>
 </view>

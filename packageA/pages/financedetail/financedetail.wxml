@@ -6,7 +6,7 @@
   <button class="delete" wx:if="{{isAdmin}}" type="primary" size="mini" data-id="{{id}}" bindtap="delete">删除</button>
   <button class="editor" wx:if="{{isAdmin}}||{{isArticleMe}}" size="mini" data-id="{{id}}" bindtap="editor">编辑</button>
   <view class='leassonTilte'>{{financedate}}</view>
-  <view class='author'>原创: 珠三角设代</view>
+  <!-- <view class='author'>原创: 珠三角设代</view> -->
   <view class='author'>数额: {{amount}}</view>
   <!-- <view class='time'>{{time}}</view> -->
   <view class='author'>是否统筹: {{consider}}</view>

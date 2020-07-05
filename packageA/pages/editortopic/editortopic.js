@@ -69,7 +69,7 @@ Page({
         title: app.globalData.projectConfig.projecttitle,
       });
       this.setData({
-        articleProjId: app.globalData.projectConfig.articleid,
+        articleProjId: app.globalData.projectConfig.articleprojid,
       })
     }
   },

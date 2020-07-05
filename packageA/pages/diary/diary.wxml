@@ -19,7 +19,7 @@
           </view>
         </picker>
       </view>
-
+<!--  {{processing[0].F_Caption}}-->
       <view class='toolbar' bindtap="format">
         <i class="iconfont icon-zitijiacu {{formats.bold ? 'ql-active' : ''}}" data-name="bold"></i>
         <i class="iconfont icon-zitixieti {{formats.italic ? 'ql-active' : ''}}" data-name="italic"></i>

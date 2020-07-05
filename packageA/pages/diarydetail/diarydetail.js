@@ -66,7 +66,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    if (app.globalData.projectConfig){
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+      this.setData({
+        diaryProjId: app.globalData.projectConfig.diaryprojid,
+      })
+    }
   },
 
   /**

@@ -2,7 +2,7 @@
 //var util = require('../../utils/util.js');
 var app = getApp();
 var config = require('../../config.js');
-var imgUrls1 = []
+// var imgUrls1 = []
 var page = 1; //分页标识，第几次下拉，用户传给后台获取新的下拉数据
 
 var searchpage = 1; // 当前页数-搜索页
@@ -11,9 +11,9 @@ var msgListKey = ""; // 文章列表本地缓存key
 
 Page({
   data: {
-    projectConfig: '',
+    projectid: '',
     collapse: '', //资料页面树状目录
-    current: [],//手风琴默认打开的部分
+    current: [], //手风琴默认打开的部分
     activeNames: ['1'],
     value: '',
     articles: [], //文章列表数组
@@ -39,38 +39,129 @@ Page({
     inputVal: "", // 搜索的内容
     searchLogShowed: false, // 是否显示搜索历史记录
     articleFocus: true, //是否是文章页
-    // searchFocus: true, //是否搜索框页
-    
+    drawingFocus: false, //是否图纸页
     standardFocus: false, //是否规范页
     otherFocus: false, //是否其他页
     searchshow: false, //页面是显示搜索（图纸、规范、其他）还是显示文章列表-首页
-    searchdrawshow: true,//页面显示顺德分部-南沙分部……
   },
+
   // 页面加载
-  onLoad: function() {
+  onLoad: function (options) {
     this.key = String(Math.floor(Math.random() * 3))
+    if (options.projectid) {
+      this.setData({
+        projectid: options.projectid
+      })
+    }
+    // wx.showShareMenu({
+    //   withShareTicket: true
+    // })
   },
+
+  getprojectconfig(projectid2) {
+    // console.log(projectid2)
+    var that = this;
+    var apiUrl = config.url + '/admin/getwxprojectconfig';
+    var postData = {
+      projectid: projectid2,
+      app_version: 1,
+    }
+    wx.request({
+      url: apiUrl,
+      data: postData,
+      method: 'GET',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success: function (res) {
+        console.log("resdata:" + res.data)
+        wx.setStorageSync({
+          key: 'projectConfig',
+          data: res.data
+        })
+        app.globalData.projectConfig = res.data
+        // console.log("zhe:"+app.globalData.projectConfig)
+        // that.setData({
+        //   apiUrl: config.url + "/wx/getwxarticless/" + app.globalData.projectConfig.articleprojid,
+        //   collapse: app.globalData.projectConfig.collapse,
+          // projectid: app.globalData.projectConfig.projectid
+        // })
+        // that.clearCache();
+        // that.getArticles(1);
+      },
+      fail: function (res) {
+        // console.log(res);
+        wx.showToast({
+          title: '获取项目配置数据失败',
+          icon: 'error',
+          duration: 2000
+        });
+      },
+    })
+  },
+
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (app.globalData.projectConfig){
-      // console.log(app.globalData.projectConfig.articleid)
+    var that=this
+    if (that.data.projectid != '') {
+      that.getprojectconfig(that.data.projectid)
+      that.setData({
+        projectid:''
+      })
+    } else if (app.globalData.projectConfig) {
       this.setData({
-        apiUrl:config.url + "/wx/getwxarticless/" + app.globalData.projectConfig.articleid,
-        collapse: app.globalData.projectConfig.collapse
+        apiUrl: config.url + "/wx/getwxarticless/" + app.globalData.projectConfig.articleprojid,
+        collapse: app.globalData.projectConfig.collapse,
+        // projectid: app.globalData.projectConfig.projectid
       })
       this.clearCache();
       this.getArticles(1);
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,
       });
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '未选定项目，是否前去选择？',
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            wx.navigateTo({
+              url: '/pages/projectlist/projectlist',
+              events: {
+                // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+                acceptDataFromOpenedPage: function (data) {
+                  console.log(data)
+                },
+                someEvent: function (data) {
+                  console.log(data)
+                }
+              },
+              success: function (res) {
+                // 通过eventChannel向被打开页面传送数据
+                res.eventChannel.emit('acceptDataFromOpenerPage', {
+                  data: 'test'
+                })
+              }
+            })
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+            wx.showToast({
+              title: '未选择项目！',
+              icon: 'none',
+              duration: 2000
+            });
+          }
+        }
+      })
     }
     // var that = this;
-    // that.clearCache(); //清本页缓存
+    // this.clearCache(); //清本页缓存
     //顶部轮播图片
     // that.carousel();
-    // that.getArticles(1); //第一次加载数据:绘画
+    // this.getArticles(1); //第一次加载数据:绘画
   },
 
   // vant打开手风琴
@@ -117,7 +208,7 @@ Page({
     }
   },
   // 清缓存
-  clearCache: function() {
+  clearCache: function () {
 
     // 这里也要分清是文章列表页还是搜索页。
 
@@ -125,11 +216,12 @@ Page({
     this.setData({
       imgUrls: [], //顶部轮播数组清空
       articles: [], //文章列表数组清空
+      msgList: []
     });
   },
   /**************** 界面点击 *****************/
   // 文章点击跳转详情页
-  onArticle: function() {
+  onArticle: function () {
     // 业务逻辑
   },
 
@@ -140,7 +232,7 @@ Page({
    * "pageSize" ：每页数量
    * "keyword" ：以文章标题模糊查询 ，格式为 "search_LIKE_实体类属性"
    */
-  loadMsgData: function(pg) {
+  loadMsgData: function (pg) {
     pg = pg ? pg : 1;
     var that = this;
     msgListKey = "msgList" + pg;
@@ -164,7 +256,7 @@ Page({
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      success: function(res) {
+      success: function (res) {
         if (res.data.info == "SUCCESS") { //成功
           var tmpArr = that.data.msgList;
           // console.log(tmpArr);
@@ -198,7 +290,7 @@ Page({
           console.log(res.data); //.info
         }
       },
-      fail: function(e) {
+      fail: function (e) {
         console.log(e);
       },
       complete: () => {
@@ -211,7 +303,7 @@ Page({
    * 获取文章列表
    * @param {int} pg  分页标识 默认0
    */
-  getArticles: function(pg) {
+  getArticles: function (pg) {
     //设置默认值
     pg = pg ? pg : 1;
     var that = this;
@@ -227,7 +319,7 @@ Page({
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      success: function(res) {
+      success: function (res) {
         if (res.data.info == "SUCCESS") { //成功
           if (pg == 1) {
             var tmpimgUrls = that.data.imgUrls;
@@ -251,13 +343,13 @@ Page({
           console.log(res.data.info);
         }
       },
-      fail: function(e) {
+      fail: function (e) {
         console.log(e);
       }
     })
   },
 
-  tap: function(e) {
+  tap: function (e) {
     for (var i = 0; i < order.length; ++i) {
       if (order[i] === this.data.toView) {
         this.setData({
@@ -268,13 +360,13 @@ Page({
     }
   },
 
-  tapMove: function(e) {
+  tapMove: function (e) {
     this.setData({
       scrollTop: this.data.scrollTop + 10
     })
   },
 
-  lower: function(e) {
+  lower: function (e) {
     // console.log(e)
     // let name = e.detail.value;
     // this.setData({
@@ -282,7 +374,7 @@ Page({
     // })
   },
 
-  upper: function(e) {
+  upper: function (e) {
 
   },
 
@@ -354,7 +446,7 @@ Page({
   },
 
   //详情页面
-  seeDetail: function(e) {
+  seeDetail: function (e) {
     // console.log(e)
     this.setData({
       leassonId: e.currentTarget.dataset.id
@@ -365,16 +457,16 @@ Page({
   },
 
   //用户点击右上角分享
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: '珠三角设代plus',
-      path: 'pages/index/index'
+      path: 'pages/index/index?projectid=' + app.globalData.projectConfig.projectid
     }
   },
 
   // 搜索框
   // 显示搜索输入框和搜索历史记录
-  showInput: function() {
+  showInput: function () {
     var that = this;
     if ("" != wx.getStorageSync('searchLog')) {
       that.setData({
@@ -390,7 +482,7 @@ Page({
     }
   },
   // 显示搜索历史记录
-  searchLogShowed: function() {
+  searchLogShowed: function () {
     var that = this;
     if ("" != wx.getStorageSync('searchLog')) {
       that.setData({
@@ -404,7 +496,7 @@ Page({
     }
   },
   // 点击 搜索 按钮后 隐藏搜索记录，并加载数据
-  searchData: function() {
+  searchData: function () {
     var that = this;
     that.setData({
       msgList: [],
@@ -423,7 +515,7 @@ Page({
       var searchLogData = that.data.searchLogList;
       searchLogData.push(searchTitle);
       wx.setStorageSync('searchLog', searchLogData);
-    }else{
+    } else {
       wx.showToast({
         title: '缺少关键字！',
         icon: 'none',
@@ -432,7 +524,7 @@ Page({
     }
   },
   // 点击叉叉icon 清除输入内容，同时清空关键字，并加载数据——没有关键字，就是加载所有数据。
-  clearInput: function() {
+  clearInput: function () {
     var that = this;
     that.setData({
       msgList: [],
@@ -444,7 +536,7 @@ Page({
     // that.loadMsgData(1);
   },
   // 输入内容时 把当前内容赋值给 查询的关键字，并显示搜索记录
-  inputTyping: function(e) {
+  inputTyping: function (e) {
     var that = this;
     // 如果不做这个if判断，会导致 searchLogList 的数据类型由 list 变为 字符串
     if ("" != wx.getStorageSync('searchLog')) {
@@ -461,7 +553,7 @@ Page({
     searchTitle = e.detail.value;
   },
   // 通过搜索记录查询数据
-  searchDataByLog: function(e) {
+  searchDataByLog: function (e) {
     // 从view中获取值，在view标签中定义data-name(name自定义，比如view中是data-log="123" ; 那么e.target.dataset.log=123)
     searchTitle = e.target.dataset.log;
     var that = this;
@@ -476,7 +568,7 @@ Page({
   },
 
   // 清除搜索记录
-  clearSearchLog: function() {
+  clearSearchLog: function () {
     var that = this;
     that.setData({
       hidden: false
@@ -491,7 +583,7 @@ Page({
   },
 
   // 定位数据
-  scroll: function(event) {
+  scroll: function (event) {
     var that = this;
     that.setData({
       scrollTop: event.detail.scrollTop
@@ -499,13 +591,11 @@ Page({
   },
 
   //直接查看pdf文件
-  downloadFile: function(e) {
-    // console.log(e)
+  downloadFile: function (e) {
     // 显示加载的icon
     wx.showLoading({
       title: '加载中...',
     })
-
     var that = this;
     if (that.data.standardFocus) {
       that.setData({
@@ -529,8 +619,8 @@ Page({
       // hotqinsessionid: sessionId
       // },
       success: function (res) {
-        wx.hideLoading()
         // console.log(res)
+        wx.hideLoading();
         const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
         wx.openDocument({
           filePath: filePath,
@@ -566,7 +656,7 @@ Page({
       this.setData({
         searchId: e.currentTarget.dataset.id
       })
-    } else if (this.data.drawingFocus && !this.data.otherFocus){
+    } else if (this.data.drawingFocus && !this.data.otherFocus) {
       this.setData({
         searchId: e.currentTarget.dataset.id2
       })

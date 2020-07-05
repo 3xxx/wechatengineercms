@@ -207,42 +207,42 @@ App({
     if (value) {
       // Do something with return value
       that.globalData.projectConfig =value
-    }else{
-      console.log('读取key发生错误')
-        wx.showModal({
-          title: '提示',
-          content: '未选定项目，是否前去选择？',
-          success (res) {
-            if (res.confirm) {
-              console.log('用户点击确定')
-              wx.navigateTo({
-                url: '/pages/projectlist/projectlist',
-                events: {
-                  // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-                  acceptDataFromOpenedPage: function(data) {
-                    console.log(data)
-                  },
-                  someEvent: function(data) {
-                    console.log(data)
-                  }
-                },
-                success: function(res) {
-                  // 通过eventChannel向被打开页面传送数据
-                  res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
-                }
-              })
-            } else if (res.cancel) {
-              console.log('用户点击取消')
-              wx.showToast({
-                title: '未选择项目！',
-                icon: 'none',
-                duration: 2000
-              });
-            }
-          }
-        })
     }
-
+    // else{
+    //   console.log('读取key发生错误')
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '未选定项目，是否前去选择？',
+    //       success (res) {
+    //         if (res.confirm) {
+    //           console.log('用户点击确定')
+    //           wx.navigateTo({
+    //             url: '/pages/projectlist/projectlist',
+    //             events: {
+    //               // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+    //               acceptDataFromOpenedPage: function(data) {
+    //                 console.log(data)
+    //               },
+    //               someEvent: function(data) {
+    //                 console.log(data)
+    //               }
+    //             },
+    //             success: function(res) {
+    //               // 通过eventChannel向被打开页面传送数据
+    //               res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
+    //             }
+    //           })
+    //         } else if (res.cancel) {
+    //           console.log('用户点击取消')
+    //           wx.showToast({
+    //             title: '未选择项目！',
+    //             icon: 'none',
+    //             duration: 2000
+    //           });
+    //         }
+    //       }
+    //     })
+    // }
     // wx.getStorage({
     //   key: 'projectconfig',
     //   success(res) {

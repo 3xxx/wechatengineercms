@@ -15,7 +15,7 @@ Page({
   data: {
     current: [],
 
-    articles: [], //文章列表数组
+    // articles: [], //文章列表数组
     imgUrls: [],
     indicatorDots: true,
     autoplay: true,
@@ -25,8 +25,9 @@ Page({
     scrollTop: 100,
     author: '珠三角设代',
     // leassonList: [],//文章列表
-    actIndex: 'draw',//这个为何无法赋值给页面呢？
-    apiUrl: config.url + '/wx/searchwxdrawings',
+    actIndex: 'draw', //这个为何无法赋值给页面呢？
+    // apiUrl: config.url + '/wx/searchwxdrawings',
+    apiUrl: config.url + '/wx/searchwxproducts',
     leassonId: '',
 
     msgList: [], //搜索结果列表
@@ -51,7 +52,7 @@ Page({
     this.setData({
       id: options.id
     })
-    this.loadMsgData(1)
+
   },
 
   /**
@@ -70,6 +71,10 @@ Page({
         title: app.globalData.projectConfig.projecttitle,
       });
     }
+    // searchpage = 1; //分页标识归零
+    // searchTitle="";
+    this.clearCache();
+    this.loadMsgData(1)
   },
 
   /**
@@ -126,13 +131,13 @@ Page({
   },
   // 清缓存
   clearCache: function () {
-
     // 这里也要分清是文章列表页还是搜索页。
-
-    page = 1; //分页标识归零
+    searchpage = 1; //分页标识归零
+    searchTitle="";
+    // page = 1; //分页标识归零
     this.setData({
       imgUrls: [], //顶部轮播数组清空
-      articles: [], //文章列表数组清空
+      msgList: [], //文章列表数组清空
     });
   },
   /**************** 界面点击 *****************/
@@ -269,9 +274,10 @@ Page({
       scrollTop: 0,
       inputVal: ""
     });
-    searchTitle = "";
-    searchpage = 1;
-    // that.loadMsgData(1);
+    // searchTitle = "";
+    // searchpage = 1;
+    that.clearCache();
+    that.loadMsgData(1);
   },
   // 输入内容时 把当前内容赋值给 查询的关键字，并显示搜索记录
   inputTyping: function (e) {
@@ -355,7 +361,7 @@ Page({
         const filePath = res.tempFilePath //返回的文件临时地址，用于后面打开本地预览所用
         wx.openDocument({
           filePath: filePath,
-          fileType: 'pdf',
+          fileType: e.currentTarget.dataset.type,
           success: function (res) {
             console.log('打开成功');
             wx.hideLoading()
@@ -461,6 +467,17 @@ Page({
           }
         }
       }
+    })
+  },
+
+  //详情页面
+  seeDetail: function (e) {
+    // console.log(e)
+    this.setData({
+      leassonId: e.currentTarget.dataset.id
+    })
+    wx.navigateTo({
+      url: '../../../pages/detail/detail?id=' + this.data.leassonId
     })
   },
 

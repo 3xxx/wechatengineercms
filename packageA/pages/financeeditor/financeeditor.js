@@ -58,26 +58,26 @@ Page({
     multiArray: [
       ['顺德部', '南沙部', '东莞部', '罗田部']
     ],
-    objectMultiArray: [
-      [{
-          id: 0,
-          name: '顺德部'
-        },
-        {
-          id: 1,
-          name: '南沙部'
-        },
-        {
-          id: 1,
-          name: '东莞部'
-        },
-        {
-          id: 1,
-          name: '罗田部'
-        }
-      ]
-    ],
-    multiIndex: [1],
+    // objectMultiArray: [
+    //   [{
+    //       id: 0,
+    //       name: '顺德部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '南沙部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '东莞部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '罗田部'
+    //     }
+    //   ]
+    // ],
+    multiIndex: [0],
     lang: 'zh_CN',
   },
 

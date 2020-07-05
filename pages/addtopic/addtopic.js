@@ -47,7 +47,7 @@ Page({
     if (app.globalData.projectConfig) {
       // console.log(app.globalData.projectConfig.articleid)
       this.setData({
-        wxarticleid: app.globalData.projectConfig.articleid,
+        wxarticleid: app.globalData.projectConfig.articleprojid,
       })
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,

@@ -21,9 +21,9 @@ Page({
     this.clearCache(); //清本页缓存
     this.getProjects(1);
     //读取存储，获得项目id
-    if (app.globalData.projectConfig){
+    if (app.globalData.projectConfig) {
       this.setData({
-        radio:app.globalData.projectConfig.projectcode
+        radio: app.globalData.projectConfig.projectcode
       });
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,
@@ -65,9 +65,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (app.globalData.projectConfig){
+    if (app.globalData.projectConfig) {
       this.setData({
-        radio:app.globalData.projectConfig.projectcode
+        radio: app.globalData.projectConfig.projectcode
       });
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,
@@ -150,10 +150,10 @@ Page({
   getprojectconfig() {
     var that = this;
     if (that.data.projectid) {
-      var apiUrl = config.url + '/admin/getwxprojectconfig'; 
+      var apiUrl = config.url + '/admin/getwxprojectconfig';
       var postData = {
-        projectid: that.data.projectid, 
-        app_version: 1, 
+        projectid: that.data.projectid,
+        app_version: 1,
       }
       wx.request({
         url: apiUrl,
@@ -167,7 +167,7 @@ Page({
             key: 'projectConfig',
             data: res.data
           })
-          app.globalData.projectConfig=res.data
+          app.globalData.projectConfig = res.data
           wx.showToast({
             title: '保存成功',
             duration: 2000

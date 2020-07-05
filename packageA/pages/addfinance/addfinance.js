@@ -50,28 +50,29 @@ Page({
     value2: [year, month, day],
     displayValue2: year + '-' + month1 + '-' + day,
     multiArray: [
-      ['顺德部', '南沙部', '东莞部', '罗田部']
+      []
     ],
-    objectMultiArray: [
-      [{
-          id: 0,
-          name: '顺德部'
-        },
-        {
-          id: 1,
-          name: '南沙部'
-        },
-        {
-          id: 1,
-          name: '东莞部'
-        },
-        {
-          id: 1,
-          name: '罗田部'
-        }
-      ]
-    ],
-    multiIndex: [1],
+    // '顺德部', '南沙部', '东莞部', '罗田部'
+    // objectMultiArray: [
+    //   [{
+    //       id: 0,
+    //       name: '顺德部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '南沙部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '东莞部'
+    //     },
+    //     {
+    //       id: 1,
+    //       name: '罗田部'
+    //     }
+    //   ]
+    // ],
+    multiIndex: [0],
     lang: 'zh_CN',
   },
 
@@ -93,12 +94,27 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that = this
     if (app.globalData.projectConfig) {
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,
       });
       this.setData({
         financeProjId: app.globalData.projectConfig.financeprojid,
+        projectid: app.globalData.projectConfig.projectid
+      })
+      let multiArray = that.data.multiArray
+      wx.request({
+        url: config.url + '/checkin/activity/getall?projectid=' + that.data.projectid,
+        method: 'POST',
+        success: function (res) {
+          for (var i = 0; i < res.data.processing.length; i++) {
+            that.data.multiArray[0][i] = res.data.processing[i].F_Caption;
+          }
+          that.setData({
+            multiArray //必须要用setdata页面才会显示
+          });
+        }
       })
     }
     this.setData({
@@ -170,7 +186,7 @@ Page({
       var sessionId = wx.getStorageSync('sessionId')
       //发起网络请求
       wx.request({
-        url: config.url + '/wx/addwxfinance/' + thata.data.financeProjId, //25002本地笔记本170592
+        url: config.url + '/wx/addwxfinance/' + that.data.financeProjId, //25002本地笔记本170592
         header: {
           "Content-Type": "application/x-www-form-urlencoded"
         },

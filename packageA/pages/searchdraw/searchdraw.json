@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "珠三角设代plus●search",
   "usingComponents": {
-    "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index"
+    "wxc-avatar": "../../../packages/@minui/wxc-avatar/dist/index"
   }
 }
