@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "van-field": "../../../component/vant/miniprogram_npm/vant-weapp/field/index",
+    "van-calendar": "../../../component/vant/miniprogram_npm/vant-weapp/calendar/index",
+    "van-cell": "../../../component/vant/miniprogram_npm/vant-weapp/cell/index",
+    "van-cell-group": "../../../component/vant/miniprogram_npm/vant-weapp/cell-group/index",
+    "van-tag": "../../../component/vant/miniprogram_npm/vant-weapp/tag/index",
+    "van-icon": "../../../component/vant/miniprogram_npm/vant-weapp/icon/index"
+  }
+}

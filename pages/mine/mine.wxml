@@ -51,6 +51,11 @@
   <button type="primary" bindtap="checkin"> 打卡</button>
   <button type="primary" bindtap="finance"> 财务登记</button>
   <button type="primary" bindtap="selectproj"> 切换项目</button>
+  <button type="primary" bindtap="uploadVideo"> 上传视频</button>
+  <button type="primary" bindtap="videoIndex"> 视频列表</button>
+  <button type="primary" bindtap="todo"> 待办事项</button>
+  <button type="primary" bindtap="business"> 出差登记</button>
+  <button type="primary" bindtap="busycheckin"> 出差打卡</button>
   <view class="tool">
     <van-button icon="wechat" round type="warning" size="small" bind:click="showCustomDialogWx">微信赞赏平台</van-button>
   </view>

@@ -22,7 +22,7 @@ Page({
     readOnly: false,
     placeholder: '请输入正文...',
     _focus: false,
-    wxarticleid: '',
+    wxarticleprojid: '',
   },
   readOnlyChange() {
     this.setData({
@@ -47,7 +47,7 @@ Page({
     if (app.globalData.projectConfig) {
       // console.log(app.globalData.projectConfig.articleid)
       this.setData({
-        wxarticleid: app.globalData.projectConfig.articleprojid,
+        wxarticleprojid: app.globalData.projectConfig.articleprojid,
       })
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,
@@ -120,7 +120,7 @@ Page({
       var sessionId = wx.getStorageSync('sessionId')
       //发起网络请求
       wx.request({
-        url: config.url + '/wx/addwxarticles/' + that.data.wxarticleid,
+        url: config.url + '/wx/addwxarticles/' + that.data.wxarticleprojid,
         header: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
@@ -358,7 +358,7 @@ Page({
         for (let path of that.data.images) {
           arr.push(wxUploadFile({
             // url: config.urls.question + '/image/upload',
-            url: config.url + '/wx/uploadwximgs/' + that.data.wxarticleid,
+            url: config.url + '/wx/uploadwximgs/' + that.data.wxarticleprojid,
             filePath: path,
             name: 'file',
           }))

@@ -5,8 +5,6 @@ function getRad(d) {
     return d * PI / 180.0;
 }
 
-// (113.52911321166994,22.802929526649727,113.52804032806398,22.803246016075406)
-// lat1,lng1,lat2,lng2
 function distance(p1,p2,callback) {
     console.log(p1,p2);
     var f = getRad((p1.lat + p2.lat) / 2);

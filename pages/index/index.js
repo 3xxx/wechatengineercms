@@ -11,7 +11,8 @@ var msgListKey = ""; // 文章列表本地缓存key
 
 Page({
   data: {
-    projectid: '',
+    projectid: '', //项目id
+    articleprojid: '', //文章对应的projectid
     collapse: '', //资料页面树状目录
     current: [], //手风琴默认打开的部分
     activeNames: ['1'],
@@ -40,22 +41,110 @@ Page({
     searchLogShowed: false, // 是否显示搜索历史记录
     articleFocus: true, //是否是文章页
     drawingFocus: false, //是否图纸页
+    videoFocus: false, //是否是视频页
+    // searchFocus: true, //是否搜索框页
+
     standardFocus: false, //是否规范页
     otherFocus: false, //是否其他页
     searchshow: false, //页面是显示搜索（图纸、规范、其他）还是显示文章列表-首页
-  },
+    searchdrawshow: true, //页面显示顺德分部-南沙分部……
 
+    //视频
+    totalPage: 1, //总页数
+    videopage: 1, // 当前页数
+    videoList: [], // 展示的视频信息
+
+    screenWidth: 350, // 视频显示宽度
+    // serverUrl: "", // 服务器路径地址
+    coverUrl: config.attachmenturl, //视频封面（附件）路径前缀
+    faceUrl: "/images/noneface.png", // 默认头像
+    coverPath: "/images/dsp3.jpg", // 默认视频封面
+    searchContent: ""
+  },
   // 页面加载
-  onLoad: function (options) {
-    this.key = String(Math.floor(Math.random() * 3))
-    if (options.projectid) {
-      this.setData({
-        projectid: options.projectid
+  onLoad: function (params) {
+    var that = this
+    that.key = String(Math.floor(Math.random() * 3))
+    if (params.projectid) {
+      that.setData({
+        projectid: params.projectid
       })
     }
-    // wx.showShareMenu({
-    //   withShareTicket: true
-    // })
+
+    if (that.data.projectid != '') {
+      that.getprojectconfig(that.data.projectid)
+      that.setData({
+        projectid:''
+      })
+    } else if (app.globalData.projectConfig) {
+      that.setData({
+        apiUrl: config.url + "/wx/getwxarticless/" + app.globalData.projectConfig.articleprojid,
+        collapse: app.globalData.projectConfig.collapse,
+        articleprojid: app.globalData.projectConfig.articleprojid
+      })
+      that.clearCache();
+      that.getArticles(1);
+      wx.setNavigationBarTitle({
+        title: app.globalData.projectConfig.projecttitle,
+      });
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '未选定项目，是否前去选择？',
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            wx.navigateTo({
+              url: '/pages/projectlist/projectlist',
+              events: {
+                // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+                acceptDataFromOpenedPage: function (data) {
+                  console.log(data)
+                },
+                someEvent: function (data) {
+                  console.log(data)
+                }
+              },
+              success: function (res) {
+                // 通过eventChannel向被打开页面传送数据
+                res.eventChannel.emit('acceptDataFromOpenerPage', {
+                  data: 'test'
+                })
+              }
+            })
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+            wx.showToast({
+              title: '未选择项目！',
+              icon: 'none',
+              duration: 2000
+            });
+          }
+        }
+      })
+    }
+
+    // 视频console.log(params.search);
+    // var me = this;
+    var screenWidth = wx.getSystemInfoSync().screenWidth;
+    that.setData({
+      screenWidth: screenWidth,
+    });
+
+    var searchContent = "";
+    var isSaveRecord = "";
+    if (params.search != null && params.search != '' && params.search != undefined) {
+      searchContent = params.search;
+    }
+    if (params.isSaveRecord != null && params.isSaveRecord != '' && params.isSaveRecord != undefined) {
+      isSaveRecord = params.isSaveRecord;
+    }
+
+    that.setData({
+      searchContent: searchContent
+    });
+    // var page = that.data.page; // 获取当前的分页数
+    that.getVideoData(1, isSaveRecord);
   },
 
   getprojectconfig(projectid2) {
@@ -104,59 +193,61 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var that=this
-    if (that.data.projectid != '') {
-      that.getprojectconfig(that.data.projectid)
-      that.setData({
-        projectid:''
-      })
-    } else if (app.globalData.projectConfig) {
-      this.setData({
-        apiUrl: config.url + "/wx/getwxarticless/" + app.globalData.projectConfig.articleprojid,
-        collapse: app.globalData.projectConfig.collapse,
-        // projectid: app.globalData.projectConfig.projectid
-      })
-      this.clearCache();
-      this.getArticles(1);
-      wx.setNavigationBarTitle({
-        title: app.globalData.projectConfig.projecttitle,
-      });
-    } else {
-      wx.showModal({
-        title: '提示',
-        content: '未选定项目，是否前去选择？',
-        success(res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-            wx.navigateTo({
-              url: '/pages/projectlist/projectlist',
-              events: {
-                // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-                acceptDataFromOpenedPage: function (data) {
-                  console.log(data)
-                },
-                someEvent: function (data) {
-                  console.log(data)
-                }
-              },
-              success: function (res) {
-                // 通过eventChannel向被打开页面传送数据
-                res.eventChannel.emit('acceptDataFromOpenerPage', {
-                  data: 'test'
-                })
-              }
-            })
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-            wx.showToast({
-              title: '未选择项目！',
-              icon: 'none',
-              duration: 2000
-            });
-          }
-        }
-      })
-    }
+    // var that=this
+    // if (that.data.projectid != '') {
+    //   that.getprojectconfig(that.data.projectid)
+    //   that.setData({
+    //     projectid:''
+    //   })
+    // } else if (app.globalData.projectConfig) {
+    //   this.setData({
+    //     apiUrl: config.url + "/wx/getwxarticless/" + app.globalData.projectConfig.articleprojid,
+    //     collapse: app.globalData.projectConfig.collapse,
+    //     articleprojid: app.globalData.projectConfig.articleprojid
+    //   })
+    //   this.clearCache();
+    //   this.getArticles(1);
+    //   wx.setNavigationBarTitle({
+    //     title: app.globalData.projectConfig.projecttitle,
+    //   });
+    // } else {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '未选定项目，是否前去选择？',
+    //     success(res) {
+    //       if (res.confirm) {
+    //         console.log('用户点击确定')
+    //         wx.navigateTo({
+    //           url: '/pages/projectlist/projectlist',
+    //           events: {
+    //             // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+    //             acceptDataFromOpenedPage: function (data) {
+    //               console.log(data)
+    //             },
+    //             someEvent: function (data) {
+    //               console.log(data)
+    //             }
+    //           },
+    //           success: function (res) {
+    //             // 通过eventChannel向被打开页面传送数据
+    //             res.eventChannel.emit('acceptDataFromOpenerPage', {
+    //               data: 'test'
+    //             })
+    //           }
+    //         })
+    //       } else if (res.cancel) {
+    //         console.log('用户点击取消')
+    //         wx.showToast({
+    //           title: '未选择项目！',
+    //           icon: 'none',
+    //           duration: 2000
+    //         });
+    //       }
+    //     }
+    //   })
+    // }
+
+
     // var that = this;
     // this.clearCache(); //清本页缓存
     //顶部轮播图片
@@ -190,14 +281,39 @@ Page({
     if (this.data.articleFocus) {
       this.clearCache();
       this.getArticles(1); //第一次加载数据
-      wx.stopPullDownRefresh();
+    } else if (this.data.videoFocus) {
+      this.setData({
+        videoList:[]//清空视频列表数组
+      });
+      wx.showNavigationBarLoading();
+      this.getVideoData(1, 0);
     }
+    wx.stopPullDownRefresh();
   },
 
   // 页面上拉触底事件（上拉加载更多）
   onReachBottom: function () {
     if (this.data.articleFocus) {
       this.getArticles(page); //后台获取新数据并追加渲染
+    } else if (this.data.videoFocus) {
+      // var me = this;
+      var currentPage = this.data.videopage; //当前页数
+      console.log(currentPage)
+      var totalPage = this.data.totalPage; //总页数页数
+      // 判断是否为最后一页
+      // 这个totalpage要计算出来！！！！
+      if (currentPage === totalPage) {
+        wx.showToast({
+          title: '已经没有视频啦...',
+          icon: 'none',
+          duration: 2000
+        })
+        return;
+      }
+      var videopage1 = currentPage + 1;
+      console.log(videopage1)
+      this.getVideoData(videopage1, 0);
+      //console.log(me.data.videoList);
     }
     // console.log(this.data.searchshow)
     if (this.data.searchshow) {
@@ -209,9 +325,7 @@ Page({
   },
   // 清缓存
   clearCache: function () {
-
     // 这里也要分清是文章列表页还是搜索页。
-
     page = 1; //分页标识归零
     this.setData({
       imgUrls: [], //顶部轮播数组清空
@@ -337,7 +451,6 @@ Page({
           that.setData({
             articles: tmpArr
           })
-          // console.log(tmpArr);
           page++;
         } else { //失败
           console.log(res.data.info);
@@ -391,12 +504,24 @@ Page({
           // searchdrawshow: false
         })
         break;
+      case "视频":
+        this.setData({
+          articleFocus: false,
+          videoFocus: true,
+          drawingFocus: false,
+          standardFocus: false,
+          otherFocus: false,
+          searchshow: false,
+          // searchdrawshow: false
+        })
+        break;
       case "图纸":
         searchpage = 1;
         this.setData({
           msgList: [],
           scrollTop: 0,
           articleFocus: false,
+          videoFocus: false,
           drawingFocus: true,
           standardFocus: false,
           otherFocus: false,
@@ -413,6 +538,7 @@ Page({
           msgList: [],
           scrollTop: 0,
           articleFocus: false,
+          videoFocus: false,
           drawingFocus: false,
           standardFocus: true,
           otherFocus: false,
@@ -428,6 +554,7 @@ Page({
           msgList: [],
           scrollTop: 0,
           articleFocus: false,
+          videoFocus: false,
           drawingFocus: false,
           standardFocus: false,
           otherFocus: true,
@@ -452,7 +579,7 @@ Page({
       leassonId: e.currentTarget.dataset.id
     })
     wx.navigateTo({
-      url: '../detail/detail?id=' + this.data.leassonId
+      url: '../detail/detail?id=' + this.data.leassonId + '&articleprojid=' + this.data.articleprojid
     })
   },
 
@@ -663,6 +790,58 @@ Page({
     }
     wx.navigateTo({
       url: '../searchdraw/searchdraw?id=' + this.data.searchId
+    })
+  },
+
+  /* 视频展示 */
+  showVideoInfo: function (e) {
+    var me = this;
+    var videoList = me.data.videoList;
+    var arrindex = e.target.dataset.arrindex;
+    var videoInfo = JSON.stringify(videoList[arrindex]);
+    console.log(videoInfo);
+
+    wx.navigateTo({
+      url: '../videoInfo/videoInfo?videoInfo=' + videoInfo
+    })
+  },
+
+  /* 获取视频信息:公用方法 */
+  getVideoData: function (pageparameter, isSaveRecord) {
+    var me = this;
+    // var serverUrl = app.serverUrl;
+    var serverUrl = config.url;
+    var searchContent = me.data.searchContent;
+    //console.log(searchContent);
+    wx.showLoading({
+      title: '正在加载视频...',
+    });
+
+    wx.request({
+      // url: serverUrl + "/video/showAllVideos?page=" + page + "&isSaveRecord=" + isSaveRecord + "&searchText=" + searchContent,
+      url: serverUrl + "/wx/getuservideo/26159?pageNo=" + pageparameter + "&isSaveRecord=" + isSaveRecord + "&searchText=" + searchContent, //170602
+      method: "GET",
+      success: function (res) {
+        wx.hideLoading();
+        wx.hideNavigationBarLoading();
+        wx.stopPullDownRefresh();
+        // console.log(res.data);
+        // 判断当前页是否是第一页，若为第一个则清空videoList
+        if (page === 1) {
+          me.setData({
+            videoList: []
+          });
+        }
+
+        var videoList = res.data.rows; // 新的视频信息
+        var newVideoList = me.data.videoList; // 旧的视频信息
+        me.setData({
+          videoList: newVideoList.concat(videoList), //将新旧的视频信息拼接在一起
+          videopage1: pageparameter,
+          totalPage: res.data.total,
+          serverUrl: serverUrl
+        });
+      }
     })
   }
 

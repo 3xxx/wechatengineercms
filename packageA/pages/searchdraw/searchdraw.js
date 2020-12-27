@@ -95,14 +95,9 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
+    this.clearCache();
+    this.loadMsgData(1)
+    wx.stopPullDownRefresh();
   },
 
   /**
@@ -115,11 +110,6 @@ Page({
     }
   },
 
-  // 下拉刷新
-  onPullDownRefresh: function () {
-
-  },
-
   // 页面上拉触底事件（上拉加载更多）
   onReachBottom: function () {
     // if (!this.data.searchshow) {
@@ -129,6 +119,7 @@ Page({
       // }
     // }
   },
+  
   // 清缓存
   clearCache: function () {
     // 这里也要分清是文章列表页还是搜索页。
@@ -140,6 +131,7 @@ Page({
       msgList: [], //文章列表数组清空
     });
   },
+  
   /**************** 界面点击 *****************/
   // 文章点击跳转详情页
   onArticle: function () {
@@ -392,7 +384,7 @@ Page({
     // console.log(e)
     var that = this
     that.setData({
-      uploadurl: config.url + '/admin/addwxattachment?pid=' + that.data.id,
+      uploadurl: config.url + '/wx/addwxattachment?pid=' + that.data.id,
     });
     wx.chooseMessageFile({
       count: 10,
@@ -433,14 +425,15 @@ Page({
                     duration: 1500
                   })
                   // 加跳转
-                  wx.navigateBack({
-                    delta: 1,
-                    success: function (e) {
-                      var page = getCurrentPages().pop();
-                      if (page == undefined || page == null) return;
-                      page.onLoad();
-                    }
-                  })
+                  // wx.navigateBack({
+                  //   delta: 1,
+                  //   success: function (e) {
+                  //     var page = getCurrentPages().pop();
+                  //     if (page == undefined || page == null) return;
+                  //     page.onLoad();
+                  that.onPullDownRefresh()
+                  //   }
+                  // })
                 } else {
                   wx.showToast({
                     title: "上传失败",
@@ -477,7 +470,15 @@ Page({
       leassonId: e.currentTarget.dataset.id
     })
     wx.navigateTo({
-      url: '../../../pages/detail/detail?id=' + this.data.leassonId
+      url: '../../../pages/detail/detail?id=' + this.data.leassonId + '&articleprojid=' + this.data.id
+    })
+  },
+
+  //发布文章
+  addArticle: function (e) {
+    // console.log(e)
+    wx.navigateTo({
+      url: '../addtopic/addtopic?articleprojid=' + this.data.id
     })
   },
 

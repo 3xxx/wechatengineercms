@@ -10,7 +10,7 @@ Page({
     hasUserInfo: false, //是否授权
     userInfo: null,
     hasLocation: false,
-    isAdmin:false
+    isAdmin: false
   },
   /**
    * 生命周期函数--监听页面加载
@@ -108,9 +108,9 @@ Page({
       })
     };
 
-    if (app.globalData.isAdmin){
+    if (app.globalData.isAdmin) {
       that.setData({
-        isAdmin:true
+        isAdmin: true
       })
     }
   },
@@ -149,9 +149,9 @@ Page({
    */
   onShow: function () {
     this.setData({
-      hasRegist: app.globalData.hasRegist//naviback返回此页不会触发onload，但是会触发onshow
+      hasRegist: app.globalData.hasRegist //naviback返回此页不会触发onload，但是会触发onshow
     });
-    if (app.globalData.projectConfig){
+    if (app.globalData.projectConfig) {
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,
       });
@@ -257,9 +257,9 @@ Page({
       })
     }
   },
-  
+
   // 项目切换
-  selectproj:function(){
+  selectproj: function () {
     wx.navigateTo({
       url: '/pages/projectlist/projectlist',
     })
@@ -269,7 +269,7 @@ Page({
   finance: function (e) {
     var that = this
     if (!that.data.hasRegist) {
-      wx.showModal({// 显示模态弹窗
+      wx.showModal({ // 显示模态弹窗
         title: '未注册用户！',
         content: '请点击确定后进行注册。',
         success(res) {
@@ -310,5 +310,78 @@ Page({
     });
     // this.setData({ wxpayshow: true });
   },
+
+  // 上传短视频
+  uploadVideo: function () {
+    var me = this;
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['video'],
+      sourceType: ['album', 'camera'],
+      maxDuration: 30,
+      camera: 'back',
+
+      success(res) {
+        // console.log(res);
+        var duration = res.tempFiles[0].duration;
+        var tmpHeight = res.tempFiles[0].height;
+        var tmpWidth = res.tempFiles[0].width;
+        var tmpVideoUrl = res.tempFiles[0].tempFilePath;
+        var tmpCoverUrl = res.tempFiles[0].thumbTempFilePath;
+
+        if (duration > 60) {
+          wx.showToast({
+            title: '视频长度不能超过60秒...',
+            icon: "none",
+            duration: 2500
+          })
+        } else if (duration < 3) {
+          wx.showToast({
+            title: '视频长度不能小于3秒...',
+            icon: "none",
+            duration: 2500
+          })
+        } else {
+          //TODO 打开选择bgm的页面
+          //打开选择bgm的页面
+          wx.navigateTo({
+            url: '../chooseBgm/chooseBgm?duration=' + duration +
+              "&tmpHeight=" + tmpHeight +
+              "&tmpWidth=" + tmpWidth +
+              "&tmpVideoUrl=" + tmpVideoUrl +
+              "&tmpCoverUrl=" + tmpCoverUrl,
+          })
+        }
+
+      }
+    })
+  },
+
+  // 短视频列表
+  videoIndex: function () {
+    wx.navigateTo({
+      url: '../videoList/videoList'
+    })
+  },
+
+  // 待办事项页面
+  todo: function () {
+    wx.navigateTo({
+      url: '../todo/todo'
+    })
+  },
+
+  // 出差登记
+  business: function () {
+    wx.navigateTo({
+      url: '../../packageC/pages/business/business'
+    })
+  },
+  // 出差打卡
+  busycheckin: function () {
+    wx.navigateTo({
+      url: '../../packageC/pages/busycheckin/busycheckin'
+    })
+  }
 
 })

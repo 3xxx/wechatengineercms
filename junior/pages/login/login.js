@@ -1,3 +1,4 @@
+// 这个不是登录界面，是register
 var app = getApp();
 var util = require('../../utils/util.js');
 

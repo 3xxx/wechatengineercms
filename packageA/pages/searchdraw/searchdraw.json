@@ -1,6 +1,10 @@
 {
   "navigationBarTitleText": "珠三角设代plus●search",
+  "enablePullDownRefresh": true,
   "usingComponents": {
-    "wxc-avatar": "../../../packages/@minui/wxc-avatar/dist/index"
+    "wxc-avatar": "../../../packages/@minui/wxc-avatar/dist/index",
+    "wux-icon": "../../../dist/icon/index",
+    "wux-avatar": "../../../dist/avatar/index",
+    "van-icon": "../../../component/vant/miniprogram_npm/vant-weapp/icon/index"
   }
 }

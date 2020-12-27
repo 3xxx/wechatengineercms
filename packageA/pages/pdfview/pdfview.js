@@ -712,7 +712,7 @@ Page({
       });
     } else if (that.data.actIndex == 'draw') {//设计页
       that.setData({
-        downloadurl: config.url + '/wx/getwxpdf/' + e.currentTarget.dataset.id,
+        downloadurl: config.url + '/wx/wxpdf/' + e.currentTarget.dataset.id,
       });
     } else {
       that.setData({

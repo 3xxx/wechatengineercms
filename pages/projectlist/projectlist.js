@@ -85,8 +85,9 @@ Page({
     var that = this;
     var apiUrl = config.url + '/project/getprojects'; //文章列表接口地址
     var postData = {
-      page: pg, //分页标识
+      pageNo: pg, //分页标识
       app_version: 1, //当前版本，后台根据版本不同给出不同的数据格式
+      limit: 15
       // projectid:26892
     }
     wx.request({
@@ -168,10 +169,7 @@ Page({
             data: res.data
           })
           app.globalData.projectConfig = res.data
-          wx.showToast({
-            title: '保存成功',
-            duration: 2000
-          });
+          
           wx.navigateBack({
             delta: 1,
             success: function (e) {
@@ -180,6 +178,10 @@ Page({
               page.onLoad();
             }
           })
+          wx.showToast({
+            title: '请重新进入小程序',
+            duration: 3000
+          });
         },
         fail: function (res) {
           // console.log(res);

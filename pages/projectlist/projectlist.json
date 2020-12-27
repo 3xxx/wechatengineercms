@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "鲁班工程宝",
+  "navigationBarTitleText": "珠三角设代",
   "enablePullDownRefresh": true,
   "usingComponents": {
     "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index",

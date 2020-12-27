@@ -12,7 +12,7 @@ var app = getApp();
 const wxUploadFile = promisify(wx.uploadFile)
 Page({
   data: {
-    articleProjId: '', //文章对应的projectid
+    articleprojid: '', //文章对应的projectid
     titleCount: 0,
     contentCount: 0,
     title: '',
@@ -55,6 +55,7 @@ Page({
       // contract_info1: options.title,
       // titleCount: options.title.length
       // isMe:true,//作者本人？
+      articleprojid:options.articleprojid
     })
   },
   /**
@@ -68,9 +69,9 @@ Page({
       wx.setNavigationBarTitle({
         title: app.globalData.projectConfig.projecttitle,
       });
-      this.setData({
-        articleProjId: app.globalData.projectConfig.articleprojid,
-      })
+      // this.setData({
+      //   articleProjId: app.globalData.projectConfig.articleprojid,
+      // })
     }
   },
 
@@ -297,7 +298,7 @@ Page({
         for (let path of that.data.images) {
           arr.push(wxUploadFile({
             // url: config.urls.question + '/image/upload',
-            url: config.url + '/wx/uploadwxeditorimg?projectid=' + articleProjId,
+            url: config.url + '/wx/uploadwxeditorimg?projectid=' + that.data.articleprojid,
             filePath: path,
             name: 'file',
           }))

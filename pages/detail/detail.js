@@ -7,6 +7,7 @@ var config = require('../../config.js');
 Page({
   data: {
     isAdmin: false,
+    articleprojid:'',
     // isLogin: false,
     isArticleMe: false,//文章作者本人可以编辑
     dkheight: 0,
@@ -70,7 +71,8 @@ Page({
     // console.log(options)
     this.setData({
       id: options.id,
-      isAdmin: app.globalData.isAdmin
+      isAdmin: app.globalData.isAdmin,
+      articleprojid:options.articleprojid
     })
     // 获得高度
     // let winPage = this;
@@ -292,7 +294,7 @@ Page({
     var that = this
     // console.log(that.data.articlecontent)
     wx.navigateTo({
-      url: '../../packageA/pages/editortopic/editortopic?id=' + e.currentTarget.dataset.id// + '&title=' + that.data.leassonTitle + '&content=' + that.data.articlecontent
+      url: '../../packageA/pages/editortopic/editortopic?id=' + e.currentTarget.dataset.id + '&articleprojid=' + that.data.articleprojid
     })
   },
   //详情页面

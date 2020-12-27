@@ -1,8 +1,8 @@
 {
     "navigationBarTitleText": "珠三角设代plus●编辑",
     "usingComponents": {
-      "wux-cell-group": "../../dist/cell-group/index",
-      "wux-cell": "../../dist/cell/index",
-      "wux-input": "../../dist/input/index"
+      "wux-cell-group": "../../../dist/cell-group/index",
+      "wux-cell": "../../../dist/cell/index",
+      "wux-input": "../../../dist/input/index"
     }
 }

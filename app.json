@@ -5,7 +5,11 @@
     "pages/bbs/bbs",
     "pages/mine/mine",
     "pages/diarylist/diarylist",
-    "pages/detail/detail"
+    "pages/detail/detail",
+    "pages/chooseBgm/chooseBgm",
+    "pages/videoInfo/videoInfo",
+    "pages/videoList/videoList",
+    "pages/todo/todo"
   ],
   "permission": {
     "scope.userLocation": {
@@ -25,8 +29,7 @@
     "backgroundColor": "#ffffff",
     "color": "#000000",
     "selectedColor": "#faad14",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/index/index",
         "iconPath": "images/home-aaaaaa.png",
         "selectedIconPath": "images/home-faad14.png",
@@ -58,8 +61,7 @@
       }
     ]
   },
-  "subPackages": [
-    {
+  "subPackages": [{
       "root": "packageA",
       "pages": [
         "pages/pdfview/pdfview",
@@ -92,8 +94,18 @@
         "pages/myappreciation/myappreciation",
         "pages/mycollect/mycollect",
         "pages/adduser/adduser",
-	"pages/myproject/myproject",
+        "pages/myproject/myproject",
         "pages/mybrand/mybrand"
+      ]
+    },
+    {
+      "root": "packageC",
+      "pages": [
+        "pages/videoplay/videoplay",
+        "pages/business/business",
+        "pages/businesseditor/businesseditor",
+        "pages/busycheckin/busycheckin",
+        "pages/calendar/calendar"
       ]
     }
   ],

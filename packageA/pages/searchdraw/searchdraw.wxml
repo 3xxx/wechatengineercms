@@ -67,7 +67,13 @@ http://blog.csdn.net/sinat_31177681/article/details/53557642
 		</view>
 	</template>
 
-	<wxc-avatar class="avatar" _pid="{{_pid}}" bindtap='uploadPDF'>upload</wxc-avatar>
+	<wxc-avatar class="avatar" _pid="{{_pid}}" bindtap='addArticle'>
+		<wux-icon class="add" type="md-add" size="32" />
+	</wxc-avatar>
+	<wxc-avatar class="avatar2" _pid="{{_pid}}" bindtap='uploadPDF'>
+		<!-- <van-icon name="chat" size="50px" /> 这个也行-->
+		<text class="fa fa-upload"></text>
+	</wxc-avatar>
 
 	<!-- <view  class="page"> {{ ['0'] }}-->
 	<view class="page__bd" hidden='{{searchshow}}'>

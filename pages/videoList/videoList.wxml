@@ -1,0 +1,19 @@
+<view wx:for="{{videoList}}" wx:key="key" class="item-container">
+  <view style='width:{{screenWidth}}px;height:210px;' class='back-img' wx:if="{{item.coverurl}}">
+    <view class="nickname">{{item.content}}</view>
+    <image src="{{coverurl}}{{item.coverurl}}" style='width:{{screenWidth}}px;height:210px;' mode="aspectFit" bindtap='showVideoInfo' data-arrindex='{{index}}'></image>
+  </view>
+  <view style='width:{{screenWidth}}px;height:210px;' class='back-img' wx:else>
+    <image src="{{coverPath}}" style='width:{{screenWidth}}px;height:210px;' mode="aspectFit" bindtap='showVideoInfo' data-arrindex='{{index}}'></image>
+  </view>
+  <view class="desc">
+    <view class="faceName" wx:if="{{item.faceImage}}">
+      <image class='myface' src="{{serverUrl}}{{item.faceImage}}"></image>
+      <view class="nickname">{{item.nickname}}</view>
+    </view>
+    <view class="faceName" wx:else>
+      <image class='myface' src="{{faceUrl}}"></image>
+      <view class="nickname">{{item.nickname}}</view>
+    </view>
+  </view>
+</view>

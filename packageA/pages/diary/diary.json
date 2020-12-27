@@ -1,10 +1,10 @@
 {
   "navigationBarTitleText": "珠三角设代plus●日志",
   "usingComponents": {
-    "wux-cell-group": "../../dist/cell-group/index",
-    "wux-cell": "../../dist/cell/index",
-    "wux-input": "../../dist/input/index",
-    "wux-date-picker": "../../dist/date-picker/index",
-    "wux-button": "../../dist/button/index"
+    "wux-cell-group": "../../../dist/cell-group/index",
+    "wux-cell": "../../../dist/cell/index",
+    "wux-input": "../../../dist/input/index",
+    "wux-date-picker": "../../../dist/date-picker/index",
+    "wux-button": "../../../dist/button/index"
   }
 }

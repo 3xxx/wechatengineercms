@@ -35,7 +35,7 @@ const formatYear = date => {
   return [year].map(formatNumber).join('')
 }
 const formatMonth = date => {
-  const month = date.getMonth()+1
+  const month = date.getMonth() + 1
   return [month].map(formatNumber).join('')
 }
 const formatDay = date => {
@@ -75,6 +75,7 @@ module.exports = {
   clearError: clearError,
   // getReq: getReq,
   // uploadFile: uploadFile
+  getRandomColor:getRandomColor,
 }
 
 // 去前后空格
@@ -96,4 +97,14 @@ function clearError(that) {
     showTopTips: false,
     errorMsg: ""
   })
+}
+
+function getRandomColor() {
+  const rgb = []
+  for (let i = 0; i < 3; ++i) {
+    let color = Math.floor(Math.random() * 256).toString(16)
+    color = color.length === 1 ? '0' + color : color
+    rgb.push(color)
+  }
+  return '#' + rgb.join('')
 }
